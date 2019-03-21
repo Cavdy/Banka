@@ -23,6 +23,8 @@
     --color-green-2: #1B5E20;
     --color-red: #F44336;
     --color-red-2: #B71C1C;
+    --color-orange: #FF9800;
+    --color-orange-2: #EF6C00;
     --color-black: #000;
     --sidebar-color-1: #404968;
     --sidebar-color-2: #2A2E43;
@@ -496,7 +498,8 @@ body {
 
 .activate-btn,
 .deactivate-btn,
-.edit-btn {
+.edit-btn,
+.delete-btn {
     text-decoration: none;
     color: var(--color-white-2);
     padding: .5rem;
@@ -510,20 +513,22 @@ body {
     background-color: var(--color-green-2);
 }
 
-.deactivate-btn {
+.deactivate-btn,
+.delete-btn {
     background-color: var(--color-red);
 }
 
-.deactivate-btn:hover {
+.deactivate-btn:hover,
+.delete-btn:hover {
     background-color: var(--color-red-2);
 }
 
 .edit-btn {
-    background-color: var(--color-blue);
+    background-color: var(--color-orange);
 }
 
 .edit-btn:hover {
-    background-color: var(--color-blue-2);
+    background-color: var(--color-orange-2);
 }
 
 /*
@@ -558,7 +563,10 @@ body {
 .activate,
 .deactivate,
 .amount,
-.edit {
+.edit,
+.delete,
+.staff-role {
+    text-transform: capitalize;
     flex: 0 0 20%;
 }
 
