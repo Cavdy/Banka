@@ -27,6 +27,10 @@
     --color-red-2: #B71C1C;
     --color-orange: #FF9800;
     --color-orange-2: #EF6C00;
+    --color-pink: #E91E63;
+    --color-pink-2: #AD1457;
+    --color-indigo: #3F51B5;
+    --color-indigo-2: #283593;
     --color-black: #000;
     --sidebar-color-1: #404968;
     --sidebar-color-2: #2A2E43;
@@ -40,8 +44,12 @@
 body {
     font-size: 62.5%; /* 10px */
     font-family: 'Muli', sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
     box-sizing: border-box;
+}
+
+.body {
+    overflow: hidden;
 }
 
 .wrapper {
@@ -696,3 +704,211 @@ body {
     text-transform: capitalize;
 }
 
+/*
+    =======================
+            Index
+    =======================
+*/
+.showcase {
+    position: relative;
+}
+
+.showcase-photo {
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.showcase-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+}
+
+.showcase-header {
+    color: var(--color-white);
+    display: flex;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.showcase-logo {
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.showcase-logo:hover {
+    animation: animateFront .5s;
+}
+
+@keyframes animateFront {
+    from {
+        transform: translateX(2rem);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.showcase-list {
+    list-style: none;
+    display: flex;
+}
+
+.showcase-item {
+    padding: .7rem;
+    background-color: transparent;
+    transform: scale(1);
+    transition: background-color .3s, transform .3s;
+}
+
+.showcase-item:not(:last-child) {
+    margin-right: .5rem;
+}
+
+.showcase-item:hover {
+    background-color: var(--color-blue-light);
+    transform: scale(1.2);
+}
+
+.showcase-link {
+    color: currentColor;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .1rem;
+    text-transform: capitalize;
+}
+
+.showcase-body {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-white);
+    text-align: center;
+}
+
+.showcase-title {
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: .2rem;
+}
+
+.showcase-description {
+    display: block;
+    font-size: 1.2rem;
+    margin: .8rem 0 2rem 0;
+}
+
+.showcase-btn {
+    font-size: 1.3rem;
+    padding: 1rem 1.5rem;
+    background-color: var(--color-blue-light);
+    text-decoration: none;
+    color: currentColor;
+    border-radius: 5rem;
+}
+
+.showcase-footer {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3rem;
+    background-color: var(--color-white-2);
+    opacity: .7;
+    display: flex;
+    align-items: center;
+}
+
+.social-links {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.facebook,
+.twitter,
+.instagram,
+.linkedin {
+    display: flex;
+    align-items: center;
+    font-size: var(--ten-pexels);
+    text-decoration: none;
+    transition: transform .5s;
+}
+
+.facebook:hover,
+.twitter:hover,
+.instagram:hover,
+.linkedin:hover {
+    transform: scale(1.1);
+}
+
+.facebook {
+    color: var(--color-blue);
+}
+.facebook:hover {
+    color: var(--color-blue-2);
+}
+
+.twitter {
+    color: var(--color-blue-light);
+}
+.twitter:hover {
+    color: var(--color-blue-light-2);
+}
+
+.instagram {
+    color: var(--color-pink);
+}
+.instagram:hover {
+    color: var(--color-pink-2);
+}
+
+.linkedin {
+    color: var(--color-indigo);
+}
+.linkedin:hover {
+    color: var(--color-indigo-2);
+}
+
+.social-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding-right: .2rem;
+}
+
+.social-icon.facebook {
+    fill: currentColor; 
+}
+.social-icon.twitter {
+    fill: currentColor; 
+}
+.social-icon.instagram {
+    fill: currentColor; 
+}
+.social-icon.linkedin {
+    fill: currentColor; 
+}
+
+.showcase-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--color-black);
+    opacity: .6;
+    width: 100%;
+    height: 100vh;
+    z-index: 4;
+}
