@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Banka Register</title>
+    <title>Banka Create Account</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -28,18 +28,21 @@
             </header>
             <div class="showcase-body">
                 <div class="card">
-                    <h1 class="content-title">Register</h1>
+                    <h1 class="content-title">Create Account</h1>
                     <form action="" class="form">
                         <div class="form-group">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="text" placeholder="Email Address" id="email" class="form-input">
+                            <label for="accountname" class="form-label">Account Name</label>
+                            <input type="text" placeholder="Account Name" id="accountname" class="form-input">
                         </div>
                         <div class="form-group">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" placeholder="Password" id="password" class="form-input">
+                            <label for="selectrole" class="form-label">Account Type</label>
+                            <select class="form-select">
+                                <option value="current">Current</option>
+                                <option value="savings">Savings</option>
+                            </select>
                         </div>
 
-                        <input type="submit" class="btn btn-block btn-primary" value="Register">
+                        <input type="submit" class="btn btn-block btn-primary" value="Create Account">
                     </form>
                 </div>
             </div>
