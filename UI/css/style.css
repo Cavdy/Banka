@@ -1021,4 +1021,8 @@ body {
         width: 15rem;
         right: -100%;
     }
+    
+    .modal-content {
+        width: 90%;
+    }
 }
