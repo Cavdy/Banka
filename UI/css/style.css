@@ -19,6 +19,8 @@
     --color-grey-4: #909092;
     --color-blue: #03A9F4;
     --color-blue-2: #2196F3;
+    --color-blue-light: #29B6F6;
+    --color-blue-light-2: #03A9F4;
     --color-green: #4CAF50;
     --color-green-2: #1B5E20;
     --color-red: #F44336;
@@ -499,7 +501,8 @@ body {
 .activate-btn,
 .deactivate-btn,
 .edit-btn,
-.delete-btn {
+.delete-btn,
+.record-btn {
     text-decoration: none;
     color: var(--color-white-2);
     padding: .5rem;
@@ -529,6 +532,14 @@ body {
 
 .edit-btn:hover {
     background-color: var(--color-orange-2);
+}
+
+.record-btn {
+    background-color: var(--color-blue);
+}
+
+.record-btn:hover {
+    background-color: var(--color-blue-2);
 }
 
 /*
@@ -565,7 +576,9 @@ body {
 .amount,
 .edit,
 .delete,
-.staff-role {
+.staff-role,
+.account-number,
+.record {
     text-transform: capitalize;
     flex: 0 0 20%;
 }
@@ -588,7 +601,6 @@ body {
 
 .modal-content {
     width: 50%;
-    height: 50%;
     margin: 5rem auto;
 }
 
@@ -598,12 +610,89 @@ body {
     =======================
 */
 .username,
-.balance {
+.balance,
+.number,
+.created {
     margin: .5rem 0;
     font-size: var(--ten-pexels);
 }
 
 #username,
-#balance {
+#balance,
+#account-number,
+#account-created,
+#account-status,
+#type {
     font-weight: 300;
 }
+
+/*
+    =======================
+        Welcome User
+    =======================
+*/
+.welcome-user {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-image: linear-gradient(to right, var(--color-blue-light), var(--color-blue-light-2));
+    color: var(--color-white-2);
+}
+
+.welcome-user-photo {
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+    margin: 0 .5rem;
+}
+
+.welcome-user-details {
+    margin-right: auto;
+}
+
+.welcome-username {
+    font-size: 1.5rem;
+}
+
+.last-login {
+    font-size: .8rem;
+}
+
+.total-balance {
+    font-size: var(--ten-pexels);
+}
+
+.total-balance-amount {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/*
+    ===============================
+        User Details (Dashboard)
+    ===============================
+*/
+.dashboard-wrapper {
+    display: flex;
+}
+
+.user-details {
+    flex: 0 0 60%;
+    margin-right: var(--ten-pexels);
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+
+.div {
+    min-height: 3rem;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.manager {
+    flex: 1;
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+

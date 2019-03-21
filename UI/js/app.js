@@ -18,10 +18,15 @@ $(document).ready(() => {
     });
 
     // modal
-    $("#show-modal").click(function () {
-        $(".modal").css("visibility", "visible");
-        $(".modal").css("opacity", "1");
-    });
+    const showModal = document.querySelectorAll('#show-modal')
+    if (showModal) {
+        showModal.forEach(function (modal) {
+            modal.addEventListener('click', function () {
+                 $(".modal").css("visibility", "visible");
+                 $(".modal").css("opacity", "1");
+            });
+        });
+    }
 
     $(window).click(function (e) {
         const modal = document.querySelector("#modal");
