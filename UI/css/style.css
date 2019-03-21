@@ -923,3 +923,102 @@ body {
 .content-title {
     color: var(--color-black);
 }
+
+
+
+
+/*
+    =======================
+        Responsiveness
+    =======================
+*/
+
+@media (max-width: 600px) {
+
+    /*
+    ============================
+        Index Responsiveness
+    ============================
+    */
+    .showcase-header {
+        padding: 0 1rem;
+    }
+
+    .showcase-logo {
+        font-size: 1.4rem;
+    }
+
+    .showcase-item:not(:last-child) {
+        margin-right: 0;
+    }
+
+    .showcase-body {
+        width: 90%;
+    }
+
+    .showcase-title {
+        font-size: 2rem;
+    }
+
+    .social-name {
+        display: none;
+    }
+
+    /*
+    =======================
+        Welcome User
+    =======================
+    */
+    .welcome-user-photo {
+        height: 3rem;
+        width: 3rem;
+        margin: 0 .2rem;
+    }
+
+    .welcome-username {
+        font-size: var(--ten-pexels);;
+    }
+
+    .last-login {
+        font-size: .6rem;
+    }
+
+    .total-balance {
+        font-size: var(--ten-pexels);
+    }
+
+    .total-balance-amount {
+        font-size: var(--ten-pexels);;
+        font-weight: 600;
+    }
+
+    /*
+    ===============================
+        Dashboard Responsiveness
+    ===============================
+    */
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+
+    .user-details {
+        margin-right: 0;
+        margin-bottom: var(--ten-pexels);
+    }
+
+    /*
+    ============================
+        Table Responsiveness
+    ============================
+    */
+    .table-row {
+        min-height: 10rem;
+        flex-direction: column;
+        margin: 2rem 0;
+    }
+
+    .header .user-nav-notification-pop {
+        width: 15rem;
+        right: -100%;
+    }
+}
