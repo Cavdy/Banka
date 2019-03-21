@@ -494,10 +494,42 @@ body {
     color: var(--color-white);
 }
 
+.activate-btn,
+.deactivate-btn,
+.edit-btn {
+    text-decoration: none;
+    color: var(--color-white-2);
+    padding: .5rem;
+}
+
+.activate-btn {
+    background-color: var(--color-green);
+}
+
+.activate-btn:hover {
+    background-color: var(--color-green-2);
+}
+
+.deactivate-btn {
+    background-color: var(--color-red);
+}
+
+.deactivate-btn:hover {
+    background-color: var(--color-red-2);
+}
+
+.edit-btn {
+    background-color: var(--color-blue);
+}
+
+.edit-btn:hover {
+    background-color: var(--color-blue-2);
+}
+
 /*
-    ============================
-        ACTIVATE / DEACTIVATE
-    ============================
+    =======================
+            TABLES
+    =======================
 */
 
 .table {
@@ -524,27 +556,46 @@ body {
 .account-name,
 .account-status,
 .activate,
-.deactivate {
+.deactivate,
+.amount,
+.edit {
     flex: 0 0 20%;
 }
 
-.activate-btn,
-.deactivate-btn {
-    text-decoration: none;
-    color: var(--color-white-2);
-    padding: .5rem;
+/*
+    =======================
+            TABLES
+    =======================
+*/
+.modal {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    background-color: #0000007c;
+    z-index: 20;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .9s;
 }
 
-.activate-btn {
-    background-color: var(--color-green);
-}
-.activate-btn:hover {
-    background-color: var(--color-green-2);
+.modal-content {
+    width: 50%;
+    height: 50%;
+    margin: 5rem auto;
 }
 
-.deactivate-btn {
-    background-color: var(--color-red);
+/*
+    =======================
+        Edit Modal Content
+    =======================
+*/
+.username,
+.balance {
+    margin: .5rem 0;
+    font-size: var(--ten-pexels);
 }
-.deactivate-btn:hover {
-    background-color: var(--color-red-2);
+
+#username,
+#balance {
+    font-weight: 300;
 }

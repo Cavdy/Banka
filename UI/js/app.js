@@ -16,4 +16,18 @@ $(document).ready(() => {
     $('#close').click(() => {
         $('.alert').remove();
     });
+
+    // modal
+    $("#show-modal").click(function () {
+        $(".modal").css("visibility", "visible");
+        $(".modal").css("opacity", "1");
+    });
+
+    $(window).click(function (e) {
+        const modal = document.querySelector("#modal");
+        if (e.target === modal) {
+            $(".modal").css("visibility", "hidden");
+            $(".modal").css("opacity", "0");
+        }
+    });
 });
