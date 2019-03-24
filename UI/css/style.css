@@ -279,6 +279,10 @@ body {
     position: relative;
 }
 
+.user-nav-icon-box-active {
+    display: none !important;
+}
+
 .header .user-nav-icon {
     height: var(--fifteen-pexels);
     width: var(--fifteen-pexels);

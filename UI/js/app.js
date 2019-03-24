@@ -14,6 +14,10 @@ $(document).ready(() => {
 
     $('#toggle-sidebar').click(() => {
         $('.sidebar').toggleClass('sidebar-hide');
+
+        if (window.innerWidth <= 600) {
+            $('.user-nav-icon-box').toggleClass('user-nav-icon-box-active');
+        }
     });
 
     // Pop box
