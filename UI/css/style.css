@@ -729,6 +729,7 @@ body {
 .showcase-content {
     background-color: var(--color-white);
     width: 70rem;
+    min-height: 30rem;
     border-radius: 5px;
     margin: 0 auto;
     position: relative;
@@ -895,10 +896,6 @@ body {
         Index Responsiveness
     ============================
     */
-
-    .showcase-content {
-        height: 90%;
-    }
 
     .showcase-header {
         padding: 0 1rem;
