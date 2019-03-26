@@ -732,7 +732,6 @@ body {
     min-height: 30rem;
     border-radius: 5px;
     margin: 0 auto;
-    position: relative;
 }
 
 .showcase-header {
@@ -753,20 +752,6 @@ body {
 .showcase-logo a {
     text-decoration: none;
     color: currentColor;
-}
-
-.showcase-logo:hover {
-    animation: animateFront .5s;
-}
-
-@keyframes animateFront {
-    from {
-        transform: translateX(2rem);
-    }
-
-    to {
-        transform: translateX(0);
-    }
 }
 
 .showcase-list {
@@ -850,9 +835,6 @@ body {
     height: 3.5rem;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    bottom: 0;
-    left: 0;
 }
 
 .content-title {
@@ -912,6 +894,10 @@ body {
     .showcase-body {
         padding: 1rem;
         flex-direction: column;
+    }
+
+    .showcase-title {
+        font-size: 1rem;
     }
 
     .showcase-body-left {
