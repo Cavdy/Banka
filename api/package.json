@@ -1,0 +1,25 @@
+{
+  "name": "banka",
+  "version": "1.0.0",
+  "description": "banking web app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cavdy/Banka.git"
+  },
+  "keywords": [
+    "banking",
+    "banker",
+    "bank",
+    "banka"
+  ],
+  "author": "Cavdy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cavdy/Banka/issues"
+  },
+  "homepage": "https://github.com/Cavdy/Banka#readme"
+}
