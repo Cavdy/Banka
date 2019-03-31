@@ -1,0 +1,31 @@
+{
+    "accounts": [
+      {
+        "id": 1,
+        "accountNumber": 836363789207,
+        "createdOn": "09/04/19",
+        "owner": 2,
+        "type": "savings",
+        "status": "active",
+        "balance": 0.00
+      },
+      {
+        "id": 2,
+        "accountNumber": 836363764107,
+        "createdOn": "15/04/19",
+        "owner": 1,
+        "type": "current",
+        "status": "dormant",
+        "balance": 10.00
+      },
+      {
+        "id": 3,
+        "accountNumber": 310363789207,
+        "createdOn": "20/04/19",
+        "owner": 3,
+        "type": "savings",
+        "status": "active",
+        "balance": 5000.00
+      }
+    ]
+}
