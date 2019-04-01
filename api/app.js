@@ -1,18 +1,24 @@
-import 'dotenv/config';
-import data from './dummyJson/users';
-import data2 from './dummyJson/accounts';
-import data3 from './dummyJson/transactions';
+import express from 'express';
+import bodyParser from 'body-parser';
+import RegisterRoute from './routes/register';
 
-// console.log('Hello Node.js project.');
+// instantiate expressjs
+const app = express();
+const PORT = process.env.PORT || 5100;
 
-// console.log(process.env.MY_SECRET);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-const { users } = data;
-const { accounts } = data2;
-const { transactions } = data3;
+app.get('/', (req, res) => {
+  res.send('welcome to Banka API');
+});
 
-users.map(user => console.log(user.firstName));
+// creating the api version route
+app.use('/api/v1/register', RegisterRoute);
 
-accounts.map(account => console.log(account.accountNumber));
+// listening to our port
+app.listen(PORT, () => {
+  console.log(`server running on port: ${PORT}`);
+});
 
-transactions.map(transaction => console.log(transaction.newBalance));
+export default app;
