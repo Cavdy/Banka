@@ -41,15 +41,12 @@
     padding: 0;
 }
 
-body {
+body,
+.body {
     font-size: 62.5%; /* 10px */
     font-family: 'Muli', sans-serif;
     overflow-x: hidden;
     box-sizing: border-box;
-}
-
-.body {
-    overflow: hidden;
 }
 
 .wrapper {
