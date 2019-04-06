@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Credit/Debit - Banka Dashboard</title>
+    <title>Banka Dashboard</title>
     <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -25,13 +25,13 @@
                         <li class="sidebar-item">
                             <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
                         </li>
-                        <li class="sidebar-item sidebar-item-active">
+                        <li class="sidebar-item">
                             <a href="./credit.html" class="sidebar-link">Credit / Debit</a>
                         </li>
                         <li class="sidebar-item">
                             <a href="./users.html" class="sidebar-link">Users Accounts</a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item sidebar-item-active">
                             <a href="staffs.html" class="sidebar-link">Staffs</a>
                         </li>
                         <li class="sidebar-item">
@@ -121,45 +121,56 @@
                 <!--Main Body-->
                 <main class="main-body">
                     <div class="card">
-                        <h1 class="content-title">Credit / Debit Accounts</h1>
+                        <h1 class="content-title">Staffs</h1>
 
                         <div class="table">
                             <div class="table-row">
                                 <div class="account-index">Index</div>
                                 <div class="account-name">Account Name</div>
-                                <div class="account-status">Account Status</div>
-                                <div class="amount">Amount</div>
+                                <div class="staff-role">Staff role</div>
                                 <div class="edit">Edit</div>
+                                <div class="delete">Delete</div>
                             </div>
                             <div class="table-row">
                                 <div class="account-index">1</div>
                                 <div class="account-name">Fred Matthew</div>
-                                <div class="account-status">Active</div>
-                                <div class="amount">10000</div>
+                                <div class="staff-role">Staff</div>
                                 <div class="edit"><a href="#" class="edit-btn" id="show-modal">Edit</a></div>
+                                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
                             </div>
                         </div>
                     </div>
                 </main>
-
             </div>
 
             <!--Edit Modal-->
             <div id="modal" class="modal">
                 <div class="modal-content">
                     <div class="card">
-                        <h1 class="content-title">Credit / Debit Account</h1>
-                        <!--Account Name and Balance-->
-                        <h4 class="username">Account name: <span id="username"></span></h4>
-                        <h4 class="balance">Balance: <span id="balance"></span></h4>
-                        <!--Credit or Debit Form-->
+                        <h1 class="content-title">Edit Account</h1>
+                        <!--Add Staff Form-->
                         <form action="" class="form">
                             <div class="form-group">
-                                <label for="creditdebit" class="form-label">Credit / Debit</label>
-                                <input type="number" placeholder="Credit / Debit" id="creditdebit" class="form-input">
+                                <label for="fullname" class="form-label">Fullname</label>
+                                <input type="text" placeholder="Fullname" id="fullname" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" placeholder="Email Address" id="email" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="selectrole" class="form-label">Choose user role</label>
+                                <select class="form-select">
+                                    <option value="staff">Staff</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" placeholder="Password" id="password" class="form-input">
                             </div>
 
-                            <input type="submit" class="btn btn-block btn-primary" value="Credit / Debit">
+                            <input type="submit" class="btn btn-block btn-primary" value="Add User">
                         </form>
                     </div>
                 </div>
