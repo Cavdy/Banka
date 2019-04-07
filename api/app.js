@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 });
 
 // creating the api version route
+app.use('/api/v1/register', RegisterRoute);
 
 // listening to our port
 app.listen(PORT, () => {
