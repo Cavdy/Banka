@@ -1,0 +1,31 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "email": "banka@banka.com",
+        "firstName": "Fred",
+        "lastName": "Micky",
+        "password": "password",
+        "type": "client",
+        "isAdmin": false
+      },
+      {
+        "id": 2,
+        "email": "banka2@banka.com",
+        "firstName": "Mitch",
+        "lastName": "Fergusson",
+        "password": "password",
+        "type": "staff",
+        "isAdmin": false
+      },
+      {
+        "id": 3,
+        "email": "banka3@banka.com",
+        "firstName": "Sandra",
+        "lastName": "Fame",
+        "password": "password",
+        "type": "staff",
+        "isAdmin": true
+      }
+    ]
+}
