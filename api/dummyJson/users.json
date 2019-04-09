@@ -5,7 +5,7 @@
         "email": "banka@banka.com",
         "firstName": "Fred",
         "lastName": "Micky",
-        "password": "password",
+        "password": "passworD1@",
         "type": "client",
         "isAdmin": false
       },
@@ -14,7 +14,7 @@
         "email": "banka2@banka.com",
         "firstName": "Mitch",
         "lastName": "Fergusson",
-        "password": "password",
+        "password": "passworD2@",
         "type": "staff",
         "isAdmin": false
       },
@@ -23,7 +23,7 @@
         "email": "banka3@banka.com",
         "firstName": "Sandra",
         "lastName": "Fame",
-        "password": "password",
+        "password": "passworD3@",
         "type": "staff",
         "isAdmin": true
       }
