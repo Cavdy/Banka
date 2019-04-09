@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import RegisterRoute from './routes/register';
+import LoginRoute from './routes/login';
 
 // instantiate expressjs
 const app = express();
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 
 // creating the api version route
 app.use('/api/v1/register', RegisterRoute);
+app.use('/api/v1/login', LoginRoute);
 
 // listening to our port
 app.listen(PORT, () => {
