@@ -16,10 +16,24 @@ app.get('/', (req, res) => {
   res.send('welcome to Banka API');
 });
 
+const checkToken = (req, res, next) => {
+  const header = req.headers.authorization;
+
+  if (typeof header !== 'undefined') {
+    const bearer = header.split(' ');
+    const token = bearer[1];
+    req.token = token;
+    next();
+  } else {
+    // If header is undefined return Forbidden (403)
+    res.sendStatus(403);
+  }
+};
+
 // creating the api version route
 app.use('/api/v1/register', RegisterRoute);
 app.use('/api/v1/login', LoginRoute);
-app.use('/api/v1/createaccount', CreateAccountRoute);
+app.use('/api/v1/createaccount', checkToken, CreateAccountRoute);
 
 // listening to our port
 app.listen(PORT, () => {

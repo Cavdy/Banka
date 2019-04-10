@@ -15,14 +15,13 @@ const LoginService = {
       // check if account exist
       for (let i = 0; i <= users.length - 1; i++) {
         if (users[i].email === userData.email && users[i].password === userData.password) {
+          returnValue = users[i];
           checkDetails = true;
         }
       }
 
       // gives output
-      if (checkDetails) {
-        returnValue = userData;
-      } else {
+      if (!checkDetails) {
         returnValue.push('incorrect credentials');
       }
     } else {
