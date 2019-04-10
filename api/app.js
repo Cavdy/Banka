@@ -31,9 +31,9 @@ const checkToken = (req, res, next) => {
 };
 
 // creating the api version route
-app.use('/api/v1/register', RegisterRoute);
-app.use('/api/v1/login', LoginRoute);
-app.use('/api/v1/createaccount', checkToken, CreateAccountRoute);
+app.use('/api/auth/signup', RegisterRoute);
+app.use('/api/auth/signin', LoginRoute);
+app.use('/api/v1/accounts', checkToken, CreateAccountRoute);
 
 // listening to our port
 app.listen(PORT, () => {
