@@ -13,6 +13,7 @@ const CreateAccountService = {
     const balance = 0.00;
     const status = 'active';
 
+    // assign data
     accountData.id = newId;
     accountData.accountNumber = accountNumberGenerator;
     accountData.createdOn = createdOn;
