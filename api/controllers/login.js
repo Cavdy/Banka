@@ -10,6 +10,7 @@ const LoginController = {
       if (err) { console.log(err); }
       if (loggedUser[0] === 'Invalid format' || loggedUser[0] === 'incorrect credentials') {
         res.json({
+          status: 'error',
           data: 'incorrect data',
         });
       } else {
