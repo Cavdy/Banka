@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import jwt from 'jsonwebtoken';
 import TransactionService from '../services/transaction';
 

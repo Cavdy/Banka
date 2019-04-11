@@ -13,6 +13,7 @@ const LoginService = {
       let checkDetails = false;
 
       // check if account exist
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i <= users.length - 1; i++) {
         if (users[i].email === userData.email && users[i].password === userData.password) {
           returnValue = users[i];

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import transactionsData from '../dummyJson/transactions';
 import accountsData from '../dummyJson/accounts';
 
