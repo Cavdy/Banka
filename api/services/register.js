@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import usersData from '../dummyJson/users';
 
 const { users } = usersData;
