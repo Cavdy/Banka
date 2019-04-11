@@ -34,7 +34,7 @@ const RegisterService = {
         emailPassed = true;
       }
     } else {
-      returnValue.push('Invalid email');
+      returnValue.push('Email is required');
     }
 
     if (firstnameAndLastnameRegex.test(userData.firstName) && typeof userData.firstName !== 'undefined' && userData.firstName !== null) {

@@ -15,23 +15,20 @@ describe('Testing User Controller', () => {
         chai.request(app)
           .post(signupUrl)
           .send({
-            firstName: 'mike',
-            lastName: 'umanah',
-            email: 'test@test.com',
-            password: 'password',
+            firstName: 'cavdy',
+            lastName: 'isaiah',
+            email: 'banka4@banka4.com',
+            password: 'passworD4@',
           })
 
           .end((error, response) => {
-            // console.log('error', response);
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(201);
-            expect(response.body.status).to.equal(201);
+            expect(response).to.have.status(200);
             expect(response.body.data).to.be.a('object');
             expect(response.body.data).to.have.property('id');
             expect(response.body.data).to.have.property('firstName');
             expect(response.body.data).to.have.property('lastName');
             expect(response.body.data).to.have.property('email');
-            expect(response.body.data.email).to.equal('test@test.com');
             done();
           });
       },
@@ -41,69 +38,14 @@ describe('Testing User Controller', () => {
       chai.request(app)
         .post(signupUrl)
         .send({
-          firstName: 'michael',
-          lastName: 'Umanah',
-          username: 'michael123',
-          password: 'password',
+          firstName: 'cavdy',
+          lastName: 'isaiah',
+          password: 'passworD4@',
         })
         .end((error, response) => {
           expect(response.body).to.be.an('object');
-          expect(response.body.status).to.equal(400);
-          expect(response.body.error).to.be.a('string');
-          expect(response.body.error).to.equal('Email is required');
-          done();
-        });
-    });
-
-    it('should not register a user when the first name is missing', (done) => {
-      chai.request(app)
-        .post(signupUrl)
-        .send({
-          lastName: 'Umanah',
-          username: 'michael123',
-          password: 'password',
-        })
-        .end((error, response) => {
-          expect(response.body).to.be.an('object');
-          expect(response.body.status).to.equal(400);
-          expect(response.body.error).to.be.a('string');
-          expect(response.body.error).to.equal('First name is required');
-          done();
-        });
-    });
-
-
-    it('should not register a user when the last name is missing', (done) => {
-      chai.request(app)
-        .post(signupUrl)
-        .send({
-          firstName: 'Umanah',
-          username: 'michael123',
-          password: 'password',
-        })
-        .end((error, response) => {
-          expect(response.body).to.be.an('object');
-          expect(response.body.status).to.equal(400);
-          expect(response.body.error).to.be.a('string');
-          expect(response.body.error).to.equal('Last name is required');
-          done();
-        });
-    });
-
-    it('should not register a user when the password is missing', (done) => {
-      chai.request(app)
-        .post(signupUrl)
-        .send({
-          email: 'mike234@gmail,com',
-          firstName: 'Umanah',
-          lastName: 'michael123',
-          username: 'password',
-        })
-        .end((error, response) => {
-          expect(response.body).to.be.an('object');
-          expect(response.body.status).to.equal(400);
-          expect(response.body.error).to.be.a('string');
-          expect(response.body.error).to.equal('Password is required');
+          expect(response.body.status).to.equal('success');
+          expect(response.body.data[0]).to.equal('Email is required');
           done();
         });
     });
@@ -112,16 +54,80 @@ describe('Testing User Controller', () => {
       chai.request(app)
         .post(signupUrl)
         .send({
-          firstName: 'mike',
-          lastName: 'umanah',
-          email: 'test@test.com',
-          password: 'password',
+          firstName: 'cavdy',
+          lastName: 'isaiah',
+          email: 'banka2@banka.com',
+          password: 'passworD4@',
         })
         .end((error, response) => {
           expect(response.body).to.be.an('object');
-          expect(response.body.status).to.equal(400);
-          expect(response.body.error).to.be.a('string');
-          expect(response.body.error).to.equal('Email already exist');
+          expect(response.body.status).to.equal('success');
+          expect(response.body.data[0]).to.equal('email already exist');
+          done();
+        });
+    });
+
+    it('should not register a user when the first name is missing', (done) => {
+      chai.request(app)
+        .post(signupUrl)
+        .send({
+          lastName: 'isaiah',
+          email: 'banka4@banka.com',
+          password: 'passworD4@',
+        })
+        .end((error, response) => {
+          expect(response.body).to.be.an('object');
+          expect(response.body.status).to.equal('success');
+          expect(response.body.data[0]).to.equal('Firstname required');
+          done();
+        });
+    });
+
+    it('should not register a user when the last name is missing', (done) => {
+      chai.request(app)
+        .post(signupUrl)
+        .send({
+          firstName: 'cavdy',
+          email: 'banka4@banka.com',
+          password: 'passworD4@',
+        })
+        .end((error, response) => {
+          expect(response.body).to.be.an('object');
+          expect(response.body.status).to.equal('success');
+          expect(response.body.data[0]).to.equal('Lastname required');
+          done();
+        });
+    });
+
+    it('should not register a user when the password is missing', (done) => {
+      chai.request(app)
+        .post(signupUrl)
+        .send({
+          firstName: 'cavdy',
+          lastName: 'isaiah',
+          email: 'banka4@banka.com',
+        })
+        .end((error, response) => {
+          expect(response.body).to.be.an('object');
+          expect(response.body.status).to.equal('success');
+          expect(response.body.data[0]).to.equal('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
+          done();
+        });
+    });
+
+    it('should not register a user when the password do not meet requirement', (done) => {
+      chai.request(app)
+        .post(signupUrl)
+        .send({
+          firstName: 'cavdy',
+          lastName: 'isaiah',
+          email: 'banka4@banka.com',
+          password: 'passworD4',
+        })
+        .end((error, response) => {
+          expect(response.body).to.be.an('object');
+          expect(response.body.status).to.equal('success');
+          expect(response.body.data[0]).to.equal('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
           done();
         });
     });
