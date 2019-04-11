@@ -17,6 +17,25 @@ const CreateAccountController = {
       }
     });
   },
+  // patchAccount
+  patchAccount(req, res) {
+    const { accountNumber } = req.params;
+    const accountStatus = req.body;
+    const updatedAccount = CreateAccountService.patchAccount(accountNumber, accountStatus);
+    return res.json({
+      status: 'success',
+      data: updatedAccount,
+    }).status(201);
+  },
+  // deleteAccount
+  deleteAccount(req, res) {
+    const { accountNumber } = req.params;
+    const deleteAccount = CreateAccountService.deleteAccount(accountNumber);
+    return res.json({
+      status: 'success',
+      data: deleteAccount,
+    }).status(200);
+  },
 };
 
 export default CreateAccountController;
