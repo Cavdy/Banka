@@ -1,4 +1,4 @@
-export default class User {
+export default class Account {
   constructor() {
     this.id = null;
     this.accountNumber = null;

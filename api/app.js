@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import RegisterRoute from './routes/register';
 import LoginRoute from './routes/login';
 import CreateAccountRoute from './routes/createAccount';
+import TransactionRoute from './routes/transaction';
 
 // instantiate expressjs
 const app = express();
@@ -34,6 +35,7 @@ const checkToken = (req, res, next) => {
 app.use('/api/auth/signup', RegisterRoute);
 app.use('/api/auth/signin', LoginRoute);
 app.use('/api/v1/accounts', checkToken, CreateAccountRoute);
+app.use('/api/v1/transactions', checkToken, TransactionRoute);
 
 // listening to our port
 app.listen(PORT, () => {
