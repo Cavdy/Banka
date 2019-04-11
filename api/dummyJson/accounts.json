@@ -2,6 +2,9 @@
     "accounts": [
       {
         "id": 1,
+        "firstName": "Fred",
+        "lastName": "Micky",
+        "email": "banka@banka.com",
         "accountNumber": 306363789207,
         "createdOn": "09/04/19",
         "owner": 2,
@@ -11,6 +14,9 @@
       },
       {
         "id": 2,
+        "firstName": "Fred2",
+        "lastName": "Micky2",
+        "email": "banka2@banka.com",
         "accountNumber": 306363764107,
         "createdOn": "15/04/19",
         "owner": 1,
@@ -20,6 +26,9 @@
       },
       {
         "id": 3,
+        "firstName": "Fred3",
+        "lastName": "Micky3",
+        "email": "banka3@banka.com",
         "accountNumber": 307363789207,
         "createdOn": "20/04/19",
         "owner": 3,
