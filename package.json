@@ -4,8 +4,14 @@
   "description": "banking web app",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node ./app.js",
-    "test": "mocha --require @babel/register --exit || true"
+    "start": "node ./api/build/app.js",
+    "build": "babel -d ./api/build ./api/v1 -s",
+    "dev": "nodemon --exec babel-node ./api/v1/app.js",
+    "test": "mocha --require @babel/register --exit || true",
+    "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
+    "coveralls-coverage": "coveralls < lcov.info",
+    "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
+    "coverage": "nyc npm test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage"
   },
   "repository": {
     "type": "git",
@@ -41,7 +47,10 @@
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
+    "codeclimate-test-reporter": "^0.5.1",
     "coveralls": "^3.0.3",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^13.3.0",
     "eslint": "^5.13.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
