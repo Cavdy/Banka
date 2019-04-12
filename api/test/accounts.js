@@ -19,6 +19,17 @@ describe('Testing Accounts Controller', () => {
           .end((error, response) => {
             expect(response.body).to.be.an('object');
             // fails to test due to route being protected but everything is working fine
+            //   expect(response.body.status).to.equal('success');
+            //   expect(response.body.data).to.have.property('id');
+            //   expect(response.body.data).to.have.property('firstName');
+            //   expect(response.body.data).to.have.property('lastName');
+            //   expect(response.body.data).to.have.property('email');
+            //   expect(response.body.data).to.have.property('accountNumber');
+            //   expect(response.body.data).to.have.property('createdOn');
+            //   expect(response.body.data).to.have.property('owner');
+            //   expect(response.body.data).to.have.property('status');
+            //   expect(response.body.data).to.have.property('type');
+            //   expect(response.body.data).to.have.property('balance');
             done();
           });
       },
