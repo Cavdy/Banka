@@ -1,0 +1,41 @@
+import jwt from 'jsonwebtoken';
+import CreateAccountService from '../services/createAccount';
+
+const CreateAccountController = {
+  createAccount(req, res) {
+    const accountData = req.body;
+    // verify jwt token
+    jwt.verify(req.token, '5634', (err, authorizedData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        const createdAccount = CreateAccountService.createAccount(accountData, authorizedData);
+        return res.json({
+          status: 'success',
+          data: createdAccount,
+        }).status(201);
+      }
+    });
+  },
+  // patchAccount
+  patchAccount(req, res) {
+    const { accountNumber } = req.params;
+    const accountStatus = req.body;
+    const updatedAccount = CreateAccountService.patchAccount(accountNumber, accountStatus);
+    return res.json({
+      status: 'success',
+      data: updatedAccount,
+    }).status(201);
+  },
+  // deleteAccount
+  deleteAccount(req, res) {
+    const { accountNumber } = req.params;
+    const deleteAccount = CreateAccountService.deleteAccount(accountNumber);
+    return res.json({
+      status: 'success',
+      data: deleteAccount,
+    }).status(200);
+  },
+};
+
+export default CreateAccountController;

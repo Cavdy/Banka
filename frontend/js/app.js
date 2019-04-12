@@ -24,14 +24,15 @@ document.querySelector('#toggle-sidebar').addEventListener('click', () => {
 const userNavUserPop = document.querySelector('.user-nav-user-pop');
 const userNavNotificationPop = document.querySelector('.user-nav-notification-pop');
 
-document.querySelector('.user-nav-icon-box').addEventListener('click', () => {
-    userNavUserPop.classList.remove('user-nav-user-pop-active');
-    userNavNotificationPop.classList.toggle('user-nav-notification-pop-active');
-});
-document.querySelector('.user-nav-user').addEventListener('click', () => {
-    userNavNotificationPop.classList.remove('user-nav-notification-pop-active');
-    userNavUserPop.classList.toggle('user-nav-user-pop-active');
-});
+const notificationPop = (element, removeClass, removeElement, toggleClass, toggleElement) => {
+    document.querySelector(element).addEventListener('click', () => {
+        removeClass.classList.remove(removeElement);
+        toggleClass.classList.toggle(toggleElement);
+    });
+}
+
+notificationPop('.user-nav-icon-box', userNavUserPop, 'user-nav-user-pop-active', userNavNotificationPop, 'user-nav-notification-pop-active');
+notificationPop('.user-nav-user', userNavNotificationPop, 'user-nav-notification-pop-active', userNavUserPop, 'user-nav-user-pop-active');
 
 // dismiss alert
 const close = document.querySelector('#close');
