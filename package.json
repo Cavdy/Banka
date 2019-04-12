@@ -7,7 +7,7 @@
     "start": "node ./api/build/app.js",
     "build": "babel -d ./api/build ./api/v1 -s",
     "dev": "nodemon --exec babel-node ./api/v1/app.js",
-    "test": "mocha --require @babel/register --exit || true",
+    "test": "mocha ./api/v1 --recursive --require @babel/register --exit || true",
     "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
     "coveralls-coverage": "coveralls < lcov.info",
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
