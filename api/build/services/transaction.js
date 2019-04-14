@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _transactions = _interopRequireDefault(require("../dummyJson/transactions"));
+var _transactions = _interopRequireDefault(require("../../dummyJson/transactions"));
 
-var _accounts = _interopRequireDefault(require("../dummyJson/accounts"));
+var _accounts = _interopRequireDefault(require("../../dummyJson/accounts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 

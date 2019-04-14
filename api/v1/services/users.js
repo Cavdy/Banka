@@ -1,4 +1,4 @@
-import dummyUsers from '../dummyJson/users';
+import dummyUsers from '../../dummyJson/users';
 
 const { users } = dummyUsers;
 
