@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import usersData from '../dummyJson/users';
+import usersData from '../../dummyJson/users';
 import registrationHelper from '../helper/registrationHelper';
 
 const { users } = usersData;
