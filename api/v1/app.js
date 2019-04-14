@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import debug from 'debug';
 import RegisterRoute from './routes/register';
 import CreateStaffRoute from './routes/createStaffs';
 import LoginRoute from './routes/login';
@@ -41,7 +42,7 @@ app.use('/api/v1/transactions', checkToken, TransactionRoute);
 
 // listening to our port
 app.listen(PORT, () => {
-  console.log(`server running on port: ${PORT}`);
+  debug('server')(`server running on port: ${PORT}`);
 });
 
 export default app;
