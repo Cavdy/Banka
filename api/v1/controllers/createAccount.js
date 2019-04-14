@@ -21,20 +21,32 @@ const CreateAccountController = {
   patchAccount(req, res) {
     const { accountNumber } = req.params;
     const accountStatus = req.body;
-    const updatedAccount = CreateAccountService.patchAccount(accountNumber, accountStatus);
-    return res.json({
-      status: 'success',
-      data: updatedAccount,
-    }).status(201);
+    jwt.verify(req.token, '5634', (err, authorizedData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        const updatedAccount = CreateAccountService.patchAccount(accountNumber, accountStatus, authorizedData);
+        return res.json({
+          status: 'success',
+          data: updatedAccount,
+        }).status(201);
+      }
+    });
   },
   // deleteAccount
   deleteAccount(req, res) {
     const { accountNumber } = req.params;
-    const deleteAccount = CreateAccountService.deleteAccount(accountNumber);
-    return res.json({
-      status: 'success',
-      data: deleteAccount,
-    }).status(200);
+    jwt.verify(req.token, '5634', (err, authorizedData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        const deleteAccount = CreateAccountService.deleteAccount(accountNumber, authorizedData);
+        return res.json({
+          status: 'success',
+          data: deleteAccount,
+        }).status(200);
+      }
+    });
   },
 };
 
