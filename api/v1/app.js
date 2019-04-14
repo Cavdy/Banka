@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import debug from 'debug';
 import RegisterRoute from './routes/register';
+import CreateStaffRoute from './routes/createStaffs';
 import LoginRoute from './routes/login';
 import CreateAccountRoute from './routes/createAccount';
 import TransactionRoute from './routes/transaction';
@@ -34,12 +36,13 @@ const checkToken = (req, res, next) => {
 // creating the api version route
 app.use('/api/auth/signup', RegisterRoute);
 app.use('/api/auth/signin', LoginRoute);
+app.use('/api/auth/addstaff', checkToken, CreateStaffRoute);
 app.use('/api/v1/accounts', checkToken, CreateAccountRoute);
 app.use('/api/v1/transactions', checkToken, TransactionRoute);
 
 // listening to our port
 app.listen(PORT, () => {
-  console.log(`server running on port: ${PORT}`);
+  debug('server')(`server running on port: ${PORT}`);
 });
 
 export default app;

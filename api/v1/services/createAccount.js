@@ -11,9 +11,7 @@ const CreateAccountService = {
     const date = new Date();
     const createdOn = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     const owner = userData.loggedUser.id;
-    const { firstName } = userData.loggedUser;
-    const { lastName } = userData.loggedUser;
-    const { email } = userData.loggedUser;
+    const { firstName, lastName, email } = userData.loggedUser;
     const balance = 0.00;
     const status = 'active';
 
