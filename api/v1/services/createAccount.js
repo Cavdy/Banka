@@ -28,29 +28,39 @@ const CreateAccountService = {
     accounts.push(accountData);
     return accountData;
   },
-  patchAccount(accountNumber, accountUpdate) {
+  patchAccount(accountNumber, accountUpdate, staff) {
     let account;
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i <= accounts.length - 1; i++) {
-      // eslint-disable-next-line eqeqeq
-      if (accounts[i].accountNumber == accountNumber) {
-        accounts[i].status = accountUpdate.status;
-        account = accounts[i];
+
+    if (staff.loggedUser.type === 'staff' || staff.loggedUser.isAdmin === true) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i <= accounts.length - 1; i++) {
+        // eslint-disable-next-line eqeqeq
+        if (accounts[i].accountNumber == accountNumber) {
+          accounts[i].status = accountUpdate.status;
+          account = accounts[i];
+        }
       }
+    } else {
+      account = 'Sorry you don\'t have permission to perform this task';
     }
     return account;
   },
-  deleteAccount(accountNumber) {
+  deleteAccount(accountNumber, staff) {
     let account;
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i <= accounts.length - 1; i++) {
-      // eslint-disable-next-line eqeqeq
-      if (accounts[i].accountNumber == accountNumber) {
-        accounts.splice(i, 1);
-        account = 'account deleted';
-      } else {
-        account = 'no account found or account has been deleted';
+
+    if (staff.loggedUser.type === 'staff' || staff.loggedUser.isAdmin === true) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i <= accounts.length - 1; i++) {
+        // eslint-disable-next-line eqeqeq
+        if (accounts[i].accountNumber == accountNumber) {
+          accounts.splice(i, 1);
+          account = 'account deleted';
+        } else {
+          account = 'no account found or account has been deleted';
+        }
       }
+    } else {
+      account = 'Sorry you don\'t have permission to perform this task';
     }
     return account;
   },
