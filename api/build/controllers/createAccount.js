@@ -33,23 +33,35 @@ var CreateAccountController = {
     var accountNumber = req.params.accountNumber;
     var accountStatus = req.body;
 
-    var updatedAccount = _createAccount["default"].patchAccount(accountNumber, accountStatus);
+    _jsonwebtoken["default"].verify(req.token, '5634', function (err, authorizedData) {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        var updatedAccount = _createAccount["default"].patchAccount(accountNumber, accountStatus, authorizedData);
 
-    return res.json({
-      status: 'success',
-      data: updatedAccount
-    }).status(201);
+        return res.json({
+          status: 'success',
+          data: updatedAccount
+        }).status(201);
+      }
+    });
   },
   // deleteAccount
   deleteAccount: function deleteAccount(req, res) {
     var accountNumber = req.params.accountNumber;
 
-    var deleteAccount = _createAccount["default"].deleteAccount(accountNumber);
+    _jsonwebtoken["default"].verify(req.token, '5634', function (err, authorizedData) {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        var deleteAccount = _createAccount["default"].deleteAccount(accountNumber, authorizedData);
 
-    return res.json({
-      status: 'success',
-      data: deleteAccount
-    }).status(200);
+        return res.json({
+          status: 'success',
+          data: deleteAccount
+        }).status(200);
+      }
+    });
   }
 };
 var _default = CreateAccountController;

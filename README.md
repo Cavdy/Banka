@@ -44,22 +44,32 @@ https://github.com/Cavdy/Banka.git
 <tr>
 	<td>PATCH</td>
 	<td>api/v1/accounts/accountNumber</td>
-	<td>Account can be modified</td>
+	<td>Staff and Admin can be modify account</td>
 </tr>
 <tr>
 	<td>DELETE</td>
 	<td>api/v1/accounts/accountNumber</td>
-	<td>Account can be modified</td>
+	<td>Staff and Admin can be delete account</td>
 </tr>
 <tr>
 	<td>POST</td>
 	<td>api/v1/transactions/accountNumber/debit</td>
-	<td>Staffs can debit users</td>
+	<td>Staffs and Admin can debit users</td>
 </tr>
 <tr>
 	<td>POST</td>
 	<td>api/v1/transactions/accountNumber/credit</td>
-	<td>Staffs can credit users</td>
+	<td>Staffs and Admin can credit users</td>
+</tr>
+<tr>
+	<td>GET</td>
+	<td>api/v1/users</td>
+	<td>Staffs and Admin can see all users</td>
+</tr>
+<tr>
+	<td>DELETE</td>
+	<td>api/v1/users/:id</td>
+	<td>Staffs and Admin can delete users</td>
 </tr>
 </table>
 

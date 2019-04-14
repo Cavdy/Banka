@@ -19,9 +19,10 @@ var CreateAccountService = {
     var date = new Date();
     var createdOn = "".concat(date.getDate(), "/").concat(date.getMonth() + 1, "/").concat(date.getFullYear());
     var owner = userData.loggedUser.id;
-    var firstName = userData.loggedUser.firstName;
-    var lastName = userData.loggedUser.lastName;
-    var email = userData.loggedUser.email;
+    var _userData$loggedUser = userData.loggedUser,
+        firstName = _userData$loggedUser.firstName,
+        lastName = _userData$loggedUser.lastName,
+        email = _userData$loggedUser.email;
     var balance = 0.00;
     var status = 'active'; // assign data
 
@@ -37,30 +38,40 @@ var CreateAccountService = {
     accounts.push(accountData);
     return accountData;
   },
-  patchAccount: function patchAccount(accountNumber, accountUpdate) {
-    var account; // eslint-disable-next-line no-plusplus
+  patchAccount: function patchAccount(accountNumber, accountUpdate, staff) {
+    var account;
 
-    for (var i = 0; i <= accounts.length - 1; i++) {
-      // eslint-disable-next-line eqeqeq
-      if (accounts[i].accountNumber == accountNumber) {
-        accounts[i].status = accountUpdate.status;
-        account = accounts[i];
+    if (staff.loggedUser.type === 'staff' || staff.loggedUser.isAdmin === true) {
+      // eslint-disable-next-line no-plusplus
+      for (var i = 0; i <= accounts.length - 1; i++) {
+        // eslint-disable-next-line eqeqeq
+        if (accounts[i].accountNumber == accountNumber) {
+          accounts[i].status = accountUpdate.status;
+          account = accounts[i];
+        }
       }
+    } else {
+      account = 'Sorry you don\'t have permission to perform this task';
     }
 
     return account;
   },
-  deleteAccount: function deleteAccount(accountNumber) {
-    var account; // eslint-disable-next-line no-plusplus
+  deleteAccount: function deleteAccount(accountNumber, staff) {
+    var account;
 
-    for (var i = 0; i <= accounts.length - 1; i++) {
-      // eslint-disable-next-line eqeqeq
-      if (accounts[i].accountNumber == accountNumber) {
-        accounts.splice(i, 1);
+    if (staff.loggedUser.type === 'staff' || staff.loggedUser.isAdmin === true) {
+      var Account = accounts.find(function (mAccount) {
+        return mAccount.accountNumber == accountNumber;
+      });
+
+      if (typeof Account !== 'undefined') {
+        accounts.splice(Account.id - 1, 1);
         account = 'account deleted';
       } else {
         account = 'no account found or account has been deleted';
       }
+    } else {
+      account = 'Sorry you don\'t have permission to perform this task';
     }
 
     return account;
