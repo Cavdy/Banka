@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import accountsData from '../dummyJson/accounts';
+import accountsData from '../../dummyJson/accounts';
 
 const { accounts } = accountsData;
 
