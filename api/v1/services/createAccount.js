@@ -49,15 +49,13 @@ const CreateAccountService = {
     let account;
 
     if (staff.loggedUser.type === 'staff' || staff.loggedUser.isAdmin === true) {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i <= accounts.length - 1; i++) {
-        // eslint-disable-next-line eqeqeq
-        if (accounts[i].accountNumber == accountNumber) {
-          accounts.splice(i, 1);
-          account = 'account deleted';
-        } else {
-          account = 'no account found or account has been deleted';
-        }
+      const Account = accounts.find(mAccount => mAccount.accountNumber == accountNumber);
+
+      if (typeof Account !== 'undefined') {
+        accounts.splice(Account.id - 1, 1);
+        account = 'account deleted';
+      } else {
+        account = 'no account found or account has been deleted';
       }
     } else {
       account = 'Sorry you don\'t have permission to perform this task';

@@ -6,6 +6,7 @@ import CreateStaffRoute from './routes/createStaffs';
 import LoginRoute from './routes/login';
 import CreateAccountRoute from './routes/createAccount';
 import TransactionRoute from './routes/transaction';
+import UsersRoute from './routes/users';
 
 // instantiate expressjs
 const app = express();
@@ -39,6 +40,7 @@ app.use('/api/auth/signin', LoginRoute);
 app.use('/api/auth/addstaff', checkToken, CreateStaffRoute);
 app.use('/api/v1/accounts', checkToken, CreateAccountRoute);
 app.use('/api/v1/transactions', checkToken, TransactionRoute);
+app.use('/api/v1/users', checkToken, UsersRoute);
 
 // listening to our port
 app.listen(PORT, () => {

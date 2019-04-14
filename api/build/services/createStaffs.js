@@ -13,17 +13,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /* eslint-disable no-param-reassign */
 var users = _users["default"].users;
-var RegisterService = {
-  registerUser: function registerUser(userData) {
+var CreateStaffService = {
+  createStaffUser: function createStaffUser(userData, admin) {
     var returnData = _registrationHelper["default"].registrationHelper(users, userData);
 
     var returnValue; // eslint-disable-next-line max-len
 
     if (returnData[0] === true && returnData[1] === true && returnData[2] === true && returnData[3] === true) {
-      userData.type = 'client';
-      userData.isAdmin = false;
-      users.push(userData);
-      returnValue = userData;
+      if (admin.loggedUser.isAdmin === true) {
+        userData.type = 'staff';
+        userData.isAdmin = false;
+        users.push(userData);
+        returnValue = userData;
+      } else {
+        returnValue = 'You must be an admin to create staffs';
+      }
     } else {
       // eslint-disable-next-line prefer-destructuring
       returnValue = returnData[4];
@@ -32,6 +36,6 @@ var RegisterService = {
     return returnValue;
   }
 };
-var _default = RegisterService;
+var _default = CreateStaffService;
 exports["default"] = _default;
-//# sourceMappingURL=register.js.map
+//# sourceMappingURL=createStaffs.js.map
