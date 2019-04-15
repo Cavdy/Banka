@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Banka Dashboard</title>
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <!--Wrapper-->
+    <div class="wrapper">
+      <!--Sidebar-->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h1 class="logo">Banka</h1>
+        </div>
+        <div class="sidebar-menu">
+          <ul class="sidebar-list">
+            <li class="sidebar-item  sidebar-item-active">
+              <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./credit.html" class="sidebar-link">Credit / Debit</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./users.html" class="sidebar-link">Users Accounts</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="staffs.html" class="sidebar-link">Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-legal">
+          &copy; 2019 Banka. All Rights Reserved.
+        </div>
+      </div>
+
+      <!--Main Content-->
+      <div class="main-content">
+        <!--Header-->
+        <header class="header">
+          <button class="toggle-sidebar" id="toggle-sidebar">
+            <svg class="toggle-sidebar-button">
+              <use xlink:href="./svg/sprite.svg#icon-list"></use>
+            </svg>
+          </button>
+          <form class="search-form">
+            <input type="text" class="search-input" placeholder="Search...">
+            <button class="search-form-button">
+              <svg class="search-form-icon">
+                <use xlink:href="./svg/sprite.svg#icon-magnifying-glass"></use>
+              </svg>
+            </button>
+          </form>
+
+          <nav class="user-nav">
+            <div class="user-nav-icon-box">
+              <svg class="user-nav-icon">
+                <use xlink:href="./svg/sprite.svg#icon-bell"></use>
+              </svg>
+              <span class="user-nav-notification"></span>
+
+              <div class="user-nav-notification-pop">
+                <ul class="list">
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, optio?</a>
+                  </li>
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing.</a>
+                  </li>
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis similique
+                      soluta sit impedit, provident laborum?</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="user-nav-user">
+              <img class="user-nav-user-photo" src="./img/js2.png" alt="">
+              <span class="user-nav-username">Franklin</span>
+              <svg class="user-nav-user-icon">
+                <use xlink:href="./svg/sprite.svg#icon-chevron-down"></use>
+              </svg>
+
+              <div class="user-nav-user-pop">
+                <ul class="list">
+                  <li class="item"><a href="./profile.html" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-user"></use>
+                      </svg>Profile</a>
+                  </li>
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-help-with-circle"></use>
+                      </svg>Help</a>
+                  </li>
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-log-out"></use>
+                      </svg>Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        <!--Welcome user-->
+        <div class="welcome-user">
+          <img class="welcome-user-photo" src="./img/js2.png" alt="">
+          <div class="welcome-user-details">
+            <p class="welcome-username">Welcome back, Franklin!</p>
+            <p class="last-login">your last login was 05/05/2019</p>
+          </div>
+          <div class="welcome-user-balance">
+            <p class="total-balance">Total Balance</p>
+            <p class="total-balance-amount">#102,000</p>
+          </div>
+        </div>
+
+        <!--Main Body-->
+        <main class="main-body">
+          <div class="dashboard-wrapper">
+            <div class="user-details">
+              <div class="card">
+                <h2 class="user-details-title">Account Details</h2>
+                <div class="div">
+                  <h4 class="user-details-name">Account name: </h4>
+                  <span id="username">Franklin Ikenna</span>
+                </div>
+                <div class="div">
+                  <h4 class="user-details-number">Account Number: </h4>
+                  <span id="account-number">758973636739</span>
+                </div>
+                <div class="div">
+                  <h4 class="type">Type: </h4>
+                  <span id="type">Savings</span>
+                </div>
+                <div class="div">
+                  <h4 class="account-status">Account Status: </h4>
+                  <span id="account-status">Active</span>
+                </div>
+                <div class="div">
+                  <h4 class="user-details-created">Account Created: </h4>
+                  <span id="account-created">07/08/2017</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="manager">
+              <div class="card">
+                <h2 class="user-details-title">Account Manager</h2>
+                <div class="div">
+                  <h4 class="user-details-name">Name: </h4>
+                  <span id="manager">Cavdy</span>
+                </div>
+                <div class="div">
+                  <h4 class="user-details-number">Mobile Number: </h4>
+                  <span id="manager-number">09012345678</span>
+                </div>
+                <div class="div">
+                  <h4 class="user-details-email">email: </h4>
+                  <span id="manager-email">banka@banka.com</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!--Js-->
+  <script src="./js/app.js"></script>
+</body>
+
+</html>
