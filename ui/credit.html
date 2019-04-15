@@ -127,16 +127,16 @@
               <div class="table-row">
                 <div class="account-index">Index</div>
                 <div class="account-name">Account Name</div>
-                <div class="account-status">Account Status</div>
                 <div class="amount">Amount</div>
-                <div class="edit">Edit</div>
+                <div class="edit">Debit</div>
+                <div class="edit">Credit</div>
               </div>
               <div class="table-row">
                 <div class="account-index">1</div>
                 <div class="account-name">Fred Matthew</div>
-                <div class="account-status">Active</div>
                 <div class="amount">10000</div>
-                <div class="edit"><a href="#" class="edit-btn" id="show-modal">Edit</a></div>
+                <div class="edit"><a href="#" class="delete-btn" id="show-modal">Debit</a></div>
+                <div class="edit"><a href="#" class="edit-btn" id="show-modal2">Credit</a></div>
               </div>
             </div>
           </div>
@@ -144,22 +144,43 @@
 
       </div>
 
-      <!--Edit Modal-->
+      <!--Debit Modal-->
       <div id="modal" class="modal">
         <div class="modal-content">
           <div class="card">
-            <h1 class="content-title">Credit / Debit Account</h1>
+            <h1 class="content-title">Debit Account</h1>
             <!--Account Name and Balance-->
             <h4 class="username">Account name: <span id="username"></span></h4>
             <h4 class="balance">Balance: <span id="balance"></span></h4>
-            <!--Credit or Debit Form-->
+            <!--Debit Form-->
             <form action="" class="form">
               <div class="form-group">
-                <label for="creditdebit" class="form-label">Credit / Debit</label>
-                <input type="number" placeholder="Credit / Debit" id="creditdebit" class="form-input">
+                <label for="debit" class="form-label">Debit</label>
+                <input type="number" placeholder="Debit" id="debit" class="form-input">
               </div>
 
-              <input type="submit" class="btn btn-block btn-primary" value="Credit / Debit">
+              <input type="submit" class="btn btn-block btn-primary" value="Debit">
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!--Credit Modal-->
+      <div id="modal2" class="modal2">
+        <div class="modal-content">
+          <div class="card">
+            <h1 class="content-title">Credit Account</h1>
+            <!--Account Name and Balance-->
+            <h4 class="username">Account name: <span id="username"></span></h4>
+            <h4 class="balance">Balance: <span id="balance"></span></h4>
+            <!--Credit Form-->
+            <form action="" class="form">
+              <div class="form-group">
+                <label for="credit" class="form-label">Credit</label>
+                <input type="number" placeholder="Credit" id="credit" class="form-input">
+              </div>
+
+              <input type="submit" class="btn btn-block btn-primary" value="Credit">
             </form>
           </div>
         </div>
