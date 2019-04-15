@@ -7,14 +7,16 @@ const CreateAccountController = {
     // verify jwt token
     jwt.verify(req.token, '5634', (err, authorizedData) => {
       if (err) {
-        res.sendStatus(403);
-      } else {
-        const createdAccount = CreateAccountService.createAccount(accountData, authorizedData);
         return res.json({
-          status: 'success',
-          data: createdAccount,
-        }).status(201);
+          status: 403,
+          data: 'You must be logged in to create an account',
+        }).status(403);
       }
+      const createdAccount = CreateAccountService.createAccount(accountData, authorizedData);
+      return res.json({
+        status: 'success',
+        data: createdAccount,
+      }).status(201);
     });
   },
   // patchAccount

@@ -17,15 +17,18 @@ var CreateAccountController = {
 
     _jsonwebtoken["default"].verify(req.token, '5634', function (err, authorizedData) {
       if (err) {
-        res.sendStatus(403);
-      } else {
-        var createdAccount = _createAccount["default"].createAccount(accountData, authorizedData);
-
         return res.json({
-          status: 'success',
-          data: createdAccount
-        }).status(201);
+          status: 403,
+          data: 'You must be logged in to create an account'
+        }).status(403);
       }
+
+      var createdAccount = _createAccount["default"].createAccount(accountData, authorizedData);
+
+      return res.json({
+        status: 'success',
+        data: createdAccount
+      }).status(201);
     });
   },
   // patchAccount
