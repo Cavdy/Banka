@@ -44,23 +44,29 @@ if (close !== null) {
 
 // modal
 const showModal = document.querySelectorAll('#show-modal');
+const showModal2 = document.querySelectorAll('#show-modal2');
 
-if (showModal) {
-  const mModal = document.querySelector('.modal');
+const modalFunction = (modalClick, modalIn, modalId) => {
+  if (modalClick) {
+    const mModal = document.querySelector(modalIn);
 
-  showModal.forEach((modal) => {
-    modal.addEventListener('click', () => {
-      mModal.style.visibility = 'visible';
-      mModal.style.opacity = '1';
+    modalClick.forEach((modal) => {
+      modal.addEventListener('click', () => {
+        mModal.style.visibility = 'visible';
+        mModal.style.opacity = '1';
+      });
     });
-  });
-}
-
-window.addEventListener('click', (e) => {
-  const modal = document.querySelector('#modal');
-  const cModal = document.querySelector('.modal');
-  if (e.target === modal) {
-    cModal.style.visibility = 'hidden';
-    cModal.style.opacity = '0';
   }
-});
+
+  window.addEventListener('click', (e) => {
+    const modal = document.querySelector(modalId);
+    const cModal = document.querySelector(modalIn);
+    if (e.target === modal) {
+      cModal.style.visibility = 'hidden';
+      cModal.style.opacity = '0';
+    }
+  });
+};
+
+modalFunction(showModal, '.modal', '#modal');
+modalFunction(showModal2, '.modal2', '#modal2');
