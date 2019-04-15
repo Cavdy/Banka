@@ -98,7 +98,7 @@ URL: https://cavdy.github.io/Banka/
 
 URL: https://bankaapp-api.herokuapp.com/
 
-## Trello board
+## Pivotal Tracker
 
 URL: https://www.pivotaltracker.com/n/projects/2319773
 
