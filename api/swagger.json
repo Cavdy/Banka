@@ -1,0 +1,386 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A banking web app api for banka",
+    "version": "1.0.0",
+    "title": "Banka App"
+  },
+  "host": "localhost:5900",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Signup"
+        ],
+        "summary": "Users can signup",
+        "description": "this endpoint uses get request to create users",
+        "operationId": "signup",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "formData",
+            "description": "users firstname",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "formData",
+            "description": "users lastname",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "users email address",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": [
+          "Signin"
+        ],
+        "summary": "Users can signup",
+        "description": "this endpoint uses get request to create users",
+        "operationId": "signin",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "users email address",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/auth/addstaff": {
+      "post": {
+        "tags": [
+          "Add Staff"
+        ],
+        "summary": "Admin can add staffs",
+        "description": "this endpoint allows admin to add staffs",
+        "operationId": "addstaff",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "formData",
+            "description": "staff firstname",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "formData",
+            "description": "staff lastname",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "staff email address",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/accounts": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Users can create a bank account",
+        "description": "this endpoint allows users to create bank account",
+        "operationId": "createaccount",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "formData",
+            "description": "type of account (savings or current)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/accounts/{accountNumber}": {
+      "patch": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Staff can patch users bank account",
+        "description": "this endpoint allows staff to patch users bank account",
+        "operationId": "patchaccount",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "users account number",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "description": "type of account (savings or current)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/transactions/{accountNumber}/debit": {
+      "post": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Staff and admin can debit users bank account",
+        "description": "this endpoint allows staff and admin to debit users bank account",
+        "operationId": "debitaccount",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "users account number",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "amount",
+            "in": "formData",
+            "description": "amount to debit user",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/transactions/{accountNumber}/credit": {
+      "post": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Staff and admin can credit users bank account",
+        "description": "this endpoint allows staff and admin to credit users bank account",
+        "operationId": "creditaccount",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "users account number",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "amount",
+            "in": "formData",
+            "description": "amount to credit user",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Returns all users",
+        "description": "Staffs and admin can see all users",
+        "operationId": "getusers",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/users/{userId}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Staff can delete users",
+        "description": "this endpoint allows staff and admin to delete users",
+        "operationId": "deleteausers",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "users account number",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
