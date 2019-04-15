@@ -5,10 +5,11 @@
     "version": "1.0.0",
     "title": "Banka App"
   },
-  "host": "localhost:5900",
+  "host": "bankaapp-api.herokuapp.com",
   "basePath": "/api",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
     "/auth/signup": {
