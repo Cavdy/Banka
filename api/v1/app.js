@@ -13,7 +13,7 @@ import UsersRoute from './routes/users';
 
 // instantiate expressjs
 const app = express();
-const PORT = process.env.PORT || 5900;
+const PORT = process.env.PORT || 5100;
 
 app.use(cors());
 

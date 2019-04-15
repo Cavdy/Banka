@@ -9,6 +9,7 @@ chai.use(chaiHttp);
 describe('Testing User Controller', () => {
   describe('Testing signup controller', () => {
     const signupUrl = '/api/auth/signup';
+    const signupStaffUrl = '/api/auth/addstaff';
     it(
       'should register a new user when all the parameters are given',
       (done) => {
@@ -131,5 +132,71 @@ describe('Testing User Controller', () => {
           done();
         });
     });
+
+    it(
+      'should not create staffs if not admin',
+      (done) => {
+        const signinUrl = '/api/auth/signin';
+        chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka2@banka.com',
+            password: 'passworD2@',
+          })
+          .end((error, response) => {
+            const { token } = response.body.data;
+            chai.request(app)
+              .post(signupStaffUrl)
+              .set('Authorization', `Bearer ${token}`)
+              .send({
+                firstName: 'cavdy',
+                lastName: 'isaiah',
+                email: 'banka4@banka.com',
+                password: 'passworD4@',
+              })
+              .end((err, res) => {
+                expect(res.body).to.be.an('object');
+                expect(res.body.status).to.equal('success');
+                expect(res.body.data).to.equal('You must be an admin to create staffs');
+              });
+            done();
+          });
+      },
+    );
+
+    it(
+      'should create staffs if admin',
+      (done) => {
+        const signinUrl = '/api/auth/signin';
+        chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka3@banka.com',
+            password: 'passworD3@',
+          })
+          .end((error, response) => {
+            const { token } = response.body.data;
+            chai.request(app)
+              .post(signupStaffUrl)
+              .set('Authorization', `Bearer ${token}`)
+              .send({
+                firstName: 'cavdy',
+                lastName: 'isaiah',
+                email: 'banka4@banka.com',
+                password: 'passworD4@',
+              })
+              .end((err, res) => {
+                expect(res.body).to.be.an('object');
+                expect(res.body.status).to.equal('success');
+                expect(res.body.data).to.be.a('object');
+                expect(res.body.data).to.have.property('id');
+                expect(res.body.data).to.have.property('firstName');
+                expect(res.body.data).to.have.property('lastName');
+                expect(res.body.data).to.have.property('email');
+              });
+            done();
+          });
+      },
+    );
   });
 });
