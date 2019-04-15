@@ -303,6 +303,7 @@ body,
 .header .user-nav-user-pop,
 .header .user-nav-notification-pop {
   background-color: var(--color-white-2);
+  box-shadow: .3rem .3rem 1rem var(--color-black);
   position: absolute;
   top: var(--hundred-percent);
   display: none;
