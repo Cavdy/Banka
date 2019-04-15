@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Add Staffs - Banka Dashboard</title>
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <!--Wrapper-->
+    <div class="wrapper">
+      <!--Sidebar-->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h1 class="logo">Banka</h1>
+        </div>
+        <div class="sidebar-menu">
+          <ul class="sidebar-list">
+            <li class="sidebar-item">
+              <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./credit.html" class="sidebar-link">Credit / Debit</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./users.html" class="sidebar-link">Users Accounts</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="staffs.html" class="sidebar-link">Staffs</a>
+            </li>
+            <li class="sidebar-item sidebar-item-active">
+              <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-legal">
+          &copy; 2019 Banka. All Rights Reserved.
+        </div>
+      </div>
+
+      <!--Main Content-->
+      <div class="main-content">
+        <!--Header-->
+        <header class="header">
+          <button class="toggle-sidebar" id="toggle-sidebar">
+            <svg class="toggle-sidebar-button">
+              <use xlink:href="./svg/sprite.svg#icon-list"></use>
+            </svg>
+          </button>
+          <form class="search-form">
+            <input type="text" class="search-input" placeholder="Search...">
+            <button class="search-form-button">
+              <svg class="search-form-icon">
+                <use xlink:href="./svg/sprite.svg#icon-magnifying-glass"></use>
+              </svg>
+            </button>
+          </form>
+
+          <nav class="user-nav">
+            <div class="user-nav-icon-box">
+              <svg class="user-nav-icon">
+                <use xlink:href="./svg/sprite.svg#icon-bell"></use>
+              </svg>
+              <span class="user-nav-notification"></span>
+
+              <div class="user-nav-notification-pop">
+                <ul class="list">
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing
+                      elit. Quae, optio?</a>
+                  </li>
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing.</a>
+                  </li>
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor sit amet consectetur adipisicing
+                      elit. Nobis similique soluta sit impedit, provident laborum?</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="user-nav-user">
+              <img class="user-nav-user-photo" src="./img/js2.png" alt="">
+              <span class="user-nav-username">Franklin</span>
+              <svg class="user-nav-user-icon">
+                <use xlink:href="./svg/sprite.svg#icon-chevron-down"></use>
+              </svg>
+
+              <div class="user-nav-user-pop">
+                <ul class="list">
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-user"></use>
+                      </svg>Profile</a>
+                  </li>
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-help-with-circle"></use>
+                      </svg>Help</a>
+                  </li>
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-log-out"></use>
+                      </svg>Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        <!--Main Body-->
+        <main class="main-body">
+          <div class="alert alert-success">Account created successfully <span id="close">X</span></div>
+          <div class="alert alert-danger">Something went wrong. Try again <span id="close">X</span></div>
+
+          <div class="card">
+            <!--Add Staff Form-->
+            <form action="" class="form">
+              <div class="form-group">
+                <label for="fullname" class="form-label">Fullname</label>
+                <input type="text" placeholder="Fullname" id="fullname" class="form-input">
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" placeholder="Email Address" id="email" class="form-input">
+              </div>
+              <div class="form-group">
+                <label for="selectrole" class="form-label">Choose user role</label>
+                <select class="form-select">
+                  <option value="staff">Staff</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" placeholder="Password" id="password" class="form-input">
+              </div>
+
+              <input type="submit" class="btn btn-block btn-primary" value="Add User">
+            </form>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!--Js-->
+  <script src="./js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Users - Banka Dashboard</title>
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <!--Wrapper-->
+    <div class="wrapper">
+      <!--Sidebar-->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h1 class="logo">Banka</h1>
+        </div>
+        <div class="sidebar-menu">
+          <ul class="sidebar-list">
+            <li class="sidebar-item">
+              <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./credit.html" class="sidebar-link">Credit / Debit</a>
+            </li>
+            <li class="sidebar-item sidebar-item-active">
+              <a href="./users.html" class="sidebar-link">Users Accounts</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="staffs.html" class="sidebar-link">Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-legal">
+          &copy; 2019 Banka. All Rights Reserved.
+        </div>
+      </div>
+
+      <!--Main Content-->
+      <div class="main-content">
+        <!--Header-->
+        <header class="header">
+          <button class="toggle-sidebar" id="toggle-sidebar">
+            <svg class="toggle-sidebar-button">
+              <use xlink:href="./svg/sprite.svg#icon-list"></use>
+            </svg>
+          </button>
+          <form class="search-form">
+            <input type="text" class="search-input" placeholder="Search...">
+            <button class="search-form-button">
+              <svg class="search-form-icon">
+                <use xlink:href="./svg/sprite.svg#icon-magnifying-glass"></use>
+              </svg>
+            </button>
+          </form>
+
+          <nav class="user-nav">
+            <div class="user-nav-icon-box">
+              <svg class="user-nav-icon">
+                <use xlink:href="./svg/sprite.svg#icon-bell"></use>
+              </svg>
+              <span class="user-nav-notification"></span>
+
+              <div class="user-nav-notification-pop">
+                <ul class="list">
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing
+                      elit. Quae, optio?</a>
+                  </li>
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing.</a>
+                  </li>
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor sit amet consectetur adipisicing
+                      elit. Nobis similique soluta sit impedit, provident laborum?</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="user-nav-user">
+              <img class="user-nav-user-photo" src="./img/js2.png" alt="">
+              <span class="user-nav-username">Franklin</span>
+              <svg class="user-nav-user-icon">
+                <use xlink:href="./svg/sprite.svg#icon-chevron-down"></use>
+              </svg>
+
+              <div class="user-nav-user-pop">
+                <ul class="list">
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-user"></use>
+                      </svg>Profile</a>
+                  </li>
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-help-with-circle"></use>
+                      </svg>Help</a>
+                  </li>
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-log-out"></use>
+                      </svg>Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        <!--Main Body-->
+        <main class="main-body">
+          <div class="card">
+            <h1 class="content-title">Users Accounts</h1>
+
+            <div class="table">
+              <div class="table-row">
+                <div class="account-index">Index</div>
+                <div class="account-name">Account Name</div>
+                <div class="account-number">Account Number</div>
+                <div class="record">Record</div>
+                <div class="delete">Delete</div>
+              </div>
+              <div class="table-row">
+                <div class="account-index">1</div>
+                <div class="account-name">Fred Matthew</div>
+                <div class="account-number">67358929653</div>
+                <div class="record"><a href="#" class="record-btn" id="show-modal">View Record</a></div>
+                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
+              </div>
+              <div class="table-row">
+                <div class="account-index">2</div>
+                <div class="account-name">Jade Smith</div>
+                <div class="account-number">86436442678</div>
+                <div class="record"><a href="#" class="record-btn" id="show-modal">View Record</a></div>
+                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
+              </div>
+              <div class="table-row">
+                <div class="account-index">3</div>
+                <div class="account-name">Black widow</div>
+                <div class="account-number">67358929653</div>
+                <div class="record"><a href="#" class="record-btn" id="show-modal">View Record</a></div>
+                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
+              </div>
+              <div class="table-row">
+                <div class="account-index">4</div>
+                <div class="account-name">Love heart</div>
+                <div class="account-number">86436442678</div>
+                <div class="record"><a href="#" class="record-btn" id="show-modal">View Record</a></div>
+                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <!--Edit Modal-->
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <div class="card">
+            <h1 class="content-title">Account Records</h1>
+            <!--Account Name and Balance-->
+            <h4 class="username">Account name: <span id="username"></span></h4>
+            <h4 class="number">Account Number: <span id="account-number"></span></h4>
+            <h4 class="balance">Balance: <span id="balance"></span></h4>
+            <h4 class="created">Account Created: <span id="account-created"></span></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Js-->
+  <script src="./js/app.js"></script>
+</body>
+
+</html>
