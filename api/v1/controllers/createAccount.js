@@ -7,10 +7,7 @@ const CreateAccountController = {
     // verify jwt token
     jwt.verify(req.token, '5634', (err, authorizedData) => {
       if (err) {
-        return res.json({
-          status: 403,
-          data: 'You must be logged in to create an account',
-        }).status(403);
+        return res.sendStatus(403);
       }
       const createdAccount = CreateAccountService.createAccount(accountData, authorizedData);
       return res.json({
