@@ -9,7 +9,13 @@ var _express = _interopRequireDefault(require("express"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
 
+var _cors = _interopRequireDefault(require("cors"));
+
 var _debug = _interopRequireDefault(require("debug"));
+
+var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
+
+var _swagger = _interopRequireDefault(require("../swagger"));
 
 var _register = _interopRequireDefault(require("./routes/register"));
 
@@ -27,11 +33,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 // instantiate expressjs
 var app = (0, _express["default"])();
-var PORT = process.env.PORT || 5100;
+var PORT = process.env.PORT || 5900;
+app.use((0, _cors["default"])());
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded({
   extended: false
-})); // Index Route
+})); // swagger
+
+app.use('/api-docs', _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(_swagger["default"]));
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+}); // Index Route
 
 app.get('/', function (req, res) {
   res.send('welcome to Banka API');
