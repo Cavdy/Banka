@@ -13,6 +13,22 @@ This is a banking web app
 
 https://github.com/Cavdy/Banka.git
 
+#### [API DOCUMENTATION](http://bankaapp-api.herokuapp.com/api-docs)
+
+## Login Details
+
+# Client
+Email: Banka@banka.com
+Password: passworD1@
+
+# Staff
+Email: Banka2@banka.com
+Password: passworD2@
+
+# Admin
+Email: Banka3@banka.com
+Password: passworD3@
+
 ## Prerequisites
 
 - Node v10.15.0 or above
