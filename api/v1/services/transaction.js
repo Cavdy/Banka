@@ -8,7 +8,7 @@ const { transactions } = transactionsData;
 
 const TransactionService = {
   debitTransaction(accountNumber, loggedInUser, transactionData) {
-    if (loggedInUser.loggedUser.type === 'staff') {
+    if (loggedInUser.loggedUser.type === 'staff' || loggedInUser.loggedUser.isAdmin === true) {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i <= accounts.length - 1; i++) {
         // eslint-disable-next-line eqeqeq
@@ -34,7 +34,7 @@ const TransactionService = {
     return 'you must be a staff to perform this transaction';
   },
   creditTransaction(accountNumber, loggedInUser, transactionData) {
-    if (loggedInUser.loggedUser.type === 'staff') {
+    if (loggedInUser.loggedUser.type === 'staff' || loggedInUser.loggedUser.isAdmin === true) {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i <= accounts.length - 1; i++) {
         // eslint-disable-next-line eqeqeq
