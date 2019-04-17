@@ -2,9 +2,10 @@
 import bcrypt from 'bcryptjs';
 import dbConnection from '../config/database';
 import registrationHelper from '../helper/registrationHelper';
+import UserModel from '../model/users';
 
 const RegisterService = {
-  async registerUser(userData) {
+  async registerUser(userData, token) {
     const returnData = await registrationHelper.registrationHelper(userData);
     let returnValue;
 
@@ -22,8 +23,18 @@ const RegisterService = {
         // email does not exist... you can insert data
         const response = await dbConnection.dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
           [userData.email, userData.firstName, userData.lastName, hash, userData.type, userData.isAdmin]);
-        if (response.command === 'INSERT') returnValue = 'Successfully signed up';
-        else returnValue = 'Something happened';
+        if (response.command === 'INSERT') {
+          const userDbData = await dbConnection.dbConnect('SELECT * FROM users WHERE email=$1', [userData.email]);
+          const user = new UserModel();
+          user.id = userDbData.rows[0].id;
+          user.firstName = userDbData.rows[0].firstname;
+          user.lastName = userDbData.rows[0].lastname;
+          user.email = userDbData.rows[0].email;
+          user.token = token;
+          returnValue = user;
+        } else {
+          returnValue = 'Something wrong happened';
+        }
       }
     } else {
       // eslint-disable-next-line prefer-destructuring

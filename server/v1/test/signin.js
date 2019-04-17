@@ -24,8 +24,6 @@ describe('Testing User Controller', () => {
         expect(response.body.data[0]).to.have.property('email');
         expect(response.body.data[0]).to.have.property('firstName');
         expect(response.body.data[0]).to.have.property('lastName');
-        expect(response.body.data[0]).to.have.property('type');
-        expect(response.body.data[0]).to.have.property('isAdmin');
         expect(response.body.data[0]).to.have.property('token');
       },
     );

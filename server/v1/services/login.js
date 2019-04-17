@@ -23,8 +23,6 @@ const LoginService = {
           user.firstName = emailresponse.rows[0].firstname;
           user.lastName = emailresponse.rows[0].lastname;
           user.email = emailresponse.rows[0].email;
-          user.type = emailresponse.rows[0].type;
-          user.isAdmin = emailresponse.rows[0].isadmin;
           user.token = token;
           returnValue.push(user);
         } else {

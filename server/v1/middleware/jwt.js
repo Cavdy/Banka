@@ -25,6 +25,15 @@ const jwtMiddleware = {
       return next();
     });
   },
+  signinJwt(req, res, next) {
+    jwt.sign(req.body, process.env.JWTSECRETKEY, async (err, token) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.token = token;
+      return next();
+    });
+  },
 };
 
 export default jwtMiddleware;

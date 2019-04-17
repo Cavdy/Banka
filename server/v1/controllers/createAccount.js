@@ -1,10 +1,10 @@
 import CreateAccountService from '../services/createAccount';
 
 const CreateAccountController = {
-  createAccount(req, res) {
+  async createAccount(req, res) {
     const accountData = req.body;
-    // verify jwt token
-    const createdAccount = CreateAccountService.createAccount(accountData, req.authorizedData);
+    const createdAccount = await CreateAccountService
+      .createAccount(accountData, req.authorizedData);
     return res.json({
       status: 'success',
       data: createdAccount,
