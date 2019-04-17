@@ -4,7 +4,7 @@
   "description": "banking web app",
   "main": "app.js",
   "scripts": {
-    "server": "DEBUG=querysuccess nodemon --exec babel-node ./server/v1/config/database.js",
+    "server": "DEBUG=query nodemon --exec babel-node ./server/v1/config/database.js",
     "start": "node ./server/build/app.js",
     "build": "babel -d ./server/build ./server/v1 -s",
     "dev": "nodemon --exec babel-node ./server/v1/app.js",
@@ -44,6 +44,7 @@
     "jsonwebtoken": "^8.5.0",
     "mocha": "^6.1.3",
     "pg": "^7.8.1",
+    "pg-connection-string": "^2.0.0",
     "swagger-ui-express": "^4.0.2"
   },
   "devDependencies": {
