@@ -4,6 +4,7 @@
   "description": "banking web app",
   "main": "app.js",
   "scripts": {
+    "server": "DEBUG=querysuccess nodemon --exec babel-node ./server/v1/config/database.js",
     "start": "node ./server/build/app.js",
     "build": "babel -d ./server/build ./server/v1 -s",
     "dev": "nodemon --exec babel-node ./server/v1/app.js",
