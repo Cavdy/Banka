@@ -2,8 +2,8 @@
 
 -- create users table
 CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  email VARCHAR(80),
+  id SERIAL PRIMARY KEY UNIQUE,
+  email VARCHAR(80) UNIQUE,
   firstName VARCHAR(20),
   lastName VARCHAR(20),
   password VARCHAR(80),
@@ -15,7 +15,10 @@ CREATE TABLE users (
 SELECT * FROM "users" LIMIT 10
 
 -- insert into users table
-INSERT into "users" values($1), ['value']
+INSERT into users values($1), ['value']
 
 -- update into users
-update users 
+update firstname
+
+-- delete from users table
+DELETE FROM users;
