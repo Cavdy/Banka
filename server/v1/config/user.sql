@@ -22,3 +22,6 @@ INSERT into users values($1), ['value']
 
 -- delete from users table
 DELETE FROM users;
+
+-- admin
+INSERT into users(email, firstName, lastName, password, type, isAdmin) values('admin@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', true)

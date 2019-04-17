@@ -23,7 +23,7 @@ const CreateAccountService = {
           [userData.email, firstname, lastname, accountNumberGenerator, createdOn, id, accountData.type, status, balance]);
       if (response.command === 'INSERT') {
         const accountDbData = await dbConnection
-          .dbConnect('SELECT id, accountnumber, createdon, owner, type, status, balance FROM accounts WHERE accountNumber=$1', [accountNumberGenerator]);
+          .dbConnect('SELECT id, accountnumber, createdon, owner, type, status, balance FROM accounts WHERE accountnumber=$1', [accountNumberGenerator]);
         const account = new AccountModel();
         account.id = accountDbData.rows[0].id;
         account.accountNumber = accountDbData.rows[0].accountnumber;
@@ -40,16 +40,28 @@ const CreateAccountService = {
 
     return accountOutput;
   },
-  patchAccount(accountNumber, accountUpdate, staff) {
+
+  async patchAccount(accountNumber, accountUpdate, staff) {
     let account;
 
-    if (staff.loggedUser.type === 'staff' || staff.loggedUser.isAdmin === true) {
+    // pulling users data from database
+    const userDetails = await dbConnection
+      .dbConnect('SELECT type, isadmin FROM users WHERE email=$1', [staff.email]);
+    const { type, isadmin } = userDetails.rows[0];
+
+    if (type === 'staff' || isadmin === true) {
       // eslint-disable-next-line no-plusplus
-      for (let i = 0; i <= accounts.length - 1; i++) {
-        // eslint-disable-next-line eqeqeq
-        if (accounts[i].accountNumber == accountNumber) {
-          accounts[i].status = accountUpdate.status;
-          account = accounts[i];
+      const accountDbData = await dbConnection
+        .dbConnect('SELECT accountnumber FROM accounts WHERE accountnumber=$1', [accountNumber]);
+      if (accountDbData.rows.length > 0) {
+        const updateAccount = await dbConnection
+          .dbConnect('UPDATE accounts SET status=$1 WHERE accountnumber=$2', [accountUpdate.status, accountNumber]);
+        if (updateAccount.command === 'UPDATE') {
+          const userDbData = await dbConnection.dbConnect('SELECT accountnumber, status FROM accounts WHERE accountnumber=$1', [accountNumber]);
+          const { accountnumber, status } = userDbData.rows[0];
+          account = { accountnumber, status };
+        } else {
+          account = 'Something wrong happened';
         }
       }
     } else {
@@ -57,17 +69,23 @@ const CreateAccountService = {
     }
     return account;
   },
-  deleteAccount(accountNumber, staff) {
+
+  async deleteAccount(accountNumber, staff) {
     let account;
 
-    if (staff.loggedUser.type === 'staff' || staff.loggedUser.isAdmin === true) {
-      const Account = accounts.find(mAccount => mAccount.accountNumber == accountNumber);
+    const userDetails = await dbConnection
+      .dbConnect('SELECT type, isadmin FROM users WHERE email=$1', [staff.email]);
+    const { type, isadmin } = userDetails.rows[0];
 
-      if (typeof Account !== 'undefined') {
-        accounts.splice(Account.id - 1, 1);
-        account = 'account deleted';
+    if (type === 'staff' || isadmin === true) {
+      const checkAccount = await dbConnection
+        .dbConnect('SELECT accountnumber FROM accounts WHERE accountnumber=$1', [accountNumber]);
+      if (checkAccount.rows.length > 0) {
+        const accountDbData = await dbConnection
+          .dbConnect('DELETE FROM accounts WHERE accountnumber=$1', [accountNumber]);
+        if (accountDbData.command === 'DELETE') account = 'Account successfully deleted';
       } else {
-        account = 'no account found or account has been deleted';
+        account = 'no account found';
       }
     } else {
       account = 'Sorry you don\'t have permission to perform this task';
