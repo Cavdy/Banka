@@ -1,7 +1,10 @@
 import { Client } from 'pg';
 import debug from 'debug';
+import dotenv from 'dotenv';
 
-const conString = 'postgres://xwrxubeu:u4wOQ6oxpvRCK6yWk5qK4rzaiisTPeoN@isilo.db.elephantsql.com:5432/xwrxubeu';
+dotenv.config();
+
+const conString = process.env.DB_CONFIG;
 
 const client = new Client(conString);
 

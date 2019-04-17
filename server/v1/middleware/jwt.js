@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const jwtMiddleware = {
   checkToken(req, res, next) {
@@ -14,7 +17,7 @@ const jwtMiddleware = {
     }
   },
   verifyJwt(req, res, next) {
-    jwt.verify(req.token, '5634', (err, authorizedData) => {
+    jwt.verify(req.token, process.env.JWTSECRETKEY, (err, authorizedData) => {
       if (err) {
         return res.sendStatus(403);
       }
