@@ -1,22 +1,21 @@
-import { Client } from 'pg';
+import { Pool } from 'pg';
 import debug from 'debug';
 import dotenv from 'dotenv';
+import { parse } from 'pg-connection-string';
 
 dotenv.config();
 
-const conString = process.env.DB_CONFIG;
+const conString = parse(process.env.DB_CONFIG);
 
-const client = new Client(conString);
+const pool = new Pool(conString);
 
-client.connect((err) => {
-  if (err) {
-    return debug('connecterror')('could not connect to postgres', err);
+// async/await - check out a client
+(async () => {
+  const client = await pool.connect();
+  try {
+    const res = await client.query('SELECT NOW() AS "theTime"');
+    debug('query')(res.rows[0].theTime);
+  } finally {
+    client.release();
   }
-  client.query('SELECT NOW() AS "theTime"', (error, result) => {
-    if (error) {
-      return debug('queryerror')('error running query', err);
-    }
-    debug('querysuccess')(result.rows[0].theTime);
-    client.end();
-  });
-});
+})().catch(e => debug('query')(e.stack));
