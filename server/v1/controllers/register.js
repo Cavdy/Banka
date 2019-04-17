@@ -1,9 +1,9 @@
 import RegisterService from '../services/register';
 
 const RegisterController = {
-  registerUser(req, res) {
+  async registerUser(req, res) {
     const userData = req.body;
-    const createdUser = RegisterService.registerUser(userData);
+    const createdUser = await RegisterService.registerUser(userData);
     return res.json({
       status: 'success',
       data: createdUser,

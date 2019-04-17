@@ -9,13 +9,35 @@ const conString = parse(process.env.DB_CONFIG);
 
 const pool = new Pool(conString);
 
-// async/await - check out a client
-(async () => {
-  const client = await pool.connect();
-  try {
-    const res = await client.query('SELECT NOW() AS "theTime"');
-    debug('query')(res.rows[0].theTime);
-  } finally {
-    client.release();
-  }
-})().catch(e => debug('query')(e.stack));
+const dbConnection = {
+  async dbConnect(passedQuery, passedData) {
+    try {
+      return (async () => {
+        const client = await pool.connect();
+        try {
+          return await client.query(passedQuery, passedData);
+        } finally {
+          client.release();
+        }
+      })();
+    } catch (e) {
+      return debug('query')(e.stack);
+    }
+  },
+  async dbTesting(passedQuery) {
+    try {
+      return (async () => {
+        const client = await pool.connect();
+        try {
+          return await client.query(passedQuery);
+        } finally {
+          client.release();
+        }
+      })();
+    } catch (e) {
+      return debug('query')(e.stack);
+    }
+  },
+};
+
+export default dbConnection;
