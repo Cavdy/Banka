@@ -10,21 +10,24 @@ const CreateAccountController = {
       data: createdAccount,
     }).status(201);
   },
+
   // patchAccount
-  patchAccount(req, res) {
+  async patchAccount(req, res) {
     const { accountNumber } = req.params;
     const accountStatus = req.body;
-    const updatedAccount = CreateAccountService
+    const updatedAccount = await CreateAccountService
       .patchAccount(accountNumber, accountStatus, req.authorizedData);
     return res.json({
       status: 'success',
       data: updatedAccount,
     }).status(201);
   },
+
   // deleteAccount
-  deleteAccount(req, res) {
+  async deleteAccount(req, res) {
     const { accountNumber } = req.params;
-    const deleteAccount = CreateAccountService.deleteAccount(accountNumber, req.authorizedData);
+    const deleteAccount = await CreateAccountService
+      .deleteAccount(accountNumber, req.authorizedData);
     return res.json({
       status: 'success',
       data: deleteAccount,
