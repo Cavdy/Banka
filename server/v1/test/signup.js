@@ -28,7 +28,11 @@ describe('Testing User Controller', () => {
           });
         expect(response).to.be.an('object');
         expect(response.body.status).to.equal('success');
-        expect(response.body.data).to.equal('Successfully signed up');
+        expect(response.body.data).to.have.property('id');
+        expect(response.body.data).to.have.property('firstName');
+        expect(response.body.data).to.have.property('lastName');
+        expect(response.body.data).to.have.property('email');
+        expect(response.body.data).to.have.property('token');
       },
     );
 

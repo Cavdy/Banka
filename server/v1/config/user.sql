@@ -12,7 +12,7 @@ CREATE TABLE users (
 );
 
 -- select all from users table
-SELECT * FROM "users" LIMIT 10
+SELECT * FROM users LIMIT 10
 
 -- select email fro users
 SELECT email FROM users WHERE email=$1, ['email']
