@@ -14,11 +14,11 @@ CREATE TABLE users (
 -- select all from users table
 SELECT * FROM "users" LIMIT 10
 
+-- select email fro users
+SELECT email FROM users WHERE email=$1, ['email']
+
 -- insert into users table
 INSERT into users values($1), ['value']
-
--- update into users
-update firstname
 
 -- delete from users table
 DELETE FROM users;
