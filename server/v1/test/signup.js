@@ -132,29 +132,36 @@ describe('Testing User Controller', () => {
     // it(
     //   'should not create staffs if not admin',
     //   async () => {
+    //     await chai.request(app)
+    //       .post(signupUrl)
+    //       .send({
+    //         firstName: 'cavdy',
+    //         lastName: 'isaiah',
+    //         email: 'bankaadmin@banka.com',
+    //         password: 'passworadmiN4@',
+    //         isAdmin: true,
+    //       });
     //     const signinUrl = '/api/auth/signin';
     //     const response = await chai.request(app)
     //       .post(signinUrl)
     //       .send({
-    //         email: 'banka872@banka4.com',
+    //         email: 'bankaadmin@banka.com',
+    //         password: 'passworadmiN4@',
+    //       });
+    //       console.log(response.body);
+    //     const { token } = response.body.data[0];
+    //     const res = await chai.request(app)
+    //       .post(signupStaffUrl)
+    //       .set('Authorization', `Bearer ${token}`)
+    //       .send({
+    //         firstName: 'cavdy',
+    //         lastName: 'isaiah',
+    //         email: 'banka4@banka.com',
     //         password: 'passworD4@',
     //       });
-    //       console.log(response.body.data);
-    //     // const { token } = response.body.data;
-    //     // chai.request(app)
-    //     //   .post(signupStaffUrl)
-    //     //   .set('Authorization', `Bearer ${token}`)
-    //     //   .send({
-    //     //     firstName: 'cavdy',
-    //     //     lastName: 'isaiah',
-    //     //     email: 'banka4@banka.com',
-    //     //     password: 'passworD4@',
-    //     //   })
-    //     //   .end((err, res) => {
-    //     //     expect(res.body).to.be.an('object');
-    //     //     expect(res.body.status).to.equal('success');
-    //     //     expect(res.body.data).to.equal('You must be an admin to create staffs');
-    //     //   });
+    //     expect(res.body).to.be.an('object');
+    //     expect(res.body.status).to.equal('success');
+    //     expect(res.body.data).to.equal('You must be an admin to create staffs');
     //   },
     // );
 
