@@ -2,20 +2,31 @@
 import TransactionService from '../services/transaction';
 
 const TransactionController = {
-  debitTransaction(req, res) {
+  async debitTransaction(req, res) {
     const { accountNumber } = req.params;
     const transactionData = req.body;
-    const debitedData = TransactionService
+    const debitedData = await TransactionService
       .debitTransaction(accountNumber, req.authorizedData, transactionData);
     return res.json({
       status: 'success',
       data: debitedData,
     }).status(201);
   },
-  creditTransaction(req, res) {
+
+  async getSpecificTransaction(req, res) {
+    const { transactionid } = req.params;
+    const getTransaction = await TransactionService
+      .getSpecificTransaction(transactionid);
+    return res.json({
+      status: 'success',
+      data: getTransaction,
+    }).status(201);
+  },
+
+  async creditTransaction(req, res) {
     const { accountNumber } = req.params;
     const transactionData = req.body;
-    const creditedData = TransactionService
+    const creditedData = await TransactionService
       .creditTransaction(accountNumber, req.authorizedData, transactionData);
     return res.json({
       status: 'success',
