@@ -41,6 +41,15 @@ const CreateAccountService = {
     return accountOutput;
   },
 
+  async allAccountTransaction(accountNumber) {
+    const userTransaction = await dbConnection
+      .dbConnect('SELECT * from transactions WHERE accountnumber=$1', [accountNumber]);
+    if (userTransaction.rows.length > 0) {
+      return userTransaction.rows;
+    }
+    return 'no transaction found';
+  },
+
   async patchAccount(accountNumber, accountUpdate, staff) {
     let account;
 
