@@ -6,6 +6,7 @@ const router = express.Router();
 
 // creating our routes
 router.get('/', jwtMiddleware.verifyJwt, CreateAccountController.allAccounts);
+router.get('/:accountNumber', jwtMiddleware.verifyJwt, CreateAccountController.specificAccounts);
 router.get('/:accountNumber/transactions', jwtMiddleware.verifyJwt, CreateAccountController.allAccountTransaction);
 router.post('/', jwtMiddleware.verifyJwt, CreateAccountController.createAccount);
 router.patch('/:accountNumber', jwtMiddleware.verifyJwt, CreateAccountController.patchAccount);

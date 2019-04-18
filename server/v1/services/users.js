@@ -1,34 +1,49 @@
-import dummyUsers from '../../dummyJson/users';
-
-const { users } = dummyUsers;
+import dbConnection from '../config/database';
 
 const UsersServices = {
-  getAllUsers(staff) {
-    if (staff.loggedUser.type === 'staff' || staff.loggedUser.isAdmin === true) {
-      return users.map((user) => {
-        return user;
-      });
+  async getAllUsers(staff) {
+    // check the users table
+    const userDetails = await dbConnection
+      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [staff.email]);
+    const { type, isadmin } = userDetails.rows[0];
+
+    if (type === 'staff' || isadmin === true) {
+      const allAccounts = await dbConnection
+        .dbConnect('SELECT * from users');
+      return allAccounts.rows;
     }
     return 'You don\'t have permission to view this page';
   },
 
-  deleteUser(id, staff) {
-    let deleteMsg;
-    if (staff.loggedUser.type === 'staff') {
-      const User = users.find(user => user.id == id && user.type != 'staff');
-      if (typeof User === 'undefined') {
-        deleteMsg = 'Sorry you can not delete a staff';
-      } else {
-        users.splice(User.id - 1, 1);
-        deleteMsg = 'deleted';
-      }
-    } else if (staff.loggedUser.isAdmin === true) {
-      const User = users.find(user => user.id == id);
-      users.splice(User.id - 1, 1);
-    } else {
-      deleteMsg = 'You don\'t have permission to do this task';
+  async getUsersAccounts(email) {
+    const allAccounts = await dbConnection
+      .dbConnect('SELECT email from users WHERE email=$1', [email]);
+    if (allAccounts.rows.length > 0) {
+      const accountDbData = await dbConnection
+        .dbConnect('SELECT * from accounts WHERE email=$1', [email]);
+      return accountDbData.rows;
     }
-    return deleteMsg;
+    return 'no account found';
+  },
+
+  async deleteUser(id, staff) {
+    // check the users table
+    const userDetails = await dbConnection
+      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [staff.email]);
+    const { type, isadmin } = userDetails.rows[0];
+
+    if (type === 'staff' || isadmin === true) {
+      const checkusers = await dbConnection
+        .dbConnect('SELECT id FROM users WHERE id=$1', [id]);
+      if (checkusers.rows.length > 0) {
+        const accountDbData = await dbConnection
+          .dbConnect('DELETE FROM users WHERE id=$1', [id]);
+        if (accountDbData.command === 'DELETE') return 'Account successfully deleted';
+      } else {
+        return 'no account found';
+      }
+    }
+    return 'You don\'t have permission to view this page';
   },
 };
 

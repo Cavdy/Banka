@@ -55,6 +55,15 @@ const CreateAccountService = {
     return 'no account found';
   },
 
+  async specificAccounts(accountNumber) {
+    const userAccount = await dbConnection
+      .dbConnect('SELECT * from accounts WHERE accountnumber=$1', [accountNumber]);
+    if (userAccount.rows.length > 0) {
+      return userAccount.rows[0];
+    }
+    return 'no transaction found';
+  },
+
   async allAccountTransaction(accountNumber) {
     const userTransaction = await dbConnection
       .dbConnect('SELECT * from transactions WHERE accountnumber=$1', [accountNumber]);
