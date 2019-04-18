@@ -11,6 +11,17 @@ const CreateAccountController = {
     }).status(201);
   },
 
+  // all accounts
+  async allAccounts(req, res) {
+    const queryParams = req.query.status;
+    const allAccounts = await CreateAccountService
+      .allAccounts(queryParams);
+    return res.json({
+      status: 'success',
+      data: allAccounts,
+    }).status(201);
+  },
+
   // get transaction history
   async allAccountTransaction(req, res) {
     const { accountNumber } = req.params;

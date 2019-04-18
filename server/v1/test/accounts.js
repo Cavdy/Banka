@@ -125,6 +125,36 @@ describe('Testing Accounts Controller', () => {
     );
 
     it(
+      'get all accounts should have these propertise',
+      async () => {
+        const signinUrl = '/api/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data[0];
+        const res = await chai.request(app)
+          .get('/api/v1/accounts')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal('success');
+        expect(res.body.data[0]).to.have.property('id');
+        expect(res.body.data[0]).to.have.property('email');
+        expect(res.body.data[0]).to.have.property('firstname');
+        expect(res.body.data[0]).to.have.property('lastname');
+        expect(res.body.data[0]).to.have.property('accountnumber');
+        expect(res.body.data[0]).to.have.property('createdon');
+        expect(res.body.data[0]).to.have.property('owner');
+        expect(res.body.data[0]).to.have.property('type');
+        expect(res.body.data[0]).to.have.property('status');
+        expect(res.body.data[0]).to.have.property('balance');
+      },
+    );
+
+    it(
       'should notify when account does not exist',
       async () => {
         const signinUrl = '/api/auth/signin';
