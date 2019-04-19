@@ -15,12 +15,12 @@ const registrationHelper = {
       returnValue.push('Email is required');
     }
 
-    if (firstnameAndLastnameRegex.test(userData.firstName) && typeof userData.firstName !== 'undefined' && userData.firstName !== null) {
+    if (firstnameAndLastnameRegex.test(userData.firstName) && typeof userData.firstName !== 'undefined' && typeof userData.firstName === 'string') {
       firstnamePassed = true;
     } else {
       returnValue.push('Firstname required');
     }
-    if (firstnameAndLastnameRegex.test(userData.lastName) && typeof userData.lastName !== 'undefined' && userData.lastName !== null) {
+    if (firstnameAndLastnameRegex.test(userData.lastName) && typeof userData.lastName !== 'undefined' && typeof userData.lastName === 'string') {
       lastnamePassed = true;
     } else {
       returnValue.push('Lastname required');

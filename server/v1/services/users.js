@@ -56,9 +56,30 @@ const UsersServices = {
       .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [staff.email]);
     const { type, isadmin } = userDetails.rows[0];
 
-    if (type === 'staff' || isadmin === true) {
+    if (type === 'staff') {
       const checkusers = await dbConnection
-        .dbConnect('SELECT id FROM users WHERE id=$1', [id]);
+        .dbConnect('SELECT type FROM users WHERE id=$1', [id]);
+      if (checkusers.rows.length > 0) {
+        if (checkusers.rows[0].type === 'client') {
+          const accountDbData = await dbConnection
+            .dbConnect('DELETE FROM users WHERE id=$1', [id]);
+          if (accountDbData.command === 'DELETE') {
+            returnStatus = 204;
+            returnSuccess = 'Account successfully deleted';
+          } else {
+            returnStatus = 500;
+          }
+        } else {
+          returnStatus = 401;
+          returnError = 'you must be an admin to delete this staff';
+        }
+      } else {
+        returnStatus = 404;
+        returnError = 'no account found';
+      }
+    } else if (isadmin === true) {
+      const checkusers = await dbConnection
+        .dbConnect('SELECT type FROM users WHERE id=$1', [id]);
       if (checkusers.rows.length > 0) {
         const accountDbData = await dbConnection
           .dbConnect('DELETE FROM users WHERE id=$1', [id]);
