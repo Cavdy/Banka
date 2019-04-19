@@ -8,7 +8,6 @@
   "host": "bankaapp-api.herokuapp.com",
   "basePath": "/api",
   "schemes": [
-    "http",
     "https"
   ],
   "paths": {
@@ -63,6 +62,76 @@
         }
       }
     },
+    "/auth/signup/addstaff": {
+      "post": {
+        "tags": [
+          "Signup"
+        ],
+        "summary": "Admin can signup staffs",
+        "description": "this endpoint uses get request to create users",
+        "operationId": "signupstaff",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "formData",
+            "description": "users firstname",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "formData",
+            "description": "users lastname",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "users email address",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "password",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "description": "staff",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "isAdmin",
+            "in": "formData",
+            "description": "isAdmin",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/auth/signin": {
       "post": {
         "tags": [
@@ -100,62 +169,6 @@
         }
       }
     },
-    "/auth/addstaff": {
-      "post": {
-        "tags": [
-          "Add Staff"
-        ],
-        "summary": "Admin can add staffs",
-        "description": "this endpoint allows admin to add staffs",
-        "operationId": "addstaff",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "firstName",
-            "in": "formData",
-            "description": "staff firstname",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "lastName",
-            "in": "formData",
-            "description": "staff lastname",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "email",
-            "in": "formData",
-            "description": "staff email address",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "password",
-            "in": "formData",
-            "description": "password",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
     "/v1/accounts": {
       "post": {
         "tags": [
@@ -182,6 +195,28 @@
         "responses": {
           "405": {
             "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Returns all accounts",
+        "description": "Staffs and admin can see all accounts",
+        "operationId": "getaccounts",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
           }
         },
         "security": [
@@ -219,6 +254,109 @@
             "description": "type of account (savings or current)",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Staff and admin can delete account",
+        "description": "this endpoint allows staff and admin to delete account",
+        "operationId": "deleteaccount",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "users account number",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/accounts/{accountNumber}/transactions": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "User can view account transactions",
+        "description": "this endpoint allows allows users to view account transactions",
+        "operationId": "gettransactions",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "users account number",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/transactions/{transactionid}": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "User can view transactionid",
+        "description": "this endpoint allows allows users transactionid",
+        "operationId": "transactionid",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "transactionid",
+            "in": "path",
+            "description": "transaction id",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -332,6 +470,41 @@
         "responses": {
           "200": {
             "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/v1/users/{email}/accounts": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "users to view all their accounts",
+        "description": "this endpoint allows users to view all their account",
+        "operationId": "getaccountsbyuser",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "email",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
           }
         },
         "security": [
