@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import debug from 'debug';
 import swaggerUi from 'swagger-ui-express';
+import dbConnection from './config/database';
 import swaggerDocument from '../swagger';
 import RegisterRoute from './routes/register';
 import LoginRoute from './routes/login';
@@ -22,6 +23,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// creating database tables
+dbConnection.createTable();
 
 // Index Route
 app.get('/', (req, res) => {

@@ -1,17 +1,12 @@
 /* eslint-disable no-undef */
 import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
-import dbConnection from '../config/database';
 
 import app from '../app';
 
 chai.use(chaiHttp);
 
 describe('Testing All Users Controller', () => {
-  before(async () => {
-    await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)', ['staff@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', false]);
-  });
   describe('Testing all accounts controller', () => {
     it(
       'users should have all required details',
@@ -79,6 +74,27 @@ describe('Testing All Users Controller', () => {
         expect(res.body).to.be.an('object');
         expect(res).to.have.status(401);
         expect(res.body.data).to.equal('You don\'t have permission to view this page');
+      },
+    );
+
+    it(
+      'only admin can delete any users',
+      async () => {
+        const signinUrl = '/api/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'staff@banka.com',
+            password: 'passworD4@',
+          });
+        const { id, token } = response.body.data;
+        const res = await chai.request(app)
+          .delete(`/api/v1/users/${id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res).to.have.status(401);
+        expect(res.body.data).to.equal('you must be an admin to delete this staff');
       },
     );
   });
