@@ -18,13 +18,13 @@ describe('Testing User Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        expect(response.body.data[0]).to.be.an('object');
-        expect(response.body.status).to.equal('success');
-        expect(response.body.data[0]).to.have.property('id');
-        expect(response.body.data[0]).to.have.property('email');
-        expect(response.body.data[0]).to.have.property('firstName');
-        expect(response.body.data[0]).to.have.property('lastName');
-        expect(response.body.data[0]).to.have.property('token');
+        expect(response.body.data).to.be.an('object');
+        expect(response).to.have.status(201);
+        expect(response.body.data).to.have.property('id');
+        expect(response.body.data).to.have.property('email');
+        expect(response.body.data).to.have.property('firstName');
+        expect(response.body.data).to.have.property('lastName');
+        expect(response.body.data).to.have.property('token');
       },
     );
 
@@ -37,7 +37,7 @@ describe('Testing User Controller', () => {
             password: 'passworD4@',
           });
         expect(response.body).to.be.an('object');
-        expect(response.body.status).to.equal('success');
+        expect(response).to.have.status(422);
         expect(response.body.data[0]).to.equal('invalid email address');
       },
     );
@@ -48,12 +48,12 @@ describe('Testing User Controller', () => {
         const response = await chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'banka876@banka4.com',
+            email: 'banka85576@banka4.com',
             password: 'passworD4@',
           });
         expect(response.body).to.be.an('object');
-        expect(response.body.status).to.equal('success');
-        expect(response.body.data[0]).to.equal('email does not exist');
+        expect(response).to.have.status(404);
+        expect(response.body.data).to.equal('email does not exist');
       },
     );
 
@@ -66,7 +66,7 @@ describe('Testing User Controller', () => {
             email: 'banka872@banka4.com',
           });
         expect(response.body).to.be.an('object');
-        expect(response.body.status).to.equal('success');
+        expect(response).to.have.status(422);
         expect(response.body.data[0]).to.equal('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
       },
     );
@@ -81,8 +81,8 @@ describe('Testing User Controller', () => {
             password: 'passworD4@@',
           });
         expect(response.body).to.be.an('object');
-        expect(response.body.status).to.equal('success');
-        expect(response.body.data[0]).to.equal('incorrect password');
+        expect(response).to.have.status(422);
+        expect(response.body.data).to.equal('incorrect password');
       },
     );
 
@@ -96,7 +96,7 @@ describe('Testing User Controller', () => {
             password: 'passworD4',
           });
         expect(response.body).to.be.an('object');
-        expect(response.body.status).to.equal('success');
+        expect(response).to.have.status(422);
         expect(response.body.data[0]).to.equal('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
       },
     );

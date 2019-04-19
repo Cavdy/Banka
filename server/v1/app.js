@@ -5,7 +5,6 @@ import debug from 'debug';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger';
 import RegisterRoute from './routes/register';
-import CreateStaffRoute from './routes/createStaffs';
 import LoginRoute from './routes/login';
 import CreateAccountRoute from './routes/createAccount';
 import TransactionRoute from './routes/transaction';
@@ -32,7 +31,6 @@ app.get('/', (req, res) => {
 // creating the api version route
 app.use('/api/auth/signup', RegisterRoute);
 app.use('/api/auth/signin', LoginRoute);
-app.use('/api/auth/addstaff', jwtMiddleware.checkToken, CreateStaffRoute);
 app.use('/api/v1/accounts', jwtMiddleware.checkToken, CreateAccountRoute);
 app.use('/api/v1/transactions', jwtMiddleware.checkToken, TransactionRoute);
 app.use('/api/v1/users', jwtMiddleware.checkToken, UsersRoute);

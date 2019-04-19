@@ -16,21 +16,21 @@ const jwtMiddleware = {
       res.sendStatus(403);
     }
   },
+  signinJwt(req, res, next) {
+    jwt.sign(req.body, process.env.JWTSECRETKEY, async (err, token) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.signintoken = token;
+      return next();
+    });
+  },
   verifyJwt(req, res, next) {
     jwt.verify(req.token, process.env.JWTSECRETKEY, (err, authorizedData) => {
       if (err) {
         return res.sendStatus(403);
       }
       req.authorizedData = authorizedData;
-      return next();
-    });
-  },
-  signinJwt(req, res, next) {
-    jwt.sign(req.body, process.env.JWTSECRETKEY, async (err, token) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
-      req.token = token;
       return next();
     });
   },

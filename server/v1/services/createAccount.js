@@ -4,12 +4,12 @@ import AccountModel from '../model/CreateAccount';
 
 const CreateAccountService = {
   async createAccount(accountData, userData) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
     const accountNumberGenerator = Math.floor(Math.random() * 1000000000) + 3000000000;
     const date = new Date();
     const createdOn = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     const balance = 0.00;
     const status = 'active';
-    let accountOutput;
 
     // pulling users data from database
     const userDetails = await dbConnection
@@ -32,49 +32,85 @@ const CreateAccountService = {
         account.type = accountDbData.rows[0].type;
         account.status = accountDbData.rows[0].status;
         account.balance = accountDbData.rows[0].balance;
-        accountOutput = account;
+        returnStatus = 201;
+        returnSuccess = account;
       }
     } else {
-      accountOutput = 'account type can either be savings or current';
+      returnStatus = 422;
+      returnError = 'account type can either be savings or current';
     }
 
-    return accountOutput;
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 
   async allAccounts(queryParams) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
     if (typeof queryParams === 'undefined' || queryParams === null) {
       const allAccounts = await dbConnection
         .dbConnect('SELECT * from accounts');
-      return allAccounts.rows;
+      returnStatus = 200;
+      returnSuccess = allAccounts.rows;
+    } else {
+      const allAccounts = await dbConnection
+        .dbConnect('SELECT * from accounts WHERE status=$1', [queryParams]);
+      if (allAccounts.rows.length > 0) {
+        returnStatus = 200;
+        returnSuccess = allAccounts.rows;
+      } else {
+        returnStatus = 404;
+        returnError = 'no account found for this user';
+      }
     }
-    const allAccounts = await dbConnection
-      .dbConnect('SELECT * from accounts WHERE status=$1', [queryParams]);
-    if (allAccounts.rows.length > 0) {
-      return allAccounts.rows;
-    }
-    return 'no account found';
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 
   async specificAccounts(accountNumber) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
     const userAccount = await dbConnection
       .dbConnect('SELECT * from accounts WHERE accountnumber=$1', [accountNumber]);
     if (userAccount.rows.length > 0) {
-      return userAccount.rows[0];
+      returnStatus = 200;
+      // eslint-disable-next-line prefer-destructuring
+      returnSuccess = userAccount.rows[0];
+    } else {
+      returnStatus = 404;
+      returnError = 'no transaction found';
     }
-    return 'no transaction found';
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 
   async allAccountTransaction(accountNumber) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
     const userTransaction = await dbConnection
       .dbConnect('SELECT * from transactions WHERE accountnumber=$1', [accountNumber]);
     if (userTransaction.rows.length > 0) {
-      return userTransaction.rows;
+      returnStatus = 200;
+      returnSuccess = userTransaction.rows;
+    } else {
+      returnStatus = 404;
+      returnError = 'no transaction found';
     }
-    return 'no transaction found';
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 
   async patchAccount(accountNumber, accountUpdate, staff) {
-    let account;
+    let returnStatus; let returnSuccess = ''; let returnError = '';
 
     // pulling users data from database
     const userDetails = await dbConnection
@@ -91,19 +127,26 @@ const CreateAccountService = {
         if (updateAccount.command === 'UPDATE') {
           const userDbData = await dbConnection.dbConnect('SELECT accountnumber, status FROM accounts WHERE accountnumber=$1', [accountNumber]);
           const { accountnumber, status } = userDbData.rows[0];
-          account = { accountnumber, status };
+          returnStatus = 200;
+          returnSuccess = { accountnumber, status };
         } else {
-          account = 'Something wrong happened';
+          returnStatus = 500;
         }
       }
     } else {
-      account = 'Sorry you don\'t have permission to perform this task';
+      returnStatus = 401;
+      returnError = 'Sorry you don\'t have permission to perform this task';
     }
-    return account;
+
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 
   async deleteAccount(accountNumber, staff) {
-    let account;
+    let returnStatus; let returnSuccess = ''; let returnError = '';
 
     const userDetails = await dbConnection
       .dbConnect('SELECT type, isadmin FROM users WHERE email=$1', [staff.email]);
@@ -115,14 +158,23 @@ const CreateAccountService = {
       if (checkAccount.rows.length > 0) {
         const accountDbData = await dbConnection
           .dbConnect('DELETE FROM accounts WHERE accountnumber=$1', [accountNumber]);
-        if (accountDbData.command === 'DELETE') account = 'Account successfully deleted';
+        if (accountDbData.command === 'DELETE') {
+          returnStatus = 204;
+          returnSuccess = 'Account successfully deleted';
+        }
       } else {
-        account = 'no account found';
+        returnStatus = 404;
+        returnError = 'no account found';
       }
     } else {
-      account = 'Sorry you don\'t have permission to perform this task';
+      returnStatus = 401;
+      returnError = 'Sorry you don\'t have permission to perform this task';
     }
-    return account;
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 };
 

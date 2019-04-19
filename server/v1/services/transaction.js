@@ -4,7 +4,7 @@ import TransactionModel from '../model/Transaction';
 
 const TransactionService = {
   async debitTransaction(accountNumber, loggedInUser, transactionData) {
-    let returnData;
+    let returnStatus; let returnSuccess = ''; let returnError = '';
 
     // check the users table
     const userDetails = await dbConnection
@@ -41,28 +41,43 @@ const TransactionService = {
           transaction.cashier = accountData.rows[0].cashier;
           transaction.transactionType = accountData.rows[0].type;
           transaction.accountBalance = accountData.rows[0].newbalance;
-          returnData = transaction;
+          returnStatus = 201;
+          returnSuccess = transaction;
         } else {
-          returnData = 'Something wrong happened';
+          returnStatus = 500;
         }
       }
     } else {
-      returnData = 'You must be a staff or admin to perform this transaction';
+      returnStatus = 401;
+      returnError = 'You must be a staff or admin to perform this transaction';
     }
-    return returnData;
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 
   async getSpecificTransaction(transactionId) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
     const userTransaction = await dbConnection
       .dbConnect('SELECT * from transactions WHERE id=$1', [transactionId]);
     if (userTransaction.rows.length > 0) {
-      return userTransaction.rows;
+      returnStatus = 200;
+      returnSuccess = userTransaction.rows;
+    } else {
+      returnStatus = 404;
+      returnError = 'no transaction found';
     }
-    return 'no transaction found';
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 
   async creditTransaction(accountNumber, loggedInUser, transactionData) {
-    let returnData;
+    let returnStatus; let returnSuccess = ''; let returnError = '';
 
     // check the users table
     const userDetails = await dbConnection
@@ -82,7 +97,7 @@ const TransactionService = {
       // check if a string
       const checkForDigit = /^-?\d+\.?\d*$/;
       if (checkForDigit.test(transactionData.amount)) {
-        // adding the passed in amount from the current balance
+        // add the passed in amount from the current balance
         const newBalance = balance + transactionData.amount;
         const transactionDbData = await dbConnection
           .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7)',
@@ -99,15 +114,21 @@ const TransactionService = {
           transaction.cashier = accountData.rows[0].cashier;
           transaction.transactionType = accountData.rows[0].type;
           transaction.accountBalance = accountData.rows[0].newbalance;
-          returnData = transaction;
+          returnStatus = 201;
+          returnSuccess = transaction;
         } else {
-          returnData = 'Something wrong happened';
+          returnStatus = 500;
         }
       }
     } else {
-      returnData = 'You must be a staff or admin to perform this transaction';
+      returnStatus = 401;
+      returnError = 'You must be a staff or admin to perform this transaction';
     }
-    return returnData;
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 };
 

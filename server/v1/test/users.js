@@ -23,13 +23,13 @@ describe('Testing All Users Controller', () => {
             email: 'admin@banka.com',
             password: 'passworD4@',
           });
-        const { token } = response.body.data[0];
+        const { token } = response.body.data;
         const res = await chai.request(app)
           .get('/api/v1/users')
           .set('Authorization', `Bearer ${token}`)
           .send();
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal('success');
+        expect(res).to.have.status(200);
         expect(res.body.data[0]).to.have.property('id');
         expect(res.body.data[0]).to.have.property('firstname');
         expect(res.body.data[0]).to.have.property('lastname');
@@ -50,13 +50,13 @@ describe('Testing All Users Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        const { token } = response.body.data[0];
+        const { token } = response.body.data;
         const res = await chai.request(app)
           .get('/api/v1/users')
           .set('Authorization', `Bearer ${token}`)
           .send();
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal('success');
+        expect(res).to.have.status(401);
         expect(res.body.data).to.equal('You don\'t have permission to view this page');
       },
     );
@@ -71,13 +71,13 @@ describe('Testing All Users Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        const { id, token } = response.body.data[0];
+        const { id, token } = response.body.data;
         const res = await chai.request(app)
           .delete(`/api/v1/users/${id}`)
           .set('Authorization', `Bearer ${token}`)
           .send();
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal('success');
+        expect(res).to.have.status(401);
         expect(res.body.data).to.equal('You don\'t have permission to view this page');
       },
     );
