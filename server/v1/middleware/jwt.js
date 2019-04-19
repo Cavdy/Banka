@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const jwtMiddleware = {
   checkToken(req, res, next) {
@@ -13,8 +16,17 @@ const jwtMiddleware = {
       res.sendStatus(403);
     }
   },
+  signinJwt(req, res, next) {
+    jwt.sign(req.body, process.env.JWTSECRETKEY, async (err, token) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.signintoken = token;
+      return next();
+    });
+  },
   verifyJwt(req, res, next) {
-    jwt.verify(req.token, '5634', (err, authorizedData) => {
+    jwt.verify(req.token, process.env.JWTSECRETKEY, (err, authorizedData) => {
       if (err) {
         return res.sendStatus(403);
       }

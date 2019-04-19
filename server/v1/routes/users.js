@@ -6,6 +6,7 @@ const router = express.Router();
 
 // creating our routes
 router.get('/', jwtMiddleware.verifyJwt, UsersController.getAllUsers);
+router.get('/:email/accounts', jwtMiddleware.verifyJwt, UsersController.getUsersAccounts);
 router.delete('/:id', jwtMiddleware.verifyJwt, UsersController.deleteUser);
 
 export default router;

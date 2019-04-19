@@ -10,93 +10,103 @@ describe('Testing Transactions Controller', () => {
   describe('Testing transactions controller', () => {
     it(
       'transactions should have all required propertise',
-      (done) => {
+      async () => {
         const signinUrl = '/api/auth/signin';
-        chai.request(app)
+        const response = await chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'banka3@banka.com',
-            password: 'passworD3@',
-          })
-          .end((error, response) => {
-            const { token } = response.body.data;
-            chai.request(app)
-              .post('/api/v1/transactions/306363789207/debit')
-              .set('Authorization', `Bearer ${token}`)
-              .send({
-                amount: 200,
-              })
-              .end((err, res) => {
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal('success');
-                expect(res.body.status).to.equal('success');
-                expect(res.body.data).to.have.property('id');
-                expect(res.body.data).to.have.property('createdOn');
-                expect(res.body.data).to.have.property('type');
-                expect(res.body.data).to.have.property('accountNumber');
-                expect(res.body.data).to.have.property('cashier');
-                expect(res.body.data).to.have.property('amount');
-                expect(res.body.data).to.have.property('oldBalance');
-                expect(res.body.data).to.have.property('newBalance');
-              });
-            done();
+            email: 'admin@banka.com',
+            password: 'passworD4@',
           });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/transactions/3003801983/debit')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            amount: 500,
+          });
+        expect(res.body).to.be.an('object');
+        expect(res).to.have.status(201);
+        expect(res.body.data).to.have.property('transactionId');
+        expect(res.body.data).to.have.property('accountNumber');
+        expect(res.body.data).to.have.property('cashier');
+        expect(res.body.data).to.have.property('amount');
+        expect(res.body.data).to.have.property('transactionType');
+        expect(res.body.data).to.have.property('accountBalance');
       },
     );
 
     it(
       'only admin and staffs should perform debit transaction',
-      (done) => {
+      async () => {
         const signinUrl = '/api/auth/signin';
-        chai.request(app)
+        const response = await chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'banka@banka.com',
-            password: 'passworD1@',
-          })
-          .end((error, response) => {
-            const { token } = response.body.data;
-            chai.request(app)
-              .post('/api/v1/transactions/306363789207/debit')
-              .set('Authorization', `Bearer ${token}`)
-              .send({
-                amount: 200,
-              })
-              .end((err, res) => {
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal('success');
-                expect(res.body.data).to.equal('you must be a staff to perform this transaction');
-              });
-            done();
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
           });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/transactions/3003801983/debit')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            amount: 500,
+          });
+        expect(res.body).to.be.an('object');
+        expect(res).to.have.status(401);
+        expect(res.body.data).to.equal('You must be a staff or admin to perform this transaction');
+      },
+    );
+
+    it(
+      'transaction should have these propertise',
+      async () => {
+        const signinUrl = '/api/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get('/api/v1/transactions/4')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res).to.have.status(200);
+        expect(res.body.data[0]).to.have.property('id');
+        expect(res.body.data[0]).to.have.property('createdon');
+        expect(res.body.data[0]).to.have.property('type');
+        expect(res.body.data[0]).to.have.property('accountnumber');
+        expect(res.body.data[0]).to.have.property('cashier');
+        expect(res.body.data[0]).to.have.property('amount');
+        expect(res.body.data[0]).to.have.property('oldbalance');
+        expect(res.body.data[0]).to.have.property('newbalance');
       },
     );
 
     it(
       'only admin and staffs should perform credit transaction',
-      (done) => {
+      async () => {
         const signinUrl = '/api/auth/signin';
-        chai.request(app)
+        const response = await chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'banka@banka.com',
-            password: 'passworD1@',
-          })
-          .end((error, response) => {
-            const { token } = response.body.data;
-            chai.request(app)
-              .post('/api/v1/transactions/306363789207/credit')
-              .set('Authorization', `Bearer ${token}`)
-              .send({
-                amount: 200,
-              })
-              .end((err, res) => {
-                expect(res.body).to.be.an('object');
-                expect(res.body.status).to.equal('success');
-                expect(res.body.data).to.equal('you must be a staff to perform this transaction');
-              });
-            done();
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
           });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/transactions/3003801983/credit')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            amount: 500,
+          });
+        expect(res.body).to.be.an('object');
+        expect(res).to.have.status(401);
+        expect(res.body.data).to.equal('You must be a staff or admin to perform this transaction');
       },
     );
   });

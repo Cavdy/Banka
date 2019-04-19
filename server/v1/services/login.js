@@ -1,35 +1,60 @@
-import usersData from '../../dummyJson/users';
-
-const { users } = usersData;
+import bcrypt from 'bcryptjs';
+import dbConnection from '../config/database';
+import UserModel from '../model/users';
 
 const LoginService = {
-  loginUser(userData) {
+  async loginUser(userData, token) {
     const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,10})$/;
     const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-    let returnValue = [];
+    let returnStatus; let returnSuccess = ''; let returnError = '';
 
     // Check if email and password is valid
     if (emailRegex.test(userData.email) && passwordRegex.test(userData.password)) {
-      let checkDetails = false;
-
-      // check if account exist
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i <= users.length - 1; i++) {
-        if (users[i].email === userData.email && users[i].password === userData.password) {
-          returnValue = users[i];
-          checkDetails = true;
+      // check if email, if it exist get the user data
+      const emailresponse = await dbConnection.dbConnect('SELECT * FROM users WHERE email=$1', [userData.email]);
+      if (emailresponse.rows.length > 0) {
+        // Load hash from your password DB.
+        const passwordUnhash = bcrypt
+          .compareSync(userData.password, emailresponse.rows[0].password);
+        if (passwordUnhash) {
+          // return users details
+          const user = new UserModel();
+          user.id = emailresponse.rows[0].id;
+          user.firstName = emailresponse.rows[0].firstname;
+          user.lastName = emailresponse.rows[0].lastname;
+          user.email = emailresponse.rows[0].email;
+          user.token = token;
+          returnStatus = 201;
+          returnSuccess = user;
+        } else {
+          // else echo incorrect password
+          returnStatus = 422;
+          returnError = 'incorrect password';
         }
-      }
-
-      // gives output
-      if (!checkDetails) {
-        returnValue.push('incorrect credentials');
+      } else {
+        returnStatus = 404;
+        returnError = 'email does not exist';
       }
     } else {
-      returnValue.push('Invalid format');
+      const error = [];
+      if (!emailRegex.test(userData.email)) {
+        returnStatus = 422;
+        error.push('invalid email address');
+      }
+
+      if (!passwordRegex.test(userData.password)) {
+        returnStatus = 422;
+        error.push('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
+      }
+      returnError = error;
     }
 
-    return returnValue;
+
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 };
 

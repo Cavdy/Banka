@@ -1,63 +1,134 @@
 /* eslint-disable no-param-reassign */
-import transactionsData from '../../dummyJson/transactions';
-import accountsData from '../../dummyJson/accounts';
-
-const { accounts } = accountsData;
-
-const { transactions } = transactionsData;
+import dbConnection from '../config/database';
+import TransactionModel from '../model/Transaction';
 
 const TransactionService = {
-  debitTransaction(accountNumber, loggedInUser, transactionData) {
-    if (loggedInUser.loggedUser.type === 'staff' || loggedInUser.loggedUser.isAdmin === true) {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i <= accounts.length - 1; i++) {
-        // eslint-disable-next-line eqeqeq
-        if (accounts[i].accountNumber == accountNumber) {
-          const date = new Date();
-          const createdOn = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-          const transactionLength = transactions.length;
-          const newId = transactionLength + 1;
-          transactionData.id = newId;
-          transactionData.createdOn = createdOn;
-          transactionData.type = 'debit';
-          transactionData.accountNumber = accountNumber;
-          transactionData.cashier = loggedInUser.loggedUser.id;
-          transactionData.amount = transactionData.amount;
-          transactionData.oldBalance = accounts[i].balance;
-          const newBalance = accounts[i].balance - transactionData.amount;
-          transactionData.newBalance = newBalance;
-          transactions.push(transactionData);
-          return transactionData;
+  async debitTransaction(accountNumber, loggedInUser, transactionData) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
+
+    // check the users table
+    const userDetails = await dbConnection
+      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [loggedInUser.email]);
+    const { id, type, isadmin } = userDetails.rows[0];
+
+    // checks if logged in user is an admin or staff
+    if (type === 'staff' || isadmin === true) {
+      const date = new Date();
+      const createdOn = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+      // pull accountnumber details from database
+      const accountDbData = await dbConnection
+        .dbConnect('SELECT accountnumber, balance FROM accounts WHERE accountnumber=$1', [accountNumber]);
+      const { accountnumber, balance } = accountDbData.rows[0];
+
+      // check if a string
+      const checkForDigit = /^-?\d+\.?\d*$/;
+      if (checkForDigit.test(transactionData.amount)) {
+        // substract the passed in amount from the current balance
+        const newBalance = balance - transactionData.amount;
+        const transactionDbData = await dbConnection
+          .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7)',
+            [createdOn, 'debit', accountnumber, id, transactionData.amount, balance, newBalance]);
+        if (transactionDbData.command === 'INSERT') {
+          // get the data from transaction
+          const accountData = await dbConnection.dbConnect('SELECT * FROM transactions WHERE accountnumber=$1', [accountNumber]);
+          // update the account table
+          await dbConnection.dbConnect('UPDATE accounts SET balance=$1 WHERE accountnumber=$2', [newBalance, accountNumber]);
+          const transaction = new TransactionModel();
+          transaction.transactionId = accountData.rows[0].id;
+          transaction.accountNumber = accountData.rows[0].accountnumber;
+          transaction.amount = accountData.rows[0].amount;
+          transaction.cashier = accountData.rows[0].cashier;
+          transaction.transactionType = accountData.rows[0].type;
+          transaction.accountBalance = accountData.rows[0].newbalance;
+          returnStatus = 201;
+          returnSuccess = transaction;
+        } else {
+          returnStatus = 500;
         }
       }
+    } else {
+      returnStatus = 401;
+      returnError = 'You must be a staff or admin to perform this transaction';
     }
-    return 'you must be a staff to perform this transaction';
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
-  creditTransaction(accountNumber, loggedInUser, transactionData) {
-    if (loggedInUser.loggedUser.type === 'staff' || loggedInUser.loggedUser.isAdmin === true) {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i <= accounts.length - 1; i++) {
-        // eslint-disable-next-line eqeqeq
-        if (accounts[i].accountNumber == accountNumber) {
-          const date = new Date();
-          const createdOn = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-          const transactionLength = transactions.length;
-          const newId = transactionLength + 1;
-          transactionData.id = newId;
-          transactionData.createdOn = createdOn;
-          transactionData.type = 'credit';
-          transactionData.accountNumber = accountNumber;
-          transactionData.cashier = loggedInUser.loggedUser.id;
-          transactionData.amount = transactionData.amount;
-          transactionData.oldBalance = accounts[i].balance;
-          const newBalance = accounts[i].balance + transactionData.amount;
-          transactionData.newBalance = newBalance;
-          transactions.push(transactionData);
-          return transactionData;
+
+  async getSpecificTransaction(transactionId) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
+    const userTransaction = await dbConnection
+      .dbConnect('SELECT * from transactions WHERE id=$1', [transactionId]);
+    if (userTransaction.rows.length > 0) {
+      returnStatus = 200;
+      returnSuccess = userTransaction.rows;
+    } else {
+      returnStatus = 404;
+      returnError = 'no transaction found';
+    }
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
+  },
+
+  async creditTransaction(accountNumber, loggedInUser, transactionData) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
+
+    // check the users table
+    const userDetails = await dbConnection
+      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [loggedInUser.email]);
+    const { id, type, isadmin } = userDetails.rows[0];
+
+    // checks if logged in user is an admin or staff
+    if (type === 'staff' || isadmin === true) {
+      const date = new Date();
+      const createdOn = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+      // pull accountnumber details from database
+      const accountDbData = await dbConnection
+        .dbConnect('SELECT accountnumber, balance FROM accounts WHERE accountnumber=$1', [accountNumber]);
+      const { accountnumber, balance } = accountDbData.rows[0];
+
+      // check if a string
+      const checkForDigit = /^-?\d+\.?\d*$/;
+      if (checkForDigit.test(transactionData.amount)) {
+        // add the passed in amount from the current balance
+        const newBalance = balance + transactionData.amount;
+        const transactionDbData = await dbConnection
+          .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7)',
+            [createdOn, 'credit', accountnumber, id, transactionData.amount, balance, newBalance]);
+        if (transactionDbData.command === 'INSERT') {
+          // get the data from transaction
+          const accountData = await dbConnection.dbConnect('SELECT * FROM transactions WHERE accountnumber=$1', [accountNumber]);
+          // update the account table
+          await dbConnection.dbConnect('UPDATE accounts SET balance=$1 WHERE accountnumber=$2', [newBalance, accountNumber]);
+          const transaction = new TransactionModel();
+          transaction.transactionId = accountData.rows[0].id;
+          transaction.accountNumber = accountData.rows[0].accountnumber;
+          transaction.amount = accountData.rows[0].amount;
+          transaction.cashier = accountData.rows[0].cashier;
+          transaction.transactionType = accountData.rows[0].type;
+          transaction.accountBalance = accountData.rows[0].newbalance;
+          returnStatus = 201;
+          returnSuccess = transaction;
+        } else {
+          returnStatus = 500;
         }
       }
+    } else {
+      returnStatus = 401;
+      returnError = 'You must be a staff or admin to perform this transaction';
     }
-    return 'you must be a staff to perform this transaction';
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
   },
 };
 

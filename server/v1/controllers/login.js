@@ -1,29 +1,14 @@
-import jwt from 'jsonwebtoken';
-import debug from 'debug';
 import LoginService from '../services/login';
+import statusHelper from '../helper/statusHelper';
 
 const LoginController = {
-  loginUser(req, res) {
+  async loginUser(req, res) {
     const userData = req.body;
-    const loggedUser = LoginService.loginUser(userData);
+    const loggedUser = await LoginService.loginUser(userData, req.signintoken);
 
-    return jwt.sign({ loggedUser }, '5634', (err, token) => {
-      if (err) { debug('jwterror')(err); }
-      if (loggedUser[0] === 'Invalid format' || loggedUser[0] === 'incorrect credentials') {
-        res.json({
-          status: 'error',
-          data: 'incorrect data',
-        });
-      } else {
-        res.json({
-          status: 'success',
-          data: {
-            loggedUser,
-            token,
-          },
-        }).status(201);
-      }
-    });
+    const data = await statusHelper
+      .statusHelper('nothing', res, loggedUser.returnStatus, loggedUser.returnError, loggedUser.returnSuccess);
+    return data;
   },
 };
 
