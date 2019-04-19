@@ -13,22 +13,6 @@ This is a banking web app
 
 https://github.com/Cavdy/Banka.git
 
-#### [API DOCUMENTATION](http://bankaapp-api.herokuapp.com/api-docs)
-
-## Login Details
-
-# Client
-Email: Banka@banka.com
-Password: passworD1@
-
-# Staff
-Email: Banka2@banka.com
-Password: passworD2@
-
-# Admin
-Email: Banka3@banka.com
-Password: passworD3@
-
 ## Prerequisites
 
 - Node v10.15.0 or above
@@ -49,8 +33,28 @@ Password: passworD3@
 </tr>
 <tr>
 	<td>POST</td>
+	<td>api/auth/signup/addstaff</td>
+	<td>Admin can add staffs</td>
+</tr>
+<tr>
+	<td>POST</td>
 	<td>api/auth/signin</td>
 	<td>Users can signin</td>
+</tr>
+<tr>
+	<td>GET</td>
+	<td>api/v1/accounts</td>
+	<td>Gets all accounts</td>
+</tr>
+<tr>
+	<td>GET</td>
+	<td>api/v1/accounts/:accountnumber</td>
+	<td>Gets account by accountnumber</td>
+</tr>
+<tr>
+	<td>GET</td>
+	<td>api/v1/accounts/:accountnumber/transactions</td>
+	<td>Gets all transactions by accountnumber</td>
 </tr>
 <tr>
 	<td>POST</td>
@@ -68,6 +72,11 @@ Password: passworD3@
 	<td>Staff and Admin can be delete account</td>
 </tr>
 <tr>
+	<td>GET</td>
+	<td>api/v1/transactions/:transactionid</td>
+	<td>Users can view a particular transaction</td>
+</tr>
+<tr>
 	<td>POST</td>
 	<td>api/v1/transactions/accountNumber/debit</td>
 	<td>Staffs and Admin can debit users</td>
@@ -81,6 +90,11 @@ Password: passworD3@
 	<td>GET</td>
 	<td>api/v1/users</td>
 	<td>Staffs and Admin can see all users</td>
+</tr>
+<tr>
+	<td>GET</td>
+	<td>api/v1/users/:email/accounts</td>
+	<td>get accounts that belongs to eamil</td>
 </tr>
 <tr>
 	<td>DELETE</td>
@@ -113,6 +127,10 @@ URL: https://cavdy.github.io/Banka/
 ## Heroku Link
 
 URL: https://bankaapp-api.herokuapp.com/
+
+## API Documentation
+
+URL: https://bankaapp-api.herokuapp.com/api-docs
 
 ## Pivotal Tracker
 
