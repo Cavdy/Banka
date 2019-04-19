@@ -9,14 +9,6 @@ This is a banking web app
 
 ## Getting Started
 
-## For Online Testing
-
-URL: https://bankaapp-api.herokuapp.com/api-docs
-
-## Default Admin Login
-Email: admin@banka.com
-Password: passworD4@
-
 ## Clone the Repository.
 
 https://github.com/Cavdy/Banka.git
