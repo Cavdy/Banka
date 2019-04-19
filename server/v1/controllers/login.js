@@ -1,14 +1,14 @@
 import LoginService from '../services/login';
+import statusHelper from '../helper/statusHelper';
 
 const LoginController = {
   async loginUser(req, res) {
     const userData = req.body;
+    const loggedUser = await LoginService.loginUser(userData, req.signintoken);
 
-    const loggedUser = await LoginService.loginUser(userData, req.token);
-    res.json({
-      status: 'success',
-      data: loggedUser,
-    }).status(201);
+    const data = await statusHelper
+      .statusHelper('nothing', res, loggedUser.returnStatus, loggedUser.returnError, loggedUser.returnSuccess);
+    return data;
   },
 };
 

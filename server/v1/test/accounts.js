@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
-import dbConnection from '../config/database';
 
 import app from '../app';
 
@@ -19,7 +18,7 @@ describe('Testing Accounts Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        const { token } = response.body.data[0];
+        const { token } = response.body.data;
         const res = await chai.request(app)
           .post('/api/v1/accounts')
           .set('Authorization', `Bearer ${token}`)
@@ -27,7 +26,7 @@ describe('Testing Accounts Controller', () => {
             type: 'savings',
           });
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal('success');
+        expect(res).to.have.status(201);
         expect(res.body.data).to.have.property('id');
         expect(res.body.data).to.have.property('accountNumber');
         expect(res.body.data).to.have.property('createdOn');
@@ -48,7 +47,7 @@ describe('Testing Accounts Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        const { token } = response.body.data[0];
+        const { token } = response.body.data;
         const res = await chai.request(app)
           .post('/api/v1/accounts')
           .set('Authorization', `Bearer ${token}`)
@@ -63,7 +62,8 @@ describe('Testing Accounts Controller', () => {
             status: 'dormant',
           });
         expect(res1.body).to.be.an('object');
-        expect(res1.body.status).to.equal('success');
+        expect(res1.body.status).to.equal(401);
+        expect(res1).to.have.status(401);
         expect(res1.body.data).to.equal('Sorry you don\'t have permission to perform this task');
       },
     );
@@ -78,7 +78,7 @@ describe('Testing Accounts Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        const { token } = response.body.data[0];
+        const { token } = response.body.data;
         const res = await chai.request(app)
           .post('/api/v1/accounts')
           .set('Authorization', `Bearer ${token}`)
@@ -91,7 +91,8 @@ describe('Testing Accounts Controller', () => {
           .set('Authorization', `Bearer ${token}`)
           .send();
         expect(res1.body).to.be.an('object');
-        expect(res1.body.status).to.equal('success');
+        expect(res1.body.status).to.equal(401);
+        expect(res1).to.have.status(401);
         expect(res1.body.data).to.equal('Sorry you don\'t have permission to perform this task');
       },
     );
@@ -106,13 +107,13 @@ describe('Testing Accounts Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        const { token } = response.body.data[0];
+        const { token } = response.body.data;
         const res = await chai.request(app)
           .get('/api/v1/accounts/3003801983/transactions')
           .set('Authorization', `Bearer ${token}`)
           .send();
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal('success');
+        expect(res).to.have.status(200);
         expect(res.body.data[0]).to.have.property('id');
         expect(res.body.data[0]).to.have.property('createdon');
         expect(res.body.data[0]).to.have.property('type');
@@ -134,13 +135,13 @@ describe('Testing Accounts Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        const { token } = response.body.data[0];
+        const { token } = response.body.data;
         const res = await chai.request(app)
           .get('/api/v1/accounts')
           .set('Authorization', `Bearer ${token}`)
           .send();
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal('success');
+        expect(res).to.have.status(200);
         expect(res.body.data[0]).to.have.property('id');
         expect(res.body.data[0]).to.have.property('email');
         expect(res.body.data[0]).to.have.property('firstname');
@@ -164,13 +165,14 @@ describe('Testing Accounts Controller', () => {
             email: 'admin@banka.com',
             password: 'passworD4@',
           });
-        const { token } = response.body.data[0];
+        const { token } = response.body.data;
         const res = await chai.request(app)
           .delete('/api/v1/accounts/883939378372')
           .set('Authorization', `Bearer ${token}`)
           .send();
         expect(res.body).to.be.an('object');
-        expect(res.body.status).to.equal('success');
+        expect(res.body.status).to.equal(404);
+        expect(res).to.have.status(404);
         expect(res.body.data).to.equal('no account found');
       },
     );

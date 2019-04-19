@@ -1,14 +1,15 @@
 import CreateAccountService from '../services/createAccount';
+import statusHelper from '../helper/statusHelper';
 
 const CreateAccountController = {
   async createAccount(req, res) {
     const accountData = req.body;
     const createdAccount = await CreateAccountService
       .createAccount(accountData, req.authorizedData);
-    return res.json({
-      status: 'success',
-      data: createdAccount,
-    }).status(201);
+
+    const data = await statusHelper
+      .statusHelper('nothing', res, createdAccount.returnStatus, createdAccount.returnError, createdAccount.returnSuccess);
+    return data;
   },
 
   // all accounts
@@ -16,10 +17,10 @@ const CreateAccountController = {
     const queryParams = req.query.status;
     const allAccounts = await CreateAccountService
       .allAccounts(queryParams);
-    return res.json({
-      status: 'success',
-      data: allAccounts,
-    }).status(201);
+
+    const data = await statusHelper
+      .statusHelper('nothing', res, allAccounts.returnStatus, allAccounts.returnError, allAccounts.returnSuccess);
+    return data;
   },
 
   // specific account
@@ -27,10 +28,10 @@ const CreateAccountController = {
     const { accountNumber } = req.params;
     const specificAccounts = await CreateAccountService
       .specificAccounts(accountNumber);
-    return res.json({
-      status: 'success',
-      data: specificAccounts,
-    }).status(201);
+
+    const data = await statusHelper
+      .statusHelper('nothing', res, specificAccounts.returnStatus, specificAccounts.returnError, specificAccounts.returnSuccess);
+    return data;
   },
 
   // get transaction history
@@ -38,10 +39,10 @@ const CreateAccountController = {
     const { accountNumber } = req.params;
     const transactionHistory = await CreateAccountService
       .allAccountTransaction(accountNumber);
-    return res.json({
-      status: 'success',
-      data: transactionHistory,
-    }).status(201);
+
+    const data = await statusHelper
+      .statusHelper('nothing', res, transactionHistory.returnStatus, transactionHistory.returnError, transactionHistory.returnSuccess);
+    return data;
   },
 
   // patchAccount
@@ -50,10 +51,10 @@ const CreateAccountController = {
     const accountStatus = req.body;
     const updatedAccount = await CreateAccountService
       .patchAccount(accountNumber, accountStatus, req.authorizedData);
-    return res.json({
-      status: 'success',
-      data: updatedAccount,
-    }).status(201);
+
+    const data = await statusHelper
+      .statusHelper('nothing', res, updatedAccount.returnStatus, updatedAccount.returnError, updatedAccount.returnSuccess);
+    return data;
   },
 
   // deleteAccount
@@ -61,10 +62,10 @@ const CreateAccountController = {
     const { accountNumber } = req.params;
     const deleteAccount = await CreateAccountService
       .deleteAccount(accountNumber, req.authorizedData);
-    return res.json({
-      status: 'success',
-      data: deleteAccount,
-    }).status(200);
+
+    const data = await statusHelper
+      .statusHelper('nothing', res, deleteAccount.returnStatus, deleteAccount.returnError, deleteAccount.returnSuccess);
+    return data;
   },
 };
 
