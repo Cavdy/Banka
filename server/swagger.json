@@ -480,7 +480,7 @@
       }
     },
     "/v1/users/{email}/accounts": {
-      "delete": {
+      "get": {
         "tags": [
           "Users"
         ],
