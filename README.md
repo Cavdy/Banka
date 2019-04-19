@@ -13,7 +13,7 @@ This is a banking web app
 
 URL: https://bankaapp-api.herokuapp.com/api-docs
 
-# Default Admin Login
+## Default Admin Login
 Email: admin@banka.com
 Password: passworD4@
 
