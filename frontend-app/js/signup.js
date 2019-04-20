@@ -13,6 +13,8 @@ const errorEmail = document.querySelector('.erroremail');
 const errorPassword = document.querySelector('.errorpassword');
 const submit = document.querySelector('#submit');
 let fnamePassed, lnamePassed, emailPassed, passwordPassed;
+const date = new Date();
+const login = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
 firstName.addEventListener('keyup', () => {
   if (!fnameAndLnameRegex.test(firstName.value)) {
@@ -78,7 +80,10 @@ const postApi = (url, data) => {
         modal.style.visibility = 'visible';
         modal.style.opacity = '1';
         setInterval(() => {
-          localStorage.setItem('token', data1.data.token);
+          sessionStorage.setItem('token', data1.data.token);
+          sessionStorage.setItem('email', data1.data.email);
+          sessionStorage.setItem('id', data1.data.id);
+          sessionStorage.setItem('login', login);
           location.replace('./createaccount.html');
         }, 3000);
       }

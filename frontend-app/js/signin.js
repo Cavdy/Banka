@@ -8,6 +8,8 @@ const errorEmail = document.querySelector('.erroremail');
 const errorPassword = document.querySelector('.errorpassword');
 const submit = document.querySelector('#submit');
 let emailPassed, passwordPassed;
+const date = new Date();
+const login = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
 email.addEventListener('keyup', () => {
   if (!emailRegex.test(email.value)) {
@@ -50,7 +52,10 @@ const postApi = (url, data) => {
       } else if (data1.status === 404) {
         errorEmail.innerHTML = data1.data;
       } else if (data1.status === 201) {
-        localStorage.setItem('token', data1.data.token);
+        sessionStorage.setItem('token', data1.data.token);
+        sessionStorage.setItem('email', data1.data.email);
+        sessionStorage.setItem('id', data1.data.id);
+        sessionStorage.setItem('login', login);
         location.replace('./dashboard.html');
       }
     });
