@@ -1,38 +1,13 @@
 const api = 'https://bankaapp-api.herokuapp.com/api';
 
-const fnameAndLnameRegex = /^[a-zA-Z ]{2,15}$/;
 const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,10})$/;
 const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-const firstName = document.querySelector('#firstname');
-const lastName = document.querySelector('#lastname');
 const email = document.querySelector('#email');
 const password = document.querySelector('#password');
-const errorFname = document.querySelector('.errorfname');
-const errorLname = document.querySelector('.errorlname');
 const errorEmail = document.querySelector('.erroremail');
 const errorPassword = document.querySelector('.errorpassword');
 const submit = document.querySelector('#submit');
-let fnamePassed, lnamePassed, emailPassed, passwordPassed;
-
-firstName.addEventListener('keyup', () => {
-  if (!fnameAndLnameRegex.test(firstName.value)) {
-    errorFname.innerHTML = 'first name should at least be 2 characters';
-    fnamePassed = false;
-  } else {
-    errorFname.innerHTML = '';
-    fnamePassed = true;
-  }
-});
-
-lastName.addEventListener('keyup', () => {
-  if (!fnameAndLnameRegex.test(lastName.value)) {
-    errorLname.innerHTML = 'last name should at least be 2 characters';
-    lnamePassed = false;
-  } else {
-    errorLname.innerHTML = '';
-    lnamePassed = true;
-  }
-});
+let emailPassed, passwordPassed;
 
 email.addEventListener('keyup', () => {
   if (!emailRegex.test(email.value)) {
@@ -54,8 +29,6 @@ password.addEventListener('keyup', () => {
   }
 });
 
-const modal = document.querySelector('.modal');
-
 // POST FETCH API REQUEST
 const postApi = (url, data) => {
   fetch(url, {
@@ -72,28 +45,24 @@ const postApi = (url, data) => {
   })
     .then(response => response.json())
     .then((data1) => {
-      if (data1.status === 409) {
+      if (data1.status === 422) {
+        errorPassword.innerHTML = data1.data;
+      } else if (data1.status === 404) {
         errorEmail.innerHTML = data1.data;
       } else if (data1.status === 201) {
-        modal.style.visibility = 'visible';
-        modal.style.opacity = '1';
-        setInterval(() => {
-          localStorage.setItem('token', data1.data.token);
-          location.replace('/frontend-app/createaccount.html');
-        }, 3000);
+        localStorage.setItem('token', data1.data.token);
+        location.replace('/frontend-app/createaccount.html');
       }
     });
 };
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();
-  if (fnamePassed === true && lnamePassed === true && emailPassed === true && passwordPassed === true) {
-    const signupData = {
-      firstName: firstName.value,
-      lastName: lastName.value,
+  if (emailPassed === true && passwordPassed === true) {
+    const signinData = {
       email: email.value,
       password: password.value,
     };
-    postApi(`${api}/auth/signup`, signupData);
+    postApi(`${api}/auth/signin`, signinData);
   }
 });

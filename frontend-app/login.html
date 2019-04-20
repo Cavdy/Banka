@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Banka Register Form</title>
+  <title>Banka Login</title>
   <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -26,21 +26,11 @@
       <main class="showcase-body">
         <div class="showcase-body-left">
           <h1 class="showcase-title">
-            Sign Up / Register
+            Login to your account
           </h1>
         </div>
         <div class="showcase-body-right">
           <form action="" class="form">
-            <div class="form-group">
-              <label for="firstname" class="form-label">First Name</label>
-              <input type="text" placeholder="First Name" id="firstname" class="form-input">
-              <p class="errorfname"></p>
-            </div>
-            <div class="form-group">
-              <label for="lastname" class="form-label">Last Name</label>
-              <input type="text" placeholder="Last Name" id="lastname" class="form-input">
-              <p class="errorlname"></p>
-            </div>
             <div class="form-group">
               <label for="email" class="form-label">Email</label>
               <input type="text" placeholder="Email Address" id="email" class="form-input">
@@ -52,7 +42,7 @@
               <p class="errorpassword"></p>
             </div>
 
-            <input type="submit" id="submit" class="btn btn-block btn-primary" value="Register">
+            <input type="submit" id="submit" class="btn btn-block btn-primary" value="Login">
           </form>
         </div>
       </main>
@@ -62,16 +52,8 @@
     </div>
   </div>
 
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <div class="card">
-        <h1 class="content-title">You are successfully signed up. You will be redirected in few seconds</h1>
-      </div>
-    </div>
-  </div>
-
   <!--Javascript-->
-  <script src="./js/signup.js"></script>
+  <script src="./js/signin.js"></script>
 </body>
 
 </html>
