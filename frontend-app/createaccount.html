@@ -5,9 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Welcome to Banka App</title>
+  <title>Banka Create Account</title>
   <link rel="stylesheet" href="./css/style.css">
-
 </head>
 
 <body class="body">
@@ -17,23 +16,29 @@
         <div class="showcase-logo"><a href="./index.html">Banka</a></div>
         <ul class="showcase-list">
           <li class="showcase-item">
-            <a href="./login.html" class="showcase-link">Login</a>
-          </li>
-          <li class="showcase-item">
-            <a href="./register.html" class="showcase-link">Register</a>
+            <a href="./dashboard.html" class="showcase-link">Dashboard</a>
           </li>
         </ul>
       </header>
       <main class="showcase-body">
         <div class="showcase-body-left">
           <h1 class="showcase-title">
-            Welcome to Banka
+            Create an account
           </h1>
-          <span class="showcase-description">Your safety is our concern</span>
-          <a href="./login.html" class="showcase-btn">Get Started</a>
         </div>
         <div class="showcase-body-right">
-          <object data="./svg/creative.svg" type="image/svg+xml" class="showcase-body-right-img"></object>
+          <p class="msg"></p>
+          <form action="" class="form">
+            <div class="form-group">
+              <label for="selectrole" class="form-label">Account Type</label>
+              <select class="form-select" id="type">
+                <option value="current">Current</option>
+                <option value="savings">Savings</option>
+              </select>
+            </div>
+
+            <input type="submit" id="submit" class="btn btn-block btn-primary" value="Create Account">
+          </form>
         </div>
       </main>
       <footer class="showcase-footer">
@@ -41,6 +46,9 @@
       </footer>
     </div>
   </div>
+
+  <!--Javascript-->
+  <script src="./js/createaccount.js"></script>
 </body>
 
 </html>

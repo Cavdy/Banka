@@ -51,7 +51,7 @@ const postApi = (url, data) => {
         errorEmail.innerHTML = data1.data;
       } else if (data1.status === 201) {
         localStorage.setItem('token', data1.data.token);
-        location.replace('/frontend-app/createaccount.html');
+        location.replace('./dashboard.html');
       }
     });
 };

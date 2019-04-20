@@ -925,6 +925,13 @@ body,
   font-size: 1.3rem;
 }
 
+.msg {
+  font-size: 1rem;
+}
+.msg a {
+  color: var(--color-pink-2);
+}
+
 /*
     =======================
         Responsiveness

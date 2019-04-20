@@ -79,7 +79,7 @@ const postApi = (url, data) => {
         modal.style.opacity = '1';
         setInterval(() => {
           localStorage.setItem('token', data1.data.token);
-          location.replace('/frontend-app/createaccount.html');
+          location.replace('./createaccount.html');
         }, 3000);
       }
     });
