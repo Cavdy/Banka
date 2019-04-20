@@ -2,7 +2,7 @@ const api = 'https://bankaapp-api.herokuapp.com/api';
 const type = document.querySelector('#type');
 const submit = document.querySelector('#submit');
 const msg = document.querySelector('.msg');
-const token = localStorage.getItem('token');
+const token = sessionStorage.getItem('token');
 
 // POST FETCH API REQUEST
 const postApi = (url, data) => {

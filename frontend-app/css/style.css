@@ -156,6 +156,7 @@ body,
   flex: 1;
   display: flex;
   flex-direction: column;
+  background-color: var(--color-grey-2);
 }
 
 
@@ -169,6 +170,7 @@ body,
   align-items: center;
   height: var(--header-height);
   background-color: var(--color-white-2);
+  border-bottom: 1px solid var(--color-grey-3);
 }
 
 .toggle-sidebar {
@@ -414,7 +416,6 @@ body,
 .main-body {
   flex: 1;
   padding: .7rem;
-  background-color: var(--color-grey-2);
 }
 
 /*
@@ -930,6 +931,38 @@ body,
 }
 .msg a {
   color: var(--color-pink-2);
+}
+
+/*
+    =======================
+      accounts dropdown
+    =======================
+*/
+.accounts {
+  margin-bottom: .5rem;
+  width: 15rem;
+  height: 3rem;
+}
+
+.accounts-form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-blue);
+}
+
+.accounts-select {
+  width: 10rem;
+  height: 2rem;
+  background-color: transparent;
+  font-size: 1rem;
+}
+
+.btn-go {
+  padding: .5rem 1rem;
+  background-color: transparent;
+  border: 1px solid var(--color-blue);
+  color: var(--color-blue);
 }
 
 /*
