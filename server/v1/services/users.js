@@ -1,7 +1,7 @@
 import dbConnection from '../config/database';
 
 const UsersServices = {
-  async getAllUsers(staff) {
+  async getAllUsers(staff, queryLimit) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
     // check the users table
     const userDetails = await dbConnection
@@ -9,10 +9,17 @@ const UsersServices = {
     const { type, isadmin } = userDetails.rows[0];
 
     if (type === 'staff' || isadmin === true) {
-      const allAccounts = await dbConnection
-        .dbConnect('SELECT * from users');
-      returnStatus = 200;
-      returnSuccess = allAccounts.rows;
+      if (typeof queryLimit !== 'undefined') {
+        const allAccounts = await dbConnection
+          .dbConnect('SELECT * from users LIMIT $1', [queryLimit]);
+        returnStatus = 200;
+        returnSuccess = allAccounts.rows;
+      } else {
+        const allAccounts = await dbConnection
+          .dbConnect('SELECT * from users LIMIT $1', [10]);
+        returnStatus = 200;
+        returnSuccess = allAccounts.rows;
+      }
     } else {
       returnStatus = 401;
       returnError = 'You don\'t have permission to view this page';

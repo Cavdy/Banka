@@ -71,12 +71,6 @@ const modalFunction = (modalClick, modalIn, modalId) => {
 modalFunction(showModal, '.modal', '#modal');
 modalFunction(showModal2, '.modal2', '#modal2');
 
-const welcome = document.querySelector('.welcome-user');
-
-setTimeout(() => {
-  welcome.style.display = 'none';
-}, 5000);
-
 const logout = document.querySelector('#logout');
 logout.addEventListener('click', (e) => {
   e.preventDefault();
