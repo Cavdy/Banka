@@ -3,7 +3,8 @@ import statusHelper from '../helper/statusHelper';
 
 const UsersController = {
   async getAllUsers(req, res) {
-    const allUsers = await UserService.getAllUsers(req.authorizedData);
+    const queryLimit = req.query.limit;
+    const allUsers = await UserService.getAllUsers(req.authorizedData, queryLimit);
 
     const data = await statusHelper
       .statusHelper('nothing', res, allUsers.returnStatus, allUsers.returnError, allUsers.returnSuccess);

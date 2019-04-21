@@ -87,3 +87,9 @@ submit.addEventListener('click', (e) => {
   const selected = accountSelect.value;
   getAccountApi(`${api}/v1/accounts/${selected}`);
 });
+
+const welcome = document.querySelector('.welcome-user');
+
+setTimeout(() => {
+  welcome.style.display = 'none';
+}, 5000);

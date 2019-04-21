@@ -15,8 +15,9 @@ const CreateAccountController = {
   // all accounts
   async allAccounts(req, res) {
     const queryParams = req.query.status;
+    const queryLimit = req.query.limit;
     const allAccounts = await CreateAccountService
-      .allAccounts(queryParams);
+      .allAccounts(queryParams, queryLimit);
 
     const data = await statusHelper
       .statusHelper('nothing', res, allAccounts.returnStatus, allAccounts.returnError, allAccounts.returnSuccess);
