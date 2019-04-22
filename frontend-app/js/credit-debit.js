@@ -4,6 +4,7 @@ const go = document.querySelector('#go');
 const limitSelect = document.querySelector('#limit');
 const onSuccess = document.querySelectorAll('.successMessage');
 const errMessage = document.querySelectorAll('.errMessage');
+const errMsg = document.querySelector('.errorMessage');
 
 // POST FETCH REQUEST FOR DEBIT/CREDIT TRANSACTION
 const debitForm = document.querySelector('#debit');
@@ -53,7 +54,6 @@ const getAccountsApi = (url) => {
     referrer: 'no-referrer',
   })
     .then((response) => {
-      const errMsg = document.querySelector('.errorMessage');
       if (response.status === 403) {
         errMsg.innerHTML = 'you must be logged in to view accounts';
       } else {
@@ -62,42 +62,46 @@ const getAccountsApi = (url) => {
       }
     })
     .then((data1) => {
-      data1.data.map((i) => {
-        const table = document.querySelector('.table');
-        const tableRow = document.createElement('div');
-        tableRow.classList = 'table-row table-body';
-        const accountNumber = document.createElement('div');
-        accountNumber.className = 'account-index';
-        accountNumber.innerHTML = i.accountnumber;
-        const accountName = document.createElement('div');
-        accountName.className = 'account-name';
-        accountName.innerHTML = `${i.firstname} ${i.lastname}`;
-        const balance = document.createElement('div');
-        balance.className = 'amount';
-        balance.innerHTML = i.balance;
-        const debit = document.createElement('div');
-        debit.className = 'edit';
-        const aDebit = document.createElement('a');
-        aDebit.href = '#';
-        aDebit.className = 'delete-btn';
-        aDebit.id = 'show-modal';
-        aDebit.innerHTML = 'Debit';
-        debit.appendChild(aDebit);
-        const credit = document.createElement('div');
-        credit.className = 'edit';
-        const aCredit = document.createElement('a');
-        aCredit.href = '#';
-        aCredit.className = 'edit-btn';
-        aCredit.id = 'show-modal2';
-        aCredit.innerHTML = 'Credit';
-        credit.appendChild(aCredit);
-        tableRow.appendChild(accountNumber);
-        tableRow.appendChild(accountName);
-        tableRow.appendChild(balance);
-        tableRow.appendChild(debit);
-        tableRow.appendChild(credit);
-        table.appendChild(tableRow);
-      });
+      if (data1.status === 401) {
+        errMsg.innerHTML = 'you must be an admin or staff to view accounts';
+      } else {
+        data1.data.map((i) => {
+          const table = document.querySelector('.table');
+          const tableRow = document.createElement('div');
+          tableRow.classList = 'table-row table-body';
+          const accountNumber = document.createElement('div');
+          accountNumber.className = 'account-index';
+          accountNumber.innerHTML = i.accountnumber;
+          const accountName = document.createElement('div');
+          accountName.className = 'account-name';
+          accountName.innerHTML = `${i.firstname} ${i.lastname}`;
+          const balance = document.createElement('div');
+          balance.className = 'amount';
+          balance.innerHTML = i.balance;
+          const debit = document.createElement('div');
+          debit.className = 'edit';
+          const aDebit = document.createElement('a');
+          aDebit.href = '#';
+          aDebit.className = 'delete-btn';
+          aDebit.id = 'show-modal';
+          aDebit.innerHTML = 'Debit';
+          debit.appendChild(aDebit);
+          const credit = document.createElement('div');
+          credit.className = 'edit';
+          const aCredit = document.createElement('a');
+          aCredit.href = '#';
+          aCredit.className = 'edit-btn';
+          aCredit.id = 'show-modal2';
+          aCredit.innerHTML = 'Credit';
+          credit.appendChild(aCredit);
+          tableRow.appendChild(accountNumber);
+          tableRow.appendChild(accountName);
+          tableRow.appendChild(balance);
+          tableRow.appendChild(debit);
+          tableRow.appendChild(credit);
+          table.appendChild(tableRow);
+        });
+      }
       return data1;
     })
     .then(() => {
