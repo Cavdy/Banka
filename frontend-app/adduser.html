@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Activate/Deactivate - Banka Dashboard</title>
+  <title>Add Staffs - Banka Dashboard</title>
   <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -22,7 +22,7 @@
         </div>
         <div class="sidebar-menu">
           <ul class="sidebar-list">
-            <li class="sidebar-item  sidebar-item-active">
+            <li class="sidebar-item">
               <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
             </li>
             <li class="sidebar-item">
@@ -34,7 +34,7 @@
             <li class="sidebar-item">
               <a href="staffs.html" class="sidebar-link">Staffs</a>
             </li>
-            <li class="sidebar-item">
+            <li class="sidebar-item sidebar-item-active">
               <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
             </li>
             <li class="sidebar-item">
@@ -79,8 +79,7 @@
                       elit. Quae, optio?</a>
                   </li>
                   <li class="item">
-                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur
-                      adipisicing.</a>
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing.</a>
                   </li>
                   <li class="item">
                     <a href="#" class="link">Lorem ipsum dolor sit amet consectetur adipisicing
@@ -121,84 +120,51 @@
 
         <!--Main Body-->
         <main class="main-body">
-          <p class="errorMessage"></p>
-          <p class="successMessage"></p>
-          <!--Accounts Limit-->
-          <div class="accountsQuery">
-            <div class="queryForm">
-              <div class="card">
-                <form action="" class="accounts-form">
-                  <div class="form-group">
-                    <select class="accounts-select" id="limit">
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="30">30</option>
-                    </select>
-                  </div>
+          <div class="alert alert-success"><span class="successMsg">Success </span><span id="close">X</span></div>
+          <div class="alert alert-danger"><span class="errMsg">Error </span><span id="close">X</span></div>
 
-                  <input type="submit" id="go" class="btn-go" value="Go">
-                </form>
-              </div>
-
-              <div class="card">
-                <form action="" class="accounts-form">
-                  <div class="form-group">
-                    <input type="number" class="accounts-input" placeholder="account number">
-                  </div>
-
-                  <input type="submit" id="ac-go" class="btn-go" value="Go">
-                </form>
-              </div>
-            </div>
-          </div>
           <div class="card">
-            <h1 class="content-title">Activate / Deactivate Accounts</h1>
-            <div class="table">
-              <div class="table-row">
-                <div class="account-index">AC Number</div>
-                <div class="account-name">AC Name</div>
-                <div class="account-status">AC Status</div>
-                <div class="activate">Active/Dormant</div>
-                <div class="deactivate">Delete</div>
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
-
-      <!--Status Modal-->
-      <div id="modal" class="modal">
-        <div class="modal-content">
-          <div class="card">
-            <h1 class="content-title">Account Details</h1>
-            <p class="successMessage"></p>
-            <p class="errMessage"></p>
-            <!--Account Name and Balance-->
-            <h4 class="username">Account Name: <span id="username"></span></h4>
-            <h4 class="username">Account Number: <span id="acnumber"></span></h4>
-            <h4 class="balance">Status: <span id="balance"></span></h4>
-            <!--Status Form-->
+            <!--Add Staff Form-->
             <form action="" class="form">
               <div class="form-group">
-                <label for="selectrole" class="form-label">Choose account status</label>
+                <label for="firstname" class="form-label">First Name</label>
+                <input type="text" placeholder="First Name" id="firstname" class="form-input">
+                <p class="errorfname"></p>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="form-label">Last Name</label>
+                <input type="text" placeholder="Last Name" id="lastname" class="form-input">
+                <p class="errorlname"></p>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" placeholder="Email Address" id="email" class="form-input">
+                <p class="erroremail"></p>
+              </div>
+              <div class="form-group">
+                <label for="selectrole" class="form-label">Choose user role</label>
                 <select class="form-select">
-                  <option value="active">Active</option>
-                  <option value="dormant">Dormant</option>
+                  <option value="staff">Staff</option>
+                  <option value="admin">Admin</option>
                 </select>
               </div>
+              <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" placeholder="Password" id="password" class="form-input">
+                <p class="errorpassword"></p>
+              </div>
 
-              <input type="submit" id="submit" class="btn btn-block btn-primary" value="Update">
+              <input type="submit" id="submit" class="btn btn-block btn-primary" value="Add User">
             </form>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   </div>
 
   <!--Js-->
   <script src="./js/app.js"></script>
-  <script src="./js/activate.js"></script>
+  <script src="./js/addstaff.js"></script>
 </body>
 
 </html>

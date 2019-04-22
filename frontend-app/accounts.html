@@ -26,7 +26,7 @@
               <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
             </li>
             <li class="sidebar-item sidebar-item-active">
-              <a href="./accounts.html" class="sidebar-link">Accounts</a>
+              <a href="./accounts.html" class="sidebar-link">Bank Accounts</a>
             </li>
             <li class="sidebar-item">
               <a href="./users.html" class="sidebar-link">Users Accounts</a>
@@ -120,7 +120,7 @@
 
         <!--Main Body-->
         <main class="main-body">
-          <p class="errorMessage"></p>
+          <div class="alert alert-danger"><span class="errMsg">Something went wrong. Try again </span><span id="close">X</span></div>
           <!--Accounts Limit-->
           <div class="accountsQuery">
             <div class="queryForm">
@@ -172,8 +172,8 @@
         <div class="modal-content">
           <div class="card">
             <h1 class="content-title">Debit Account</h1>
-            <p class="successMessage"></p>
-            <p class="errMessage"></p>
+            <div class="alert alert-success"><span class="successMsg">Success </span><span id="close">X</span></div>
+            <div class="alert alert-danger"><span class="errMsg">Error </span><span id="close">X</span></div>
             <!--Account Name and Balance-->
             <h4 class="username">Account Name: <span id="username"></span></h4>
             <h4 class="username">Account Number: <span id="acnumber"></span></h4>
@@ -196,8 +196,8 @@
         <div class="modal-content">
           <div class="card">
             <h1 class="content-title">Credit Account</h1>
-            <p class="successMessage"></p>
-            <p class="errMessage"></p>
+            <div class="alert alert-success"><span class="successMsg">Success </span><span id="close">X</span></div>
+            <div class="alert alert-danger"><span class="errMsg">Error </span><span id="close">X</span></div>
             <!--Account Name and Balance-->
             <h4 class="username">Account name: <span id="username"></span></h4>
             <h4 class="username">Account Number: <span id="acnumber"></span></h4>
