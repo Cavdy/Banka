@@ -399,11 +399,13 @@ body,
 }
 
 .alert-success {
+  display: none;
   background-color: var(--color-green);
   color: var(--color-green-2);
 }
 
 .alert-danger {
+  display: none;
   background-color: var(--color-red);
   color: var(--color-red-2);
 }
