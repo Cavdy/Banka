@@ -47,34 +47,46 @@ const CreateAccountService = {
     };
   },
 
-  async allAccounts(queryParams, queryLimit) {
+  async allAccounts(queryParams, queryLimit, staff) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
-    if (typeof queryParams !== 'undefined' && typeof queryLimit !== 'undefined') {
-      const allAccounts = await dbConnection
-        .dbConnect('SELECT * from accounts WHERE status=$1 LIMIT $2', [queryParams, queryLimit]);
-      if (allAccounts.rows.length > 0) {
+
+    // pulling users data from database
+    const userDetails = await dbConnection
+      .dbConnect('SELECT type, isadmin FROM users WHERE email=$1', [staff.email]);
+    const { type, isadmin } = userDetails.rows[0];
+
+    if (type === 'staff' || isadmin === true) {
+      if (typeof queryParams !== 'undefined' && typeof queryLimit !== 'undefined') {
+        const allAccounts = await dbConnection
+          .dbConnect('SELECT * from accounts WHERE status=$1 LIMIT $2', [queryParams, queryLimit]);
+        if (allAccounts.rows.length > 0) {
+          returnStatus = 200;
+          returnSuccess = allAccounts.rows;
+        } else {
+          returnStatus = 404;
+          returnError = 'no account found for this user';
+        }
+      } else if (typeof queryParams === 'undefined' || typeof queryLimit !== 'undefined') {
+        const allAccounts = await dbConnection
+          .dbConnect('SELECT * from accounts LIMIT $1', [queryLimit]);
+        if (allAccounts.rows.length > 0) {
+          returnStatus = 200;
+          returnSuccess = allAccounts.rows;
+        } else {
+          returnStatus = 404;
+          returnError = 'no account found for this user';
+        }
+      } else {
+        const allAccounts = await dbConnection
+          .dbConnect('SELECT * from accounts LIMIT $1', [10]);
         returnStatus = 200;
         returnSuccess = allAccounts.rows;
-      } else {
-        returnStatus = 404;
-        returnError = 'no account found for this user';
-      }
-    } else if (typeof queryParams === 'undefined' || typeof queryLimit !== 'undefined') {
-      const allAccounts = await dbConnection
-        .dbConnect('SELECT * from accounts LIMIT $1', [queryLimit]);
-      if (allAccounts.rows.length > 0) {
-        returnStatus = 200;
-        returnSuccess = allAccounts.rows;
-      } else {
-        returnStatus = 404;
-        returnError = 'no account found for this user';
       }
     } else {
-      const allAccounts = await dbConnection
-        .dbConnect('SELECT * from accounts LIMIT $1', [10]);
-      returnStatus = 200;
-      returnSuccess = allAccounts.rows;
+      returnStatus = 401;
+      returnError = 'Sorry you don\'t have permission to perform this task';
     }
+
     return {
       returnStatus,
       returnSuccess,

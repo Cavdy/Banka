@@ -26,7 +26,7 @@
               <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
             </li>
             <li class="sidebar-item sidebar-item-active">
-              <a href="./credit.html" class="sidebar-link">Credit / Debit</a>
+              <a href="./accounts.html" class="sidebar-link">Accounts</a>
             </li>
             <li class="sidebar-item">
               <a href="./users.html" class="sidebar-link">Users Accounts</a>
@@ -120,20 +120,34 @@
 
         <!--Main Body-->
         <main class="main-body">
+          <p class="errorMessage"></p>
           <!--Accounts Limit-->
-          <div class="accounts">
-            <div class="card">
-              <form action="" class="accounts-form">
-                <div class="form-group">
-                  <select class="accounts-select" id="accounts">
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                  </select>
-                </div>
+          <div class="accountsQuery">
+            <div class="queryForm">
+              <div class="card">
+                <form action="" class="accounts-form">
+                  <div class="form-group">
+                    <select class="accounts-select" id="limit">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                    </select>
+                  </div>
 
-                <input type="submit" id="submit" class="btn-go" value="Go">
-              </form>
+                  <input type="submit" id="go" class="btn-go" value="Go">
+                </form>
+              </div>
+
+              <div class="card">
+                <form action="" class="accounts-form">
+                  <div class="form-group">
+                    <input type="number" class="accounts-input" placeholder="account number">
+                  </div>
+
+                  <input type="submit" id="ac-go" class="btn-go" value="Go">
+                </form>
+              </div>
             </div>
           </div>
           <div class="card">
@@ -141,18 +155,11 @@
 
             <div class="table">
               <div class="table-row">
-                <div class="account-index">Index</div>
-                <div class="account-name">Account Name</div>
-                <div class="amount">Amount</div>
+                <div class="account-index">AC Number</div>
+                <div class="account-name">AC Name</div>
+                <div class="amount">Balance</div>
                 <div class="edit">Debit</div>
                 <div class="edit">Credit</div>
-              </div>
-              <div class="table-row">
-                <div class="account-index">1</div>
-                <div class="account-name">Fred Matthew</div>
-                <div class="amount">10000</div>
-                <div class="edit"><a href="#" class="delete-btn" id="show-modal">Debit</a></div>
-                <div class="edit"><a href="#" class="edit-btn" id="show-modal2">Credit</a></div>
               </div>
             </div>
           </div>
@@ -165,17 +172,20 @@
         <div class="modal-content">
           <div class="card">
             <h1 class="content-title">Debit Account</h1>
+            <p class="successMessage"></p>
+            <p class="errMessage"></p>
             <!--Account Name and Balance-->
-            <h4 class="username">Account name: <span id="username"></span></h4>
+            <h4 class="username">Account Name: <span id="username"></span></h4>
+            <h4 class="username">Account Number: <span id="acnumber"></span></h4>
             <h4 class="balance">Balance: <span id="balance"></span></h4>
             <!--Debit Form-->
             <form action="" class="form">
               <div class="form-group">
                 <label for="debit" class="form-label">Debit</label>
-                <input type="number" placeholder="Debit" id="debit" class="form-input">
+                <input type="text" placeholder="Debit" id="debit" class="form-input">
               </div>
 
-              <input type="submit" class="btn btn-block btn-primary" value="Debit">
+              <input type="submit" id="debitbtn" class="btn btn-block btn-primary" value="Debit">
             </form>
           </div>
         </div>
@@ -186,17 +196,20 @@
         <div class="modal-content">
           <div class="card">
             <h1 class="content-title">Credit Account</h1>
+            <p class="successMessage"></p>
+            <p class="errMessage"></p>
             <!--Account Name and Balance-->
             <h4 class="username">Account name: <span id="username"></span></h4>
+            <h4 class="username">Account Number: <span id="acnumber"></span></h4>
             <h4 class="balance">Balance: <span id="balance"></span></h4>
             <!--Credit Form-->
             <form action="" class="form">
               <div class="form-group">
                 <label for="credit" class="form-label">Credit</label>
-                <input type="number" placeholder="Credit" id="credit" class="form-input">
+                <input type="text" placeholder="Credit" id="credit" class="form-input">
               </div>
 
-              <input type="submit" class="btn btn-block btn-primary" value="Credit">
+              <input type="submit" id="creditbtn" class="btn btn-block btn-primary" value="Credit">
             </form>
           </div>
         </div>

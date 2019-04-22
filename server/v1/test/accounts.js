@@ -132,7 +132,7 @@ describe('Testing Accounts Controller', () => {
         const response = await chai.request(app)
           .post(signinUrl)
           .send({
-            email: 'banka872@banka4.com',
+            email: 'admin@banka.com',
             password: 'passworD4@',
           });
         const { token } = response.body.data;
