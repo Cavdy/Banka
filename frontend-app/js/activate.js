@@ -6,15 +6,13 @@ const onSuccess = document.querySelectorAll('.successMessage');
 const errMessage = document.querySelectorAll('.errMessage');
 const errMsg = document.querySelector('.errorMessage');
 
-// POST FETCH REQUEST FOR DEBIT/CREDIT TRANSACTION
-const debitForm = document.querySelector('#debit');
-const debitBtn = document.querySelector('#debitbtn');
-const creditForm = document.querySelector('#credit');
-const creditBtn = document.querySelector('#creditbtn');
+// POST FETCH REQUEST FOR ACCOUNTS
+const formSelect = document.querySelector('.form-select');
+const submit = document.querySelector('#submit');
 
-const debitCreditApi = (url, data) => {
+const patchApi = (url, data) => {
   fetch(url, {
-    method: 'POST',
+    method: 'PATCH',
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
@@ -28,12 +26,41 @@ const debitCreditApi = (url, data) => {
   })
     .then(response => response.json())
     .then((data1) => {
-      if (data1.status === 201) {
+      if (data1.status === 200) {
         errMessage.forEach((err) => {
           err.innerHTML = '';
         });
         onSuccess.forEach((success) => {
-          success.innerHTML = 'Transaction was successful';
+          success.innerHTML = 'Updated successfully';
+          setInterval(() => {
+            document.location.reload(true);
+          }, 3000);
+        });
+      }
+    });
+};
+
+// DELETE FETCH REQUEST FOR ACCOUNTS
+const deleteApi = (url, data) => {
+  fetch(url, {
+    method: 'DELETE',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow',
+    referrer: 'no-referrer',
+  })
+    .then((response) => {
+      if (response.status === 204) {
+        errMessage.forEach((err) => {
+          err.innerHTML = '';
+        });
+        onSuccess.forEach((success) => {
+          success.innerHTML = 'Deleted successfully';
           setInterval(() => {
             document.location.reload(true);
           }, 3000);
@@ -78,30 +105,29 @@ const getAccountsApi = (url) => {
           const accountName = document.createElement('div');
           accountName.className = 'account-name';
           accountName.innerHTML = `${i.firstname} ${i.lastname}`;
-          const balance = document.createElement('div');
-          balance.className = 'amount';
-          balance.innerHTML = i.balance;
-          const debit = document.createElement('div');
-          debit.className = 'edit';
-          const aDebit = document.createElement('a');
-          aDebit.href = '#';
-          aDebit.className = 'delete-btn';
-          aDebit.id = 'show-modal';
-          aDebit.innerHTML = 'Debit';
-          debit.appendChild(aDebit);
-          const credit = document.createElement('div');
-          credit.className = 'edit';
-          const aCredit = document.createElement('a');
-          aCredit.href = '#';
-          aCredit.className = 'edit-btn';
-          aCredit.id = 'show-modal2';
-          aCredit.innerHTML = 'Credit';
-          credit.appendChild(aCredit);
+          const status = document.createElement('div');
+          status.className = 'account-status';
+          status.innerHTML = i.status;
+          const activate = document.createElement('div');
+          activate.className = 'activate';
+          const aActivate = document.createElement('a');
+          aActivate.href = '#';
+          aActivate.className = 'activate-btn';
+          aActivate.id = 'show-modal';
+          aActivate.innerHTML = 'Active/Dormant';
+          activate.appendChild(aActivate);
+          const deleteAccount = document.createElement('div');
+          deleteAccount.className = 'deactivate';
+          const aDeleteAccount = document.createElement('a');
+          aDeleteAccount.href = '#';
+          aDeleteAccount.className = 'deactivate-btn';
+          aDeleteAccount.innerHTML = 'Delete';
+          deleteAccount.appendChild(aDeleteAccount);
           tableRow.appendChild(accountNumber);
           tableRow.appendChild(accountName);
-          tableRow.appendChild(balance);
-          tableRow.appendChild(debit);
-          tableRow.appendChild(credit);
+          tableRow.appendChild(status);
+          tableRow.appendChild(activate);
+          tableRow.appendChild(deleteAccount);
           table.appendChild(tableRow);
         });
       }
@@ -110,7 +136,6 @@ const getAccountsApi = (url) => {
     .then(() => {
       // modal
       const showModal = document.querySelectorAll('#show-modal');
-      const showModal2 = document.querySelectorAll('#show-modal2');
       const accountName = document.querySelectorAll('#username');
       const accountNumber = document.querySelectorAll('#acnumber');
       const accountBalance = document.querySelectorAll('#balance');
@@ -137,29 +162,9 @@ const getAccountsApi = (url) => {
                   balance.innerHTML = ACBalance;
                 });
 
-                debitBtn.addEventListener('click', () => {
+                submit.addEventListener('click', () => {
                   e.preventDefault();
-
-                  const checkForDigit = /^-?\d+\.?\d*$/;
-                  if (checkForDigit.test(debitForm.value)) {
-                    debitCreditApi(`${api}/v1/transactions/${ACNumber}/debit`, { amount: debitForm.value });
-                  } else {
-                    errMessage.forEach((err) => {
-                      err.innerHTML = 'Invalid Amount. Please numbers only';
-                    });
-                  }
-                });
-
-                creditBtn.addEventListener('click', () => {
-                  e.preventDefault();
-                  const checkForDigit = /^-?\d+\.?\d*$/;
-                  if (checkForDigit.test(creditForm.value)) {
-                    debitCreditApi(`${api}/v1/transactions/${ACNumber}/credit`, { amount: creditForm.value });
-                  } else {
-                    errMessage.forEach((err) => {
-                      err.innerHTML = 'Invalid Amount. Please numbers only';
-                    });
-                  }
+                  patchApi(`${api}/v1/accounts/${ACNumber}`, { status: formSelect.value });
                 });
               }
             });
@@ -177,7 +182,16 @@ const getAccountsApi = (url) => {
       };
 
       modalFunction(showModal, '.modal', '#modal');
-      modalFunction(showModal2, '.modal2', '#modal2');
+
+      // DELETE
+      const dels = document.querySelectorAll('.deactivate-btn');
+      dels.forEach((del) => {
+        del.addEventListener('click', (e) => {
+          const ACNumber = e.target.parentElement.parentElement.children[0].innerHTML;
+          deleteApi(`${api}/v1/accounts/${ACNumber}`);
+          e.target.parentElement.parentElement.remove();
+        });
+      });
     });
 };
 getAccountsApi(`${api}/v1/accounts?limit=${limitSelect.value}`);
@@ -197,7 +211,6 @@ const getSpecficAccountApi = (url) => {
     referrer: 'no-referrer',
   })
     .then((response) => {
-      const errMsg = document.querySelector('.errorMessage');
       if (response.status === 403) {
         errMsg.innerHTML = 'you must be logged in to view accounts';
       } else {
@@ -216,37 +229,35 @@ const getSpecficAccountApi = (url) => {
       const accountName = document.createElement('div');
       accountName.className = 'account-name';
       accountName.innerHTML = `${i.firstname} ${i.lastname}`;
-      const balance = document.createElement('div');
-      balance.className = 'amount';
-      balance.innerHTML = i.balance;
-      const debit = document.createElement('div');
-      debit.className = 'edit';
-      const aDebit = document.createElement('a');
-      aDebit.href = '#';
-      aDebit.className = 'delete-btn';
-      aDebit.id = 'show-modal';
-      aDebit.innerHTML = 'Debit';
-      debit.appendChild(aDebit);
-      const credit = document.createElement('div');
-      credit.className = 'edit';
-      const aCredit = document.createElement('a');
-      aCredit.href = '#';
-      aCredit.className = 'edit-btn';
-      aCredit.id = 'show-modal2';
-      aCredit.innerHTML = 'Credit';
-      credit.appendChild(aCredit);
+      const status = document.createElement('div');
+      status.className = 'account-status';
+      status.innerHTML = i.status;
+      const activate = document.createElement('div');
+      activate.className = 'activate';
+      const aActivate = document.createElement('a');
+      aActivate.href = '#';
+      aActivate.className = 'activate-btn';
+      aActivate.id = 'show-modal';
+      aActivate.innerHTML = 'Active/Dormant';
+      activate.appendChild(aActivate);
+      const deleteAccount = document.createElement('div');
+      deleteAccount.className = 'deactivate';
+      const aDeleteAccount = document.createElement('a');
+      aDeleteAccount.href = '#';
+      aDeleteAccount.className = 'deactivate-btn';
+      aDeleteAccount.innerHTML = 'Delete';
+      deleteAccount.appendChild(aDeleteAccount);
       tableRow.appendChild(accountNumber);
       tableRow.appendChild(accountName);
-      tableRow.appendChild(balance);
-      tableRow.appendChild(debit);
-      tableRow.appendChild(credit);
+      tableRow.appendChild(status);
+      tableRow.appendChild(activate);
+      tableRow.appendChild(deleteAccount);
       table.appendChild(tableRow);
       return data1;
     })
     .then(() => {
       // modal
       const showModal = document.querySelectorAll('#show-modal');
-      const showModal2 = document.querySelectorAll('#show-modal2');
       const accountName = document.querySelectorAll('#username');
       const accountNumber = document.querySelectorAll('#acnumber');
       const accountBalance = document.querySelectorAll('#balance');
@@ -273,30 +284,12 @@ const getSpecficAccountApi = (url) => {
                   balance.innerHTML = ACBalance;
                 });
 
-                debitBtn.addEventListener('click', () => {
+                submit.addEventListener('click', () => {
                   e.preventDefault();
-
-                  const checkForDigit = /^-?\d+\.?\d*$/;
-                  if (checkForDigit.test(debitForm.value)) {
-                    debitCreditApi(`${api}/v1/transactions/${ACNumber}/debit`, { amount: debitForm.value });
-                  } else {
-                    errMessage.forEach((err) => {
-                      err.innerHTML = 'Invalid Amount. Please numbers only';
-                    });
-                  }
+                  patchApi(`${api}/v1/accounts/${ACNumber}`, { status: formSelect.value });
                 });
 
-                creditBtn.addEventListener('click', () => {
-                  e.preventDefault();
-                  const checkForDigit = /^-?\d+\.?\d*$/;
-                  if (checkForDigit.test(creditForm.value)) {
-                    debitCreditApi(`${api}/v1/transactions/${ACNumber}/credit`, { amount: creditForm.value });
-                  } else {
-                    errMessage.forEach((err) => {
-                      err.innerHTML = 'Invalid Amount. Please numbers only';
-                    });
-                  }
-                });
+                console.log(e.target);
               }
             });
           });
@@ -313,7 +306,16 @@ const getSpecficAccountApi = (url) => {
       };
 
       modalFunction(showModal, '.modal', '#modal');
-      modalFunction(showModal2, '.modal2', '#modal2');
+
+      // DELETE
+      const dels = document.querySelectorAll('.deactivate-btn');
+      dels.forEach((del) => {
+        del.addEventListener('click', (e) => {
+          const ACNumber = e.target.parentElement.parentElement.children[0].innerHTML;
+          deleteApi(`${api}/v1/accounts/${ACNumber}`);
+          e.target.parentElement.parentElement.remove();
+        });
+      });
     });
 };
 
