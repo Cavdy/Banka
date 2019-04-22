@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Activate/Deactivate - Banka Dashboard</title>
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <!--Wrapper-->
+    <div class="wrapper">
+      <!--Sidebar-->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h1 class="logo">Banka</h1>
+        </div>
+        <div class="sidebar-menu">
+          <ul class="sidebar-list">
+            <li class="sidebar-item  sidebar-item-active">
+              <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./accounts.html" class="sidebar-link">Accounts</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./users.html" class="sidebar-link">Users Accounts</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="staffs.html" class="sidebar-link">Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-legal">
+          &copy; 2019 Banka. All Rights Reserved.
+        </div>
+      </div>
+
+      <!--Main Content-->
+      <div class="main-content">
+        <!--Header-->
+        <header class="header">
+          <button class="toggle-sidebar" id="toggle-sidebar">
+            <svg class="toggle-sidebar-button">
+              <use xlink:href="./svg/sprite.svg#icon-list"></use>
+            </svg>
+          </button>
+          <form class="search-form">
+            <input type="text" class="search-input" placeholder="Search...">
+            <button class="search-form-button">
+              <svg class="search-form-icon">
+                <use xlink:href="./svg/sprite.svg#icon-magnifying-glass"></use>
+              </svg>
+            </button>
+          </form>
+
+          <nav class="user-nav">
+            <div class="user-nav-icon-box">
+              <svg class="user-nav-icon">
+                <use xlink:href="./svg/sprite.svg#icon-bell"></use>
+              </svg>
+              <span class="user-nav-notification"></span>
+
+              <div class="user-nav-notification-pop">
+                <ul class="list">
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing
+                      elit. Quae, optio?</a>
+                  </li>
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur
+                      adipisicing.</a>
+                  </li>
+                  <li class="item">
+                    <a href="#" class="link">Lorem ipsum dolor sit amet consectetur adipisicing
+                      elit. Nobis similique soluta sit impedit, provident laborum?</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="user-nav-user">
+              <img class="user-nav-user-photo" src="./img/js2.png" alt="">
+              <span class="user-nav-username">Franklin</span>
+              <svg class="user-nav-user-icon">
+                <use xlink:href="./svg/sprite.svg#icon-chevron-down"></use>
+              </svg>
+
+              <div class="user-nav-user-pop">
+                <ul class="list">
+                  <li class="item"><a href="./profile.html" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-user"></use>
+                      </svg>Profile</a>
+                  </li>
+                  <li class="item"><a href="#" class="link">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-help-with-circle"></use>
+                      </svg>Help</a>
+                  </li>
+                  <li class="item"><a href="#" class="link" id="logout">
+                      <svg class="user-nav-link-icon">
+                        <use xlink:href="./svg/sprite.svg#icon-log-out"></use>
+                      </svg>Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        <!--Main Body-->
+        <main class="main-body">
+          <p class="errorMessage"></p>
+          <p class="successMessage"></p>
+          <!--Accounts Limit-->
+          <div class="accountsQuery">
+            <div class="queryForm">
+              <div class="card">
+                <form action="" class="accounts-form">
+                  <div class="form-group">
+                    <select class="accounts-select" id="limit">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                    </select>
+                  </div>
+
+                  <input type="submit" id="go" class="btn-go" value="Go">
+                </form>
+              </div>
+
+              <div class="card">
+                <form action="" class="accounts-form">
+                  <div class="form-group">
+                    <input type="number" class="accounts-input" placeholder="account number">
+                  </div>
+
+                  <input type="submit" id="ac-go" class="btn-go" value="Go">
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h1 class="content-title">Activate / Deactivate Accounts</h1>
+            <div class="table">
+              <div class="table-row">
+                <div class="account-index">AC Number</div>
+                <div class="account-name">AC Name</div>
+                <div class="account-status">AC Status</div>
+                <div class="activate">Active/Dormant</div>
+                <div class="deactivate">Delete</div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <!--Status Modal-->
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <div class="card">
+            <h1 class="content-title">Account Details</h1>
+            <p class="successMessage"></p>
+            <p class="errMessage"></p>
+            <!--Account Name and Balance-->
+            <h4 class="username">Account Name: <span id="username"></span></h4>
+            <h4 class="username">Account Number: <span id="acnumber"></span></h4>
+            <h4 class="balance">Status: <span id="balance"></span></h4>
+            <!--Status Form-->
+            <form action="" class="form">
+              <div class="form-group">
+                <label for="selectrole" class="form-label">Choose account status</label>
+                <select class="form-select">
+                  <option value="active">Active</option>
+                  <option value="dormant">Dormant</option>
+                </select>
+              </div>
+
+              <input type="submit" id="submit" class="btn btn-block btn-primary" value="Update">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Js-->
+  <script src="./js/app.js"></script>
+  <script src="./js/activate.js"></script>
+</body>
+
+</html>
