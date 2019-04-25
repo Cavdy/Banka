@@ -3,12 +3,21 @@ import dbConnection from '../config/database';
 import TransactionModel from '../model/Transaction';
 
 const TransactionService = {
+
+  /**
+   * Debit Transaction
+   * @constructor
+   * @param {*} accountNumber - account number.
+   * @param {*} loggedInUser - logged in user
+   * @param {*} transactionData - transaction data
+   */
   async debitTransaction(accountNumber, loggedInUser, transactionData) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
 
     // check the users table
     const userDetails = await dbConnection
-      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [loggedInUser.email]);
+      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1',
+        [loggedInUser.email]);
     const { id, type, isadmin } = userDetails.rows[0];
 
     // checks if logged in user is an admin or staff
@@ -18,7 +27,10 @@ const TransactionService = {
 
       // pull accountnumber details from database
       const accountDbData = await dbConnection
-        .dbConnect('SELECT accountnumber, balance FROM accounts WHERE accountnumber=$1', [accountNumber]);
+        .dbConnect(
+          'SELECT accountnumber, balance FROM accounts WHERE accountnumber=$1',
+          [accountNumber]
+        );
       const { accountnumber, balance } = accountDbData.rows[0];
 
       // check if a string
@@ -26,26 +38,40 @@ const TransactionService = {
       if (checkForDigit.test(transactionData.amount)) {
         // substract the passed in amount from the current balance
         const newBalance = balance - transactionData.amount;
-        const transactionDbData = await dbConnection
-          .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7)',
-            [createdOn, 'debit', accountnumber, id, transactionData.amount, balance, newBalance]);
-        if (transactionDbData.command === 'INSERT') {
-          // get the data from transaction
-          const accountData = await dbConnection.dbConnect('SELECT * FROM transactions WHERE accountnumber=$1', [accountNumber]);
-          // update the account table
-          await dbConnection.dbConnect('UPDATE accounts SET balance=$1 WHERE accountnumber=$2', [newBalance, accountNumber]);
-          const transaction = new TransactionModel();
-          transaction.transactionId = accountData.rows[0].id;
-          transaction.accountNumber = accountData.rows[0].accountnumber;
-          transaction.amount = accountData.rows[0].amount;
-          transaction.cashier = accountData.rows[0].cashier;
-          transaction.transactionType = accountData.rows[0].type;
-          transaction.accountBalance = accountData.rows[0].newbalance;
-          returnStatus = 201;
-          returnSuccess = transaction;
+
+        // check if account balance is zero
+        if (newBalance < 0) {
+          returnStatus = 422;
+          returnError = 'Sorry this account is very low and can\'t be debited';
         } else {
-          returnStatus = 500;
+          const transactionDbData = await dbConnection
+            .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7)',
+              [createdOn, 'debit', accountnumber, id, transactionData.amount, balance, newBalance]);
+          if (transactionDbData.command === 'INSERT') {
+          // get the data from transaction
+            const accountData = await dbConnection
+              .dbConnect('SELECT * FROM transactions WHERE accountnumber=$1',
+                [accountNumber]);
+            // update the account table
+            const acBalance = await dbConnection
+              .dbConnect(
+                'UPDATE accounts SET balance=$1 WHERE accountnumber=$2 RETURNING balance',
+                [newBalance, accountNumber]
+              );
+            const transaction = new TransactionModel();
+            transaction.transactionId = accountData.rows[0].id;
+            transaction.accountNumber = accountData.rows[0].accountnumber;
+            transaction.amount = accountData.rows[0].amount;
+            transaction.cashier = accountData.rows[0].cashier;
+            transaction.transactionType = accountData.rows[0].type;
+            transaction.accountBalance = acBalance.rows[0].balance;
+            returnStatus = 201;
+            returnSuccess = transaction;
+          }
         }
+      } else {
+        returnStatus = 422;
+        returnError = 'please numbers only';
       }
     } else {
       returnStatus = 401;
@@ -58,6 +84,11 @@ const TransactionService = {
     };
   },
 
+  /**
+   * Get specific transaction
+   * @constructor
+   * @param {*} transactionId - transaction id.
+   */
   async getSpecificTransaction(transactionId) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
     const userTransaction = await dbConnection
@@ -76,12 +107,20 @@ const TransactionService = {
     };
   },
 
+  /**
+   * Credit Transaction
+   * @constructor
+   * @param {*} accountNumber - account number.
+   * @param {*} loggedInUser - logged in user
+   * @param {*} transactionData - transaction data
+   */
   async creditTransaction(accountNumber, loggedInUser, transactionData) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
 
     // check the users table
     const userDetails = await dbConnection
-      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [loggedInUser.email]);
+      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1',
+        [loggedInUser.email]);
     const { id, type, isadmin } = userDetails.rows[0];
 
     // checks if logged in user is an admin or staff
@@ -91,7 +130,10 @@ const TransactionService = {
 
       // pull accountnumber details from database
       const accountDbData = await dbConnection
-        .dbConnect('SELECT accountnumber, balance FROM accounts WHERE accountnumber=$1', [accountNumber]);
+        .dbConnect(
+          'SELECT accountnumber, balance FROM accounts WHERE accountnumber=$1',
+          [accountNumber]
+        );
       const { accountnumber, balance } = accountDbData.rows[0];
 
       // check if a string
@@ -104,21 +146,26 @@ const TransactionService = {
             [createdOn, 'credit', accountnumber, id, transactionData.amount, balance, newBalance]);
         if (transactionDbData.command === 'INSERT') {
           // get the data from transaction
-          const accountData = await dbConnection.dbConnect('SELECT * FROM transactions WHERE accountnumber=$1', [accountNumber]);
+          const accountData = await dbConnection
+            .dbConnect('SELECT * FROM transactions WHERE accountnumber=$1',
+              [accountNumber]);
           // update the account table
-          await dbConnection.dbConnect('UPDATE accounts SET balance=$1 WHERE accountnumber=$2', [newBalance, accountNumber]);
+          const acBalance = await dbConnection
+            .dbConnect('UPDATE accounts SET balance=$1 WHERE accountnumber=$2 RETURNING balance',
+              [newBalance, accountNumber]);
           const transaction = new TransactionModel();
           transaction.transactionId = accountData.rows[0].id;
           transaction.accountNumber = accountData.rows[0].accountnumber;
           transaction.amount = accountData.rows[0].amount;
           transaction.cashier = accountData.rows[0].cashier;
           transaction.transactionType = accountData.rows[0].type;
-          transaction.accountBalance = accountData.rows[0].newbalance;
+          transaction.accountBalance = acBalance.rows[0].balance;
           returnStatus = 201;
           returnSuccess = transaction;
-        } else {
-          returnStatus = 500;
         }
+      } else {
+        returnStatus = 422;
+        returnError = 'please numbers only';
       }
     } else {
       returnStatus = 401;

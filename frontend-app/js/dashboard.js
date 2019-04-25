@@ -8,9 +8,12 @@ const accountName = document.querySelector('#username');
 const accountNumber = document.querySelector('#account-number');
 const accountBalance = document.querySelector('#account-balance');
 const accountType = document.querySelector('#type');
-const firstName = document.querySelector('#account-status');
+const accountStatus = document.querySelector('#account-status');
+const accountCreated = document.querySelector('#account-created');
+const firstName = document.querySelector('#firstname');
 const lastLogin = document.querySelector('#lastLogin');
 const totalBalance = document.querySelector('.total-balance-amount');
+const errMsg = document.querySelector('.errMsg');
 
 lastLogin.innerHTML = login;
 
@@ -29,23 +32,30 @@ const getAccountsApi = (url) => {
     referrer: 'no-referrer',
   })
     .then((response) => {
-      const errMsg = document.querySelector('.errorMessage');
       if (response.status === 403) {
-        errMsg.innerHTML = 'you must be logged in to view accounts';
+        errMsg.innerHTML = 'you must be logged in to view accounts, Login <a href="./login.html">here</a>';
+        errMsg.parentElement.style.display = 'flex';
       } else {
         errMsg.innerHTML = '';
+        errMsg.parentElement.style.display = 'none';
         return response.json();
       }
     })
     .then((data1) => {
-      data1.data.map((i) => {
-        const option = document.createElement('option');
-        const attr = document.createAttribute('value');
-        attr.value = i.accountnumber;
-        option.setAttributeNode(attr);
-        option.innerHTML = i.accountnumber;
-        accountSelect.appendChild(option);
-      });
+      if (data1.status === 404) {
+        errMsg.innerHTML = 'you don\'t have an account, create <a href="./createaccount.html">one</a>';
+        errMsg.parentElement.style.display = 'flex';
+      } else {
+        errMsg.parentElement.style.display = 'none';
+        data1.data.map((i) => {
+          const option = document.createElement('option');
+          const attr = document.createAttribute('value');
+          attr.value = i.accountnumber;
+          option.setAttributeNode(attr);
+          option.innerHTML = i.accountnumber;
+          accountSelect.appendChild(option);
+        });
+      }
     });
 };
 getAccountsApi(`${api}/v1/users/${email}/accounts`);
@@ -66,8 +76,10 @@ const getAccountApi = (url) => {
   })
     .then((response) => {
       if (response.status === 403) {
-        console.log('you must be logged in to view accounts');
+        errMsg.innerHTML = 'you must be logged in to view accounts, Login <a href="./login.html">here</a>';
+        errMsg.parentElement.style.display = 'flex';
       }
+      errMsg.parentElement.style.display = 'none';
       return response.json();
     })
     .then((data1) => {
