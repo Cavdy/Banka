@@ -35,9 +35,5 @@ module.exports = {
         }
       }],
       "max-len": ["error", { "code": 80 }],
-      "linebreak-style": [
-        "error",
-        "windows"
-      ]
     }
 };
