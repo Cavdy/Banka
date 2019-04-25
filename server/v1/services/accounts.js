@@ -226,6 +226,9 @@ const CreateAccountService = {
           .dbConnect('DELETE FROM accounts WHERE accountnumber=$1',
             [accountNumber]);
         if (accountDbData.command === 'DELETE') {
+          await dbConnection
+            .dbConnect('DELETE FROM transactions WHERE accountnumber=$1',
+              [accountNumber]);
           returnStatus = 200;
           returnSuccess = 'Account successfully deleted';
         }
