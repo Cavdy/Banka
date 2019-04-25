@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 
@@ -8,7 +7,7 @@ chai.use(chaiHttp);
 
 describe('Testing User Controller', () => {
   describe('Testing signin controller', () => {
-    const signinUrl = '/api/auth/signin';
+    const signinUrl = '/api/v1/auth/signin';
     it(
       'should login when all the parameters are given',
       async () => {
@@ -18,8 +17,8 @@ describe('Testing User Controller', () => {
             email: 'banka872@banka4.com',
             password: 'passworD4@',
           });
-        expect(response.body.data).to.be.an('object');
-        expect(response).to.have.status(201);
+        expect(response.body).to.be.an('object');
+        expect(response.body.status).to.equal(201);
         expect(response.body.data).to.have.property('id');
         expect(response.body.data).to.have.property('email');
         expect(response.body.data).to.have.property('firstName');
@@ -37,7 +36,7 @@ describe('Testing User Controller', () => {
             password: 'passworD4@',
           });
         expect(response.body).to.be.an('object');
-        expect(response).to.have.status(422);
+        expect(response.body.status).to.equal(422);
         expect(response.body.data[0]).to.equal('invalid email address');
       },
     );
@@ -52,7 +51,7 @@ describe('Testing User Controller', () => {
             password: 'passworD4@',
           });
         expect(response.body).to.be.an('object');
-        expect(response).to.have.status(404);
+        expect(response.body.status).to.equal(404);
         expect(response.body.data).to.equal('email does not exist');
       },
     );
@@ -66,8 +65,9 @@ describe('Testing User Controller', () => {
             email: 'banka872@banka4.com',
           });
         expect(response.body).to.be.an('object');
-        expect(response).to.have.status(422);
-        expect(response.body.data[0]).to.equal('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
+        expect(response.body.status).to.equal(422);
+        expect(response.body.data[0])
+          .to.equal('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
       },
     );
 
@@ -81,7 +81,7 @@ describe('Testing User Controller', () => {
             password: 'passworD4@@',
           });
         expect(response.body).to.be.an('object');
-        expect(response).to.have.status(422);
+        expect(response.body.status).to.equal(422);
         expect(response.body.data).to.equal('incorrect password');
       },
     );
@@ -96,8 +96,9 @@ describe('Testing User Controller', () => {
             password: 'passworD4',
           });
         expect(response.body).to.be.an('object');
-        expect(response).to.have.status(422);
-        expect(response.body.data[0]).to.equal('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
+        expect(response.body.status).to.equal(422);
+        expect(response.body.data[0])
+          .to.equal('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
       },
     );
   });

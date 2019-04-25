@@ -1,17 +1,20 @@
 /* eslint-disable no-else-return */
 const statusHelper = {
+  /**
+   * Return json data base on the status
+   * @constructor
+   * @param {*} req - passed in req.
+   * @param {*} res -passed in res
+   * @param {*} status - passed in status
+   * @param {*} error - passed in error message
+   * @param {*} data - passed in success data
+   */
   async statusHelper(req, res, status, error, data) {
     if (status === 401) { // unauthorized
       res.status(401);
       return res.json({
         status: 401,
         data: error,
-      });
-    } else if (status === 500) { // internal error
-      res.status(500);
-      return res.json({
-        status: 500,
-        data: 'Internal Server Error',
       });
     } else if (status === 409) { // conflict
       res.status(409);
@@ -35,12 +38,6 @@ const statusHelper = {
       res.status(404);
       return res.json({
         status: 404,
-        data: error,
-      });
-    } else if (status === 204) { // no content
-      res.status(204);
-      return res.json({
-        status: 204,
         data: error,
       });
     } else if (status === 422) {

@@ -4,6 +4,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const jwtMiddleware = {
+  /**
+   * Check Token
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   * @param {*} next - run next
+   */
   checkToken(req, res, next) {
     const header = req.headers.authorization;
     if (typeof header !== 'undefined') {
@@ -16,6 +23,14 @@ const jwtMiddleware = {
       res.sendStatus(403);
     }
   },
+
+  /**
+   * Signin Jwt
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   * @param {*} next - run next
+   */
   signinJwt(req, res, next) {
     jwt.sign(req.body, process.env.JWTSECRETKEY, async (err, token) => {
       if (err) {
@@ -25,6 +40,14 @@ const jwtMiddleware = {
       return next();
     });
   },
+
+  /**
+   * Verify Jwt
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   * @param {*} next - run next
+   */
   verifyJwt(req, res, next) {
     jwt.verify(req.token, process.env.JWTSECRETKEY, (err, authorizedData) => {
       if (err) {

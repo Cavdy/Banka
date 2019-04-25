@@ -1,11 +1,18 @@
 import dbConnection from '../config/database';
 
 const UsersServices = {
+  /**
+   * Get all users
+   * @constructor
+   * @param {*} staff - get token details to check if staff or admin
+   * @param {*} queryLimit - Get query parameter
+   */
   async getAllUsers(staff, queryLimit) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
     // check the users table
     const userDetails = await dbConnection
-      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [staff.email]);
+      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1',
+        [staff.email]);
     const { type, isadmin } = userDetails.rows[0];
 
     if (type === 'staff' || isadmin === true) {
@@ -31,6 +38,11 @@ const UsersServices = {
     };
   },
 
+  /**
+   * Get user's accounts by email
+   * @constructor
+   * @param {*} email - get user's email
+   */
   async getUsersAccounts(email) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
     const allAccounts = await dbConnection
@@ -56,11 +68,18 @@ const UsersServices = {
     };
   },
 
+  /**
+   * Delete user
+   * @constructor
+   * @param {*} id - get user id
+   * @param {*} staff - get token details to check if staff or admin
+   */
   async deleteUser(id, staff) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
     // check the users table
     const userDetails = await dbConnection
-      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1', [staff.email]);
+      .dbConnect('SELECT id, type, isadmin FROM users WHERE email=$1',
+        [staff.email]);
     const { type, isadmin } = userDetails.rows[0];
 
     if (type === 'staff') {
@@ -71,10 +90,8 @@ const UsersServices = {
           const accountDbData = await dbConnection
             .dbConnect('DELETE FROM users WHERE id=$1', [id]);
           if (accountDbData.command === 'DELETE') {
-            returnStatus = 204;
+            returnStatus = 200;
             returnSuccess = 'Account successfully deleted';
-          } else {
-            returnStatus = 500;
           }
         } else {
           returnStatus = 401;
@@ -91,10 +108,8 @@ const UsersServices = {
         const accountDbData = await dbConnection
           .dbConnect('DELETE FROM users WHERE id=$1', [id]);
         if (accountDbData.command === 'DELETE') {
-          returnStatus = 204;
+          returnStatus = 200;
           returnSuccess = 'Account successfully deleted';
-        } else {
-          returnStatus = 500;
         }
       } else {
         returnStatus = 404;

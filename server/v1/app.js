@@ -3,11 +3,10 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import debug from 'debug';
 import swaggerUi from 'swagger-ui-express';
-import dbConnection from './config/database';
+import migration from './config/migration';
 import swaggerDocument from '../swagger';
-import RegisterRoute from './routes/register';
-import LoginRoute from './routes/login';
-import CreateAccountRoute from './routes/createAccount';
+import AuthRoute from './routes/auth';
+import CreateAccountRoute from './routes/accounts';
 import TransactionRoute from './routes/transaction';
 import UsersRoute from './routes/users';
 import jwtMiddleware from './middleware/jwt';
@@ -25,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // creating database tables
-dbConnection.createTable();
+migration.createTable();
 
 // Index Route
 app.get('/', (req, res) => {
@@ -33,8 +32,7 @@ app.get('/', (req, res) => {
 });
 
 // creating the api version route
-app.use('/api/auth/signup', RegisterRoute);
-app.use('/api/auth/signin', LoginRoute);
+app.use('/api/v1/auth', AuthRoute);
 app.use('/api/v1/accounts', jwtMiddleware.checkToken, CreateAccountRoute);
 app.use('/api/v1/transactions', jwtMiddleware.checkToken, TransactionRoute);
 app.use('/api/v1/users', jwtMiddleware.checkToken, UsersRoute);
