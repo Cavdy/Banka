@@ -1,16 +1,20 @@
 language: node_js
 node_js:
-  - "stable"
+  - "10"
 cache:
 directories:
   - "node_modules"
 before_install: cd ./server
 install:
   - npm install
-script:
-  - npm run test
 after_success: 
   - npm run coverage
 env: 
   global:
     - CODECLIMATE_REPO_TOKEN=c14abfc89b0eb06fcb10f480f4b3e47142ac181c60c21f0131b570e72b1fbeb7
+    - JWTSECRETKEY=5634
+    - DB_CONFIG=postgres://xwrxubeu:u4wOQ6oxpvRCK6yWk5qK4rzaiisTPeoN@isilo.db.elephantsql.com:5432/xwrxubeu
+script:
+  - npm run test
+services:
+  - postgresql
