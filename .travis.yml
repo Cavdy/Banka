@@ -1,14 +1,14 @@
 language: node_js
 node_js:
-  - "10"
-cache:
-directories:
-  - "node_modules"
+  - stable
 before_install: cd ./server
 install:
   - npm install
 after_success: 
   - npm run coverage
+cache:
+  directories:
+    - "node_modules"
 env: 
   global:
     - CODECLIMATE_REPO_TOKEN=c14abfc89b0eb06fcb10f480f4b3e47142ac181c60c21f0131b570e72b1fbeb7
