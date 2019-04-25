@@ -1,4 +1,7 @@
+import dotenv from 'dotenv';
 import dbConnection from './database';
+
+dotenv.config();
 
 const Migration = {
   /**
