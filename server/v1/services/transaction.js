@@ -45,13 +45,9 @@ const TransactionService = {
           returnError = 'Sorry this account is very low and can\'t be debited';
         } else {
           const transactionDbData = await dbConnection
-            .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7)',
+            .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7) RETURNING id, accountnumber, amount, cashier, type',
               [createdOn, 'debit', accountnumber, id, transactionData.amount, balance, newBalance]);
           if (transactionDbData.command === 'INSERT') {
-          // get the data from transaction
-            const accountData = await dbConnection
-              .dbConnect('SELECT * FROM transactions WHERE accountnumber=$1',
-                [accountNumber]);
             // update the account table
             const acBalance = await dbConnection
               .dbConnect(
@@ -59,11 +55,11 @@ const TransactionService = {
                 [newBalance, accountNumber]
               );
             const transaction = new TransactionModel();
-            transaction.transactionId = accountData.rows[0].id;
-            transaction.accountNumber = accountData.rows[0].accountnumber;
-            transaction.amount = accountData.rows[0].amount;
-            transaction.cashier = accountData.rows[0].cashier;
-            transaction.transactionType = accountData.rows[0].type;
+            transaction.transactionId = transactionDbData.rows[0].id;
+            transaction.accountNumber = transactionDbData.rows[0].accountnumber;
+            transaction.amount = transactionDbData.rows[0].amount;
+            transaction.cashier = transactionDbData.rows[0].cashier;
+            transaction.transactionType = transactionDbData.rows[0].type;
             transaction.accountBalance = acBalance.rows[0].balance;
             returnStatus = 201;
             returnSuccess = transaction;
@@ -139,29 +135,30 @@ const TransactionService = {
       // check if a string
       const checkForDigit = /^-?\d+\.?\d*$/;
       if (checkForDigit.test(transactionData.amount)) {
+        if (transactionData.amount <= 0) {
+          returnStatus = 422;
+          returnError = 'please credit an account with positive value';
+        } else {
         // add the passed in amount from the current balance
-        const newBalance = balance + transactionData.amount;
-        const transactionDbData = await dbConnection
-          .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7)',
-            [createdOn, 'credit', accountnumber, id, transactionData.amount, balance, newBalance]);
-        if (transactionDbData.command === 'INSERT') {
-          // get the data from transaction
-          const accountData = await dbConnection
-            .dbConnect('SELECT * FROM transactions WHERE accountnumber=$1',
-              [accountNumber]);
-          // update the account table
-          const acBalance = await dbConnection
-            .dbConnect('UPDATE accounts SET balance=$1 WHERE accountnumber=$2 RETURNING balance',
-              [newBalance, accountNumber]);
-          const transaction = new TransactionModel();
-          transaction.transactionId = accountData.rows[0].id;
-          transaction.accountNumber = accountData.rows[0].accountnumber;
-          transaction.amount = accountData.rows[0].amount;
-          transaction.cashier = accountData.rows[0].cashier;
-          transaction.transactionType = accountData.rows[0].type;
-          transaction.accountBalance = acBalance.rows[0].balance;
-          returnStatus = 201;
-          returnSuccess = transaction;
+          const newBalance = balance + transactionData.amount;
+          const transactionDbData = await dbConnection
+            .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7) RETURNING id, accountnumber, amount, cashier, type',
+              [createdOn, 'credit', accountnumber, id, transactionData.amount, balance, newBalance]);
+          if (transactionDbData.command === 'INSERT') {
+            // update the account table
+            const acBalance = await dbConnection
+              .dbConnect('UPDATE accounts SET balance=$1 WHERE accountnumber=$2 RETURNING balance',
+                [newBalance, accountNumber]);
+            const transaction = new TransactionModel();
+            transaction.transactionId = transactionDbData.rows[0].id;
+            transaction.accountNumber = transactionDbData.rows[0].accountnumber;
+            transaction.amount = transactionDbData.rows[0].amount;
+            transaction.cashier = transactionDbData.rows[0].cashier;
+            transaction.transactionType = transactionDbData.rows[0].type;
+            transaction.accountBalance = acBalance.rows[0].balance;
+            returnStatus = 201;
+            returnSuccess = transaction;
+          }
         }
       } else {
         returnStatus = 422;

@@ -1,6 +1,9 @@
 import { Pool } from 'pg';
+import dotenv from 'dotenv';
 import debug from 'debug';
 import { parse } from 'pg-connection-string';
+
+dotenv.config();
 
 let conString;
 
