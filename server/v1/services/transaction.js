@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import dbConnection from '../config/database';
-import TransactionModel from '../model/Transaction';
+import TransactionModel from '../model/transaction';
 
 const TransactionService = {
 
@@ -33,9 +33,7 @@ const TransactionService = {
         );
       const { accountnumber, balance } = accountDbData.rows[0];
 
-      // check if a string
-      const checkForDigit = /^-?\d+\.?\d*$/;
-      if (checkForDigit.test(transactionData.amount)) {
+      if (typeof transactionData.amount === 'number') {
         // substract the passed in amount from the current balance
         const newBalance = balance - transactionData.amount;
 
@@ -132,9 +130,7 @@ const TransactionService = {
         );
       const { accountnumber, balance } = accountDbData.rows[0];
 
-      // check if a string
-      const checkForDigit = /^-?\d+\.?\d*$/;
-      if (checkForDigit.test(transactionData.amount)) {
+      if (typeof transactionData.amount === 'number') {
         if (transactionData.amount <= 0) {
           returnStatus = 422;
           returnError = 'please credit an account with positive value';

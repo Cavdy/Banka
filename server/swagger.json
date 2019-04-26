@@ -14,7 +14,7 @@
     "v1/auth/signup": {
       "post": {
         "tags": [
-          "Signup"
+          "Auth"
         ],
         "summary": "Users can signup",
         "description": "this endpoint uses get request to create users",
@@ -65,7 +65,7 @@
     "v1/auth/signup/addstaff": {
       "post": {
         "tags": [
-          "Signup"
+          "Auth"
         ],
         "summary": "Admin can signup staffs",
         "description": "this endpoint uses get request to create users",
@@ -135,7 +135,7 @@
     "v1/auth/signin": {
       "post": {
         "tags": [
-          "Signin"
+          "Auth"
         ],
         "summary": "Users can signup",
         "description": "this endpoint uses get request to create users",

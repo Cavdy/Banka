@@ -36,26 +36,6 @@ const dbConnection = {
       return debug('query')(e.stack);
     }
   },
-
-  /**
-   * Connect to database - For test
-   * @constructor
-   * @param {*} passedQuery - passed in SQL query.
-   */
-  async dbTesting(passedQuery) {
-    try {
-      return (async () => {
-        const client = await pool.connect();
-        try {
-          return await client.query(passedQuery);
-        } finally {
-          client.release();
-        }
-      })();
-    } catch (e) {
-      return debug('query')(e.stack);
-    }
-  },
 };
 
 export default dbConnection;
