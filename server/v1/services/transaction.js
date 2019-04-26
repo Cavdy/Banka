@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import dbConnection from '../config/database';
-import TransactionModel from '../model/Transaction';
+import TransactionModel from '../model/transaction';
 
 const TransactionService = {
 

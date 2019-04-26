@@ -355,6 +355,66 @@ describe('Testing Accounts Controller', () => {
     );
 
     it(
+      'should not patch account if not active or dormant',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/accounts')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            type: 'savings',
+          });
+        const { accountNumber } = res.body.data;
+        const res1 = await chai.request(app)
+          .patch(`/api/v1/accounts/${accountNumber}77`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            status: 'dormants',
+          });
+        expect(res1.body).to.be.an('object');
+        expect(res1.body.status).to.equal(422);
+        expect(res1.body.data).to.equal('account status can only be active or dormant');
+      },
+    );
+
+    it(
+      'when account not found',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/accounts')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            type: 'savings',
+          });
+        const { accountNumber } = res.body.data;
+        const res1 = await chai.request(app)
+          .patch(`/api/v1/accounts/${accountNumber}77`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            status: 'dormant',
+          });
+        expect(res1.body).to.be.an('object');
+        expect(res1.body.status).to.equal(404);
+        expect(res1.body.data).to.equal('account not found');
+      },
+    );
+
+    it(
       'should not delete account if not staff or admin',
       async () => {
         const signinUrl = '/api/v1/auth/signin';

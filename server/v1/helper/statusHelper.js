@@ -22,6 +22,12 @@ const statusHelper = {
         status: 409,
         data: error,
       });
+    } else if (status === 403) { // conflict
+      res.status(403);
+      return res.json({
+        status: 403,
+        data: error,
+      });
     } else if (status === 201) { // created
       res.status(201);
       return res.json({

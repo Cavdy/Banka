@@ -1,5 +1,5 @@
 import dbConnection from '../config/database';
-import AccountModel from '../model/CreateAccount';
+import AccountModel from '../model/accounts';
 
 const CreateAccountService = {
   /**
@@ -175,21 +175,26 @@ const CreateAccountService = {
     const { type, isadmin } = userDetails.rows[0];
 
     if (type === 'staff' || isadmin === true) {
-      const accountDbData = await dbConnection
-        .dbConnect('SELECT accountnumber FROM accounts WHERE accountnumber=$1',
-          [accountNumber]);
-      if (accountDbData.rows.length > 0) {
-        const updateAccount = await dbConnection
-          .dbConnect('UPDATE accounts SET status=$1 WHERE accountnumber=$2',
-            [accountUpdate.status, accountNumber]);
-        if (updateAccount.command === 'UPDATE') {
-          const userDbData = await dbConnection
-            .dbConnect('SELECT accountnumber, status FROM accounts WHERE accountnumber=$1',
-              [accountNumber]);
-          const { accountnumber, status } = userDbData.rows[0];
-          returnStatus = 200;
-          returnSuccess = { accountnumber, status };
+      if (accountUpdate.status === 'active' || accountUpdate.status === 'dormant') {
+        const accountDbData = await dbConnection
+          .dbConnect('SELECT accountnumber FROM accounts WHERE accountnumber=$1',
+            [accountNumber]);
+        if (accountDbData.rows.length > 0) {
+          const updateAccount = await dbConnection
+            .dbConnect('UPDATE accounts SET status=$1 WHERE accountnumber=$2 RETURNING accountnumber, status',
+              [accountUpdate.status, accountNumber]);
+          if (updateAccount.command === 'UPDATE') {
+            const { accountnumber, status } = updateAccount.rows[0];
+            returnStatus = 200;
+            returnSuccess = { accountnumber, status };
+          }
+        } else {
+          returnStatus = 404;
+          returnError = 'account not found';
         }
+      } else {
+        returnStatus = 422;
+        returnError = 'account status can only be active or dormant';
       }
     } else {
       returnStatus = 401;
