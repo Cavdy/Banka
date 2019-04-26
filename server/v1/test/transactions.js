@@ -236,6 +236,30 @@ describe('Testing Transactions Controller', () => {
     );
 
     it(
+      'should not credit when negative number',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/transactions/3003801983/credit')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            amount: -500,
+          });
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(422);
+        expect(res.body.data)
+          .to.equal('please credit an account with positive value');
+      },
+    );
+
+    it(
       'admin and staffs can perform credit transaction',
       async () => {
         const signinUrl = '/api/v1/auth/signin';
