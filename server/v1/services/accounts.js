@@ -18,7 +18,7 @@ const CreateAccountService = {
 
     // pulling users data from database
     const userDetails = await dbConnection
-      .dbConnect('SELECT id,firstname,lastname FROM users WHERE email=$1',
+      .dbConnect('SELECT * FROM users WHERE email=$1',
         [userData.email]);
     const { firstname, lastname, id } = userDetails.rows[0];
 
