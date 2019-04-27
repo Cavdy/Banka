@@ -59,6 +59,26 @@ const UsersController = {
         deleteUser.returnSuccess);
     return data;
   },
+
+  /**
+   * Signup staff
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   */
+  async createStaffs(req, res) {
+    const userData = req.body;
+    const createdStaff = await UserService
+      .createStaffs(userData, req.signintoken, req.authorizedData);
+
+    const data = await statusHelper
+      .statusHelper(req,
+        res,
+        createdStaff.returnStatus,
+        createdStaff.returnError,
+        createdStaff.returnSuccess);
+    return data;
+  },
 };
 
 export default UsersController;

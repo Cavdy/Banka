@@ -52,7 +52,7 @@ const CreateAccountController = {
   async specificAccounts(req, res) {
     const { accountNumber } = req.params;
     const specificAccounts = await AccountsService
-      .specificAccounts(accountNumber);
+      .specificAccounts(accountNumber, req.authorizedData);
 
     const data = await statusHelper
       .statusHelper(req,
@@ -72,7 +72,7 @@ const CreateAccountController = {
   async allAccountTransaction(req, res) {
     const { accountNumber } = req.params;
     const transactionHistory = await AccountsService
-      .allAccountTransaction(accountNumber);
+      .allAccountTransaction(accountNumber, req.authorizedData);
 
     const data = await statusHelper
       .statusHelper(req,
