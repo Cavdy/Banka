@@ -85,11 +85,22 @@ const UsersServices = {
         [staff.email]);
     const { type, isadmin } = userDetails.rows[0];
 
-    if (type === 'staff') {
+    if (type === 'staff') { // checks if staff
       const checkusers = await dbConnection
-        .dbConnect('SELECT type FROM users WHERE id=$1', [id]);
+        .dbConnect('SELECT email, type FROM users WHERE id=$1', [id]);
       if (checkusers.rows.length > 0) {
-        if (checkusers.rows[0].type === 'client') {
+        if (checkusers.rows[0].type === 'client') { // check if client
+          const delTransactions = await dbConnection
+            .dbConnect('SELECT * from accounts WHERE email=$1',
+              [checkusers.rows[0].email]); // loop through db for accounts
+          delTransactions.rows.map(async (del) => {
+            await dbConnection
+              .dbConnect('DELETE FROM transactions WHERE accountnumber=$1',
+                [del.accountnumber]);
+            await dbConnection
+              .dbConnect('DELETE FROM accounts WHERE accountnumber=$1',
+                [del.accountnumber]);
+          });
           const accountDbData = await dbConnection
             .dbConnect('DELETE FROM users WHERE id=$1', [id]);
           if (accountDbData.command === 'DELETE') {
@@ -106,8 +117,19 @@ const UsersServices = {
       }
     } else if (isadmin === true) {
       const checkusers = await dbConnection
-        .dbConnect('SELECT type FROM users WHERE id=$1', [id]);
+        .dbConnect('SELECT email, type FROM users WHERE id=$1', [id]);
       if (checkusers.rows.length > 0) {
+        const delTransactions = await dbConnection
+          .dbConnect('SELECT * from accounts WHERE email=$1',
+            [checkusers.rows[0].email]);
+        delTransactions.rows.map(async (del) => {
+          await dbConnection
+            .dbConnect('DELETE FROM transactions WHERE accountnumber=$1',
+              [del.accountnumber]);
+          await dbConnection
+            .dbConnect('DELETE FROM accounts WHERE accountnumber=$1',
+              [del.accountnumber]);
+        });
         const accountDbData = await dbConnection
           .dbConnect('DELETE FROM users WHERE id=$1', [id]);
         if (accountDbData.command === 'DELETE') {
