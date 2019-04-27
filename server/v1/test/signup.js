@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 describe('Testing User Controller', () => {
   before(async () => {
-    await dbConnection.dbTesting('DELETE FROM users');
+    await dbConnection.dbConnect('DELETE FROM users');
     await dbConnection
       .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
         ['admin@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true]);
@@ -25,6 +25,9 @@ describe('Testing User Controller', () => {
     await dbConnection
       .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
         ['deleteguy2@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true]);
+    await dbConnection
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
+        ['deleteguy3@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false]);
   });
   describe('Testing signup controller', () => {
     const signupUrl = '/api/v1/auth/signup';
@@ -78,7 +81,7 @@ describe('Testing User Controller', () => {
           });
         const { token } = response.body.data;
         const res = await chai.request(app)
-          .post('/api/v1/auth/signup/addstaff')
+          .post('/api/v1/users/addstaff')
           .set('Authorization', `Bearer ${token}`)
           .send({
             firstName: 'cavdy',
@@ -122,7 +125,7 @@ describe('Testing User Controller', () => {
           });
         const { token } = response.body.data;
         const res = await chai.request(app)
-          .post('/api/v1/auth/signup/addstaff')
+          .post('/api/v1/users/addstaff')
           .set('Authorization', `Bearer ${token}`)
           .send({
             type: 'staff',
@@ -232,7 +235,7 @@ describe('Testing User Controller', () => {
           });
         const { token } = response.body.data;
         const res = await chai.request(app)
-          .post('/api/v1/auth/signup/addstaff')
+          .post('/api/v1/users/addstaff')
           .set('Authorization', `Bearer ${token}`)
           .send({
             firstName: 'cavdy',
@@ -262,7 +265,7 @@ describe('Testing User Controller', () => {
           });
         const { token } = response.body.data;
         const res = await chai.request(app)
-          .post('/api/v1/auth/signup/addstaff')
+          .post('/api/v1/users/addstaff')
           .set('Authorization', `Bearer ${token}`)
           .send({
             firstName: 'cavdy',

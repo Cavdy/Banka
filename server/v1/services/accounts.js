@@ -1,5 +1,5 @@
 import dbConnection from '../config/database';
-import AccountModel from '../model/CreateAccount';
+import AccountModel from '../model/accounts';
 
 const CreateAccountService = {
   /**
@@ -18,7 +18,7 @@ const CreateAccountService = {
 
     // pulling users data from database
     const userDetails = await dbConnection
-      .dbConnect('SELECT id,firstname,lastname FROM users WHERE email=$1',
+      .dbConnect('SELECT * FROM users WHERE email=$1',
         [userData.email]);
     const { firstname, lastname, id } = userDetails.rows[0];
 
@@ -113,20 +113,38 @@ const CreateAccountService = {
    * Get specific account
    * @constructor
    * @param {*} accountNumber - recieve account number.
+   * @param {*} loggedIn - logged in details.
    */
-  async specificAccounts(accountNumber) {
+  async specificAccounts(accountNumber, loggedIn) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
+
+    const users = await dbConnection
+      .dbConnect('SELECT * from users WHERE email=$1',
+        [loggedIn.email]);
+    const { type, isadmin } = users.rows[0];
+
     const userAccount = await dbConnection
       .dbConnect('SELECT * from accounts WHERE accountnumber=$1',
         [accountNumber]);
+
     if (userAccount.rows.length > 0) {
-      returnStatus = 200;
-      // eslint-disable-next-line prefer-destructuring
-      returnSuccess = userAccount.rows[0];
+      if (userAccount.rows[0].email === loggedIn.email) {
+        returnStatus = 200;
+        // eslint-disable-next-line prefer-destructuring
+        returnSuccess = userAccount.rows[0];
+      } else if (type === 'staff' || isadmin === true) {
+        returnStatus = 200;
+        // eslint-disable-next-line prefer-destructuring
+        returnSuccess = userAccount.rows[0];
+      } else {
+        returnStatus = 401;
+        returnError = 'sorry you can\'t view another user\'s account';
+      }
     } else {
       returnStatus = 404;
       returnError = 'no account found';
     }
+
     return {
       returnStatus,
       returnSuccess,
@@ -138,19 +156,42 @@ const CreateAccountService = {
    * Get all accounts trasactions that belongs to account number
    * @constructor
    * @param {*} accountNumber - recieve account number.
+   * @param {*} loggedIn - logged in details.
    */
-  async allAccountTransaction(accountNumber) {
+  async allAccountTransaction(accountNumber, loggedIn) {
     let returnStatus; let returnSuccess = ''; let returnError = '';
+
+    const users = await dbConnection
+      .dbConnect('SELECT * from users WHERE email=$1',
+        [loggedIn.email]);
+    const { type, isadmin } = users.rows[0];
+
     const userTransaction = await dbConnection
       .dbConnect('SELECT * from transactions WHERE accountnumber=$1',
         [accountNumber]);
+
+    const userAccount = await dbConnection
+      .dbConnect('SELECT email from accounts WHERE accountnumber=$1',
+        [accountNumber]);
+
     if (userTransaction.rows.length > 0) {
-      returnStatus = 200;
-      returnSuccess = userTransaction.rows;
+      if (userAccount.rows[0].email === loggedIn.email) {
+        returnStatus = 200;
+        // eslint-disable-next-line prefer-destructuring
+        returnSuccess = userTransaction.rows;
+      } else if (type === 'staff' || isadmin === true) {
+        returnStatus = 200;
+        // eslint-disable-next-line prefer-destructuring
+        returnSuccess = userTransaction.rows;
+      } else {
+        returnStatus = 401;
+        returnError = 'sorry you can\'t view another user\'s transactions';
+      }
     } else {
       returnStatus = 404;
       returnError = 'no transaction found';
     }
+
     return {
       returnStatus,
       returnSuccess,
@@ -175,21 +216,26 @@ const CreateAccountService = {
     const { type, isadmin } = userDetails.rows[0];
 
     if (type === 'staff' || isadmin === true) {
-      const accountDbData = await dbConnection
-        .dbConnect('SELECT accountnumber FROM accounts WHERE accountnumber=$1',
-          [accountNumber]);
-      if (accountDbData.rows.length > 0) {
-        const updateAccount = await dbConnection
-          .dbConnect('UPDATE accounts SET status=$1 WHERE accountnumber=$2',
-            [accountUpdate.status, accountNumber]);
-        if (updateAccount.command === 'UPDATE') {
-          const userDbData = await dbConnection
-            .dbConnect('SELECT accountnumber, status FROM accounts WHERE accountnumber=$1',
-              [accountNumber]);
-          const { accountnumber, status } = userDbData.rows[0];
-          returnStatus = 200;
-          returnSuccess = { accountnumber, status };
+      if (accountUpdate.status === 'active' || accountUpdate.status === 'dormant') {
+        const accountDbData = await dbConnection
+          .dbConnect('SELECT accountnumber FROM accounts WHERE accountnumber=$1',
+            [accountNumber]);
+        if (accountDbData.rows.length > 0) {
+          const updateAccount = await dbConnection
+            .dbConnect('UPDATE accounts SET status=$1 WHERE accountnumber=$2 RETURNING accountnumber, status',
+              [accountUpdate.status, accountNumber]);
+          if (updateAccount.command === 'UPDATE') {
+            const { accountnumber, status } = updateAccount.rows[0];
+            returnStatus = 200;
+            returnSuccess = { accountnumber, status };
+          }
+        } else {
+          returnStatus = 404;
+          returnError = 'account not found';
         }
+      } else {
+        returnStatus = 422;
+        returnError = 'account status can only be active or dormant';
       }
     } else {
       returnStatus = 401;

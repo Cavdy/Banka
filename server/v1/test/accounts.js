@@ -37,6 +37,43 @@ describe('Testing Accounts Controller', () => {
     );
 
     it(
+      'user can view their account',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/accounts')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            type: 'savings',
+          });
+        const { accountNumber } = res.body.data;
+        const res1 = await chai.request(app)
+          .get(`/api/v1/accounts/${accountNumber}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res1.body).to.be.an('object');
+        expect(res1.body.status).to.equal(200);
+        expect(res1.body.data).to.have.property('id');
+        expect(res1.body.data).to.have.property('email');
+        expect(res1.body.data).to.have.property('firstname');
+        expect(res1.body.data).to.have.property('lastname');
+        expect(res1.body.data).to.have.property('accountnumber');
+        expect(res1.body.data).to.have.property('createdon');
+        expect(res1.body.data).to.have.property('owner');
+        expect(res1.body.data).to.have.property('type');
+        expect(res1.body.data).to.have.property('status');
+        expect(res1.body.data).to.have.property('balance');
+      },
+    );
+
+    it(
       'admin or staff should see all accounts',
       async () => {
         const signinUrl = '/api/v1/auth/signin';
@@ -251,6 +288,64 @@ describe('Testing Accounts Controller', () => {
     );
 
     it(
+      'admin or staff should get any specific account',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/accounts/${3003801983}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data).to.have.property('id');
+        expect(res.body.data).to.have.property('email');
+        expect(res.body.data).to.have.property('firstname');
+        expect(res.body.data).to.have.property('lastname');
+        expect(res.body.data).to.have.property('accountnumber');
+        expect(res.body.data).to.have.property('createdon');
+        expect(res.body.data).to.have.property('owner');
+        expect(res.body.data).to.have.property('type');
+        expect(res.body.data).to.have.property('status');
+        expect(res.body.data).to.have.property('balance');
+      },
+    );
+
+    it(
+      'admin or staff should get any specific account transactions',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/accounts/${3003801983}/transactions`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data[0]).to.have.property('id');
+        expect(res.body.data[0]).to.have.property('createdon');
+        expect(res.body.data[0]).to.have.property('type');
+        expect(res.body.data[0]).to.have.property('accountnumber');
+        expect(res.body.data[0]).to.have.property('cashier');
+        expect(res.body.data[0]).to.have.property('amount');
+        expect(res.body.data[0]).to.have.property('oldbalance');
+        expect(res.body.data[0]).to.have.property('newbalance');
+      },
+    );
+
+    it(
       'when account does not have transaction',
       async () => {
         const signinUrl = '/api/v1/auth/signin';
@@ -272,7 +367,7 @@ describe('Testing Accounts Controller', () => {
     );
 
     it(
-      'when specific account does not have transaction',
+      'when account does not have transaction',
       async () => {
         const signinUrl = '/api/v1/auth/signin';
         const response = await chai.request(app)
@@ -283,7 +378,72 @@ describe('Testing Accounts Controller', () => {
           });
         const { token } = response.body.data;
         const res = await chai.request(app)
-          .get(`/api/v1/accounts/${314685979881}`)
+          .get(`/api/v1/accounts/${3146859791}/transactions`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.data).to.equal('no transaction found');
+      },
+    );
+
+    it(
+      'when specific account does not have permission',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'deleteguy3@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/accounts/${3146859791}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(401);
+        expect(res.body.data)
+          .to.equal('sorry you can\'t view another user\'s account');
+      },
+    );
+
+    it(
+      'when specific account transaction does not have permission',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'deleteguy3@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/accounts/${3003801983}/transactions`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(401);
+        expect(res.body.data)
+          .to.equal('sorry you can\'t view another user\'s transactions');
+      },
+    );
+
+    it(
+      'when specific account does not have transaction',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/accounts/${314685979133}`)
           .set('Authorization', `Bearer ${token}`)
           .send();
         expect(res.body).to.be.an('object');
@@ -351,6 +511,66 @@ describe('Testing Accounts Controller', () => {
         expect(res1.body.status).to.equal(200);
         expect(res1.body.data).to.have.property('accountnumber');
         expect(res1.body.data).to.have.property('status');
+      },
+    );
+
+    it(
+      'should not patch account if not active or dormant',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/accounts')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            type: 'savings',
+          });
+        const { accountNumber } = res.body.data;
+        const res1 = await chai.request(app)
+          .patch(`/api/v1/accounts/${accountNumber}77`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            status: 'dormants',
+          });
+        expect(res1.body).to.be.an('object');
+        expect(res1.body.status).to.equal(422);
+        expect(res1.body.data).to.equal('account status can only be active or dormant');
+      },
+    );
+
+    it(
+      'when account not found',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .post('/api/v1/accounts')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            type: 'savings',
+          });
+        const { accountNumber } = res.body.data;
+        const res1 = await chai.request(app)
+          .patch(`/api/v1/accounts/${accountNumber}77`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            status: 'dormant',
+          });
+        expect(res1.body).to.be.an('object');
+        expect(res1.body.status).to.equal(404);
+        expect(res1.body.data).to.equal('account not found');
       },
     );
 

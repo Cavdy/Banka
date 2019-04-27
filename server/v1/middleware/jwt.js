@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import statusHelper from '../helper/statusHelper';
 
 dotenv.config();
 
@@ -20,7 +21,12 @@ const jwtMiddleware = {
       next();
     } else {
       // If header is undefined return Forbidden (403)
-      res.sendStatus(403);
+      return statusHelper
+        .statusHelper(req,
+          res,
+          403,
+          'you are not logged in',
+          '');
     }
   },
 
@@ -34,7 +40,12 @@ const jwtMiddleware = {
   signinJwt(req, res, next) {
     jwt.sign(req.body, process.env.JWTSECRETKEY, async (err, token) => {
       if (err) {
-        return res.sendStatus(403);
+        return statusHelper
+          .statusHelper(req,
+            res,
+            403,
+            'you are not logged in',
+            '');
       }
       req.signintoken = token;
       return next();
@@ -51,7 +62,12 @@ const jwtMiddleware = {
   verifyJwt(req, res, next) {
     jwt.verify(req.token, process.env.JWTSECRETKEY, (err, authorizedData) => {
       if (err) {
-        return res.sendStatus(403);
+        return statusHelper
+          .statusHelper(req,
+            res,
+            403,
+            'invalid token',
+            '');
       }
       req.authorizedData = authorizedData;
       return next();
