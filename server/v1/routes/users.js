@@ -10,5 +10,10 @@ router.get('/:email/accounts',
   jwtMiddleware.verifyJwt,
   UsersController.getUsersAccounts);
 router.delete('/:id', jwtMiddleware.verifyJwt, UsersController.deleteUser);
+router.post('/addstaff',
+  jwtMiddleware.checkToken,
+  jwtMiddleware.signinJwt,
+  jwtMiddleware.verifyJwt,
+  UsersController.createStaffs);
 
 export default router;
