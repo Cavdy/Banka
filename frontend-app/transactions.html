@@ -132,21 +132,6 @@
               <div class="card">
                 <form action="" class="accounts-form">
                   <div class="form-group">
-                    <select class="accounts-select" id="limit">
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="30">30</option>
-                    </select>
-                  </div>
-
-                  <input type="submit" id="go" class="btn-go" value="Go">
-                </form>
-              </div>
-
-              <div class="card">
-                <form action="" class="accounts-form">
-                  <div class="form-group">
                     <select class="accounts-select" id="account-select">
                       <!--dynamically create option-->
                     </select>
@@ -177,12 +162,16 @@
       <div id="modal" class="modal">
         <div class="modal-content">
           <div class="card">
-            <h1 class="content-title">Account Records</h1>
+            <h1 class="tran-content-title">Banka App</h1>
+            <h3 class="tran-title">Transaction Details</h3>
             <!--Account Name and Balance-->
-            <h4 class="username">Account name: <span id="username"></span></h4>
-            <h4 class="number">Account Number: <span id="account-number"></span></h4>
-            <h4 class="balance">Balance: <span id="balance"></span></h4>
-            <h4 class="created">Account Created: <span id="account-created"></span></h4>
+            <p class="number">Account Number: &nbsp;&nbsp;&nbsp;<span id="account-number"></span></p>
+            <p class="balance">Amount: &nbsp;&nbsp;&nbsp;<span id="amount"></span></p>
+            <p class="balance">Old Balance: &nbsp;&nbsp;&nbsp;<span id="oldbalance"></span></p>
+            <p class="balance">New Balance: &nbsp;&nbsp;&nbsp;<span id="newbalance"></span></p>
+            <p class="balance">Transaction Type: &nbsp;&nbsp;&nbsp;<span id="transactiontype"></span></p>
+            <p class="balance">Cashier ID: &nbsp;&nbsp;&nbsp;<span id="cashierid"></span></p>
+            <p class="created">Transaction Date: &nbsp;&nbsp;&nbsp;<span id="trandate"></span></p>
           </div>
         </div>
       </div>
