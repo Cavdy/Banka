@@ -931,6 +931,7 @@ body,
 .msg {
   font-size: 1rem;
 }
+
 .msg a {
   color: var(--color-pink-2);
 }
@@ -989,6 +990,103 @@ body,
 .successMessage {
   font-size: 1rem;
   color: var(--color-green);
+}
+
+.transaction {
+  display: flex;
+}
+
+.transaction-body {
+  flex: 0 0 60%;
+  align-items: center;
+  text-align: center;
+  margin-right: .5rem;
+}
+
+.dc-tran {
+  min-height: 20rem;
+}
+
+.dc-tran h1 {
+  margin: 1.5rem 0;
+  font-size: 2rem;
+}
+
+.dc-tran label {
+  font-size: 1.5rem;
+}
+
+.dc-tran input[type=number] {
+  width: 60%;
+  height: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.credit-btn {
+  width: 29%;
+  margin-right: .5rem;
+  height: 2rem;
+  color: var(--color-white);
+  border: none;
+  background-color: var(--color-indigo);
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.credit-btn:hover {
+  background-color: var(--color-indigo-2);
+}
+
+.debit-btn {
+  width: 30%;
+  height: 2rem;
+  color: var(--color-white);
+  border: none;
+  background-color: var(--color-red);
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.debit-btn:hover {
+  background-color: var(--color-red-2);
+}
+
+.transaction-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.show-account {
+  display: none;
+}
+
+.show-nothing {
+  font-size: 1rem;
+}
+
+.show {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.show-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+.show-content {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.none {
+  display: none;
 }
 
 /*
@@ -1107,7 +1205,7 @@ body,
     */
   .table-row {
     flex-direction: column;
-    height: 11rem;
+    min-height: 15rem;
     padding: .5rem 0;
   }
 
@@ -1128,6 +1226,20 @@ body,
     width: 90%;
   }
 
+  .account-index,
+  .account-name,
+  .account-status,
+  .activate,
+  .deactivate,
+  .amount,
+  .edit,
+  .delete,
+  .staff-role,
+  .account-number,
+  .record {
+    margin-bottom: .8rem;
+  }
+
   /*
     ============================
         Index Responsiveness
@@ -1143,7 +1255,7 @@ body,
   .profile-img {
     border-radius: 100%;
     width: 200px;
-    height: 200px;  
+    height: 200px;
   }
 
   .right-profile-section {

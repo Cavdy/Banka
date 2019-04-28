@@ -1,4 +1,4 @@
-const api = 'https://bankaapp-api.herokuapp.com/api';
+const api = 'https://bankaapp-api.herokuapp.com/api/v1';
 
 const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,10})$/;
 const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;

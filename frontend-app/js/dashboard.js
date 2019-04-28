@@ -1,4 +1,4 @@
-const api = 'https://bankaapp-api.herokuapp.com/api';
+const api = 'https://bankaapp-api.herokuapp.com/api/v1';
 const token = sessionStorage.getItem('token');
 const email = sessionStorage.getItem('email');
 const login = localStorage.getItem('login');
@@ -13,52 +13,12 @@ const accountCreated = document.querySelector('#account-created');
 const firstName = document.querySelector('#firstname');
 const lastLogin = document.querySelector('#lastLogin');
 const totalBalance = document.querySelector('.total-balance-amount');
+const accountsElement = document.querySelector('.accounts');
+const dashboard = document.querySelector('.dashboard-wrapper');
+const welcomeUser = document.querySelector('.welcome-user');
 const errMsg = document.querySelector('.errMsg');
 
 lastLogin.innerHTML = login;
-
-// GET FETCH API REQUEST TO GET ALL ACCOUNTS OF A USER
-const getAccountsApi = (url) => {
-  fetch(url, {
-    method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow',
-    referrer: 'no-referrer',
-  })
-    .then((response) => {
-      if (response.status === 403) {
-        errMsg.innerHTML = 'you must be logged in to view accounts, Login <a href="./login.html">here</a>';
-        errMsg.parentElement.style.display = 'flex';
-      } else {
-        errMsg.innerHTML = '';
-        errMsg.parentElement.style.display = 'none';
-        return response.json();
-      }
-    })
-    .then((data1) => {
-      if (data1.status === 404) {
-        errMsg.innerHTML = 'you don\'t have an account, create <a href="./createaccount.html">one</a>';
-        errMsg.parentElement.style.display = 'flex';
-      } else {
-        errMsg.parentElement.style.display = 'none';
-        data1.data.map((i) => {
-          const option = document.createElement('option');
-          const attr = document.createAttribute('value');
-          attr.value = i.accountnumber;
-          option.setAttributeNode(attr);
-          option.innerHTML = i.accountnumber;
-          accountSelect.appendChild(option);
-        });
-      }
-    });
-};
-getAccountsApi(`${api}/v1/users/${email}/accounts`);
 
 // GET FETCH API REQUEST TO GET A PARTICULAR ACCOUNT INFO
 const getAccountApi = (url) => {
@@ -94,10 +54,65 @@ const getAccountApi = (url) => {
     });
 };
 
+// GET FETCH API REQUEST TO GET ALL ACCOUNTS OF A USER
+const getAccountsApi = (url) => {
+  fetch(url, {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow',
+    referrer: 'no-referrer',
+  })
+    .then((response) => {
+      if (response.status === 403) {
+        errMsg.innerHTML = 'you must be logged in to view accounts, Login <a href="./login.html">here</a>';
+        errMsg.parentElement.style.display = 'flex';
+      } else {
+        errMsg.innerHTML = '';
+        errMsg.parentElement.style.display = 'none';
+        return response.json();
+      }
+    })
+    .then((data1) => {
+      if (data1.status === 404) {
+        errMsg.innerHTML = 'you don\'t have an account, create <a href="./createaccount.html">one</a>';
+        errMsg.parentElement.style.display = 'flex';
+      } else {
+        errMsg.parentElement.style.display = 'none';
+        // set the dahsboard hidden
+        accountsElement.style.display = 'flex';
+        dashboard.style.display = 'flex';
+        welcomeUser.style.display = 'flex';
+
+        data1.data.map((i) => {
+          const option = document.createElement('option');
+          const attr = document.createAttribute('value');
+          attr.value = i.accountnumber;
+          option.setAttributeNode(attr);
+          option.innerHTML = i.accountnumber;
+          accountSelect.appendChild(option);
+        });
+
+        getAccountApi(`${api}/accounts/${accountSelect.value}`);
+      }
+    });
+};
+getAccountsApi(`${api}/users/${email}/accounts`);
+
+// set the dahsboard hidden
+accountsElement.style.display = 'none';
+dashboard.style.display = 'none';
+welcomeUser.style.display = 'none';
+
 submit.addEventListener('click', (e) => {
   e.preventDefault();
   const selected = accountSelect.value;
-  getAccountApi(`${api}/v1/accounts/${selected}`);
+  getAccountApi(`${api}/accounts/${selected}`);
 });
 
 const welcome = document.querySelector('.welcome-user');

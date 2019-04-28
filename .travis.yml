@@ -12,9 +12,6 @@ cache:
 env: 
   global:
     - CODECLIMATE_REPO_TOKEN=c14abfc89b0eb06fcb10f480f4b3e47142ac181c60c21f0131b570e72b1fbeb7
-    - JWTSECRETKEY=5634
-    - DB_CONFIG=postgres://xwrxubeu:u4wOQ6oxpvRCK6yWk5qK4rzaiisTPeoN@isilo.db.elephantsql.com:5432/xwrxubeu
-    - ADMIN_PWD=$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2
 script:
   - npm run test
 services:
