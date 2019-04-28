@@ -23,6 +23,46 @@ const UsersController = {
   },
 
   /**
+   * Get staffs
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   */
+  async getAllStaffs(req, res) {
+    const queryLimit = req.query.limit;
+    const allUsers = await UserService
+      .getAllStaffs(req.authorizedData, queryLimit);
+
+    const data = await statusHelper
+      .statusHelper(req,
+        res,
+        allUsers.returnStatus,
+        allUsers.returnError,
+        allUsers.returnSuccess);
+    return data;
+  },
+  
+  /**
+   * Get clients
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   */
+  async getAllClients(req, res) {
+    const queryLimit = req.query.limit;
+    const allUsers = await UserService
+      .getAllClients(req.authorizedData, queryLimit);
+
+    const data = await statusHelper
+      .statusHelper(req,
+        res,
+        allUsers.returnStatus,
+        allUsers.returnError,
+        allUsers.returnSuccess);
+    return data;
+  },
+
+  /**
    * Get user accounts
    * @constructor
    * @param {*} req - get request.
@@ -38,6 +78,26 @@ const UsersController = {
         getUsersAccounts.returnStatus,
         getUsersAccounts.returnError,
         getUsersAccounts.returnSuccess);
+    return data;
+  },
+
+  /**
+   * Get specific user
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   */
+  async getSpecificUser(req, res) {
+    const { id } = req.params;
+    const getSpecificUser = await UserService
+      .getSpecificUser(id, req.authorizedData);
+
+    const data = await statusHelper
+      .statusHelper(req,
+        res,
+        getSpecificUser.returnStatus,
+        getSpecificUser.returnError,
+        getSpecificUser.returnSuccess);
     return data;
   },
 

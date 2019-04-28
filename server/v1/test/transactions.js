@@ -255,7 +255,7 @@ describe('Testing Transactions Controller', () => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equal(422);
         expect(res.body.data)
-          .to.equal('please credit an account with positive value');
+          .to.equal('please numbers only');
       },
     );
 
