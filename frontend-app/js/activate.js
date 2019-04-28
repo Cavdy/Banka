@@ -329,15 +329,14 @@ go.addEventListener('click', (e) => {
   getAccountsApi(`${api}/v1/accounts?limit=${limitSelect.value}`);
 });
 
-const acBtn = document.querySelector('#ac-go');
+const search = document.querySelector('#search');
 
-acBtn.addEventListener('click', (e) => {
+search.addEventListener('keyup', (e) => {
   e.preventDefault();
-  const acInput = document.querySelector('.accounts-input');
   const tableBodies = document.querySelectorAll('.table-body');
   tableBodies.forEach((tableBody) => {
     tableBody.remove();
   });
 
-  getSpecficAccountApi(`${api}/v1/accounts/${acInput.value}`);
+  getSpecficAccountApi(`${api}/v1/accounts/${search.value}`);
 });
