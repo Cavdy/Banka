@@ -97,13 +97,13 @@ const UsersServices = {
     if (type === 'staff' || isadmin === true) {
       if (typeof queryLimit !== 'undefined') {
         const allAccounts = await dbConnection
-          .dbConnect('SELECT * from users WHERE type=$1, isadmin=$2 LIMIT $3',
+          .dbConnect('SELECT * from users WHERE type=$1 AND isadmin=$2 LIMIT $3',
             ['client', false, queryLimit]);
         returnStatus = 200;
         returnSuccess = allAccounts.rows;
       } else {
         const allAccounts = await dbConnection
-          .dbConnect('SELECT * from users WHERE type=$1, isadmin=$2 LIMIT $3',
+          .dbConnect('SELECT * from users WHERE type=$1 AND isadmin=$2 LIMIT $3',
             ['client', false, 10]);
         returnStatus = 200;
         returnSuccess = allAccounts.rows;
