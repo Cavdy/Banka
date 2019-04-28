@@ -119,7 +119,7 @@ const getUsersApi = (url) => {
       return data1;
     });
 };
-getUsersApi(`${api}/v1/users/clients`);
+getUsersApi(`${api}/v1/users/staffs`);
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();
@@ -128,5 +128,5 @@ submit.addEventListener('click', (e) => {
     tableBody.remove();
   });
 
-  getUsersApi(`${api}/v1/users/clients?limit=${limitSelect.value}`);
+  getUsersApi(`${api}/v1/users/staffs?limit=${limitSelect.value}`);
 });
