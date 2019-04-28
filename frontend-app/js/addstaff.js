@@ -1,4 +1,4 @@
-const api = 'https://bankaapp-api.herokuapp.com/api';
+const api = 'https://bankaapp-api.herokuapp.com/api/v1';
 const token = sessionStorage.getItem('token');
 
 const fnameAndLnameRegex = /^[a-zA-Z ]{2,15}$/;
@@ -104,7 +104,7 @@ submit.addEventListener('click', (e) => {
         password: password.value,
         isAdmin: false,
       };
-      postApi(`${api}/auth/signup/addstaff`, signupData);
+      postApi(`${api}/users/addstaff`, signupData);
     } else {
       const signupData = {
         firstName: firstName.value,
@@ -114,7 +114,7 @@ submit.addEventListener('click', (e) => {
         password: password.value,
         isAdmin: true,
       };
-      postApi(`${api}/auth/signup/addstaff`, signupData);
+      postApi(`${api}/users/addstaff`, signupData);
     }
   }
 });

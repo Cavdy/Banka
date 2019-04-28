@@ -21,32 +21,35 @@
           <h1 class="logo">Banka</h1>
         </div>
         <div class="sidebar-menu">
-            <ul class="sidebar-list">
-                <li class="sidebar-item">
-                  <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="./createaccount.html" class="sidebar-link">Create an account</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="./accounts.html" class="sidebar-link">Credit / Debit</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="./transactions.html" class="sidebar-link">Transactions</a>
-                </li>
-                <li class="sidebar-item  sidebar-item-active">
-                  <a href="./users.html" class="sidebar-link">Users</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="staffs.html" class="sidebar-link">Staffs</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
-                </li>
-              </ul>
+          <ul class="sidebar-list">
+            <li class="sidebar-item">
+              <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./createaccount.html" class="sidebar-link">Create an account</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./accounts.html" class="sidebar-link">Credit / Debit</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./viewaccounts.html" class="sidebar-link">All Accounts</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./transactions.html" class="sidebar-link">Transactions</a>
+            </li>
+            <li class="sidebar-item  sidebar-item-active">
+              <a href="./users.html" class="sidebar-link">Users</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="staffs.html" class="sidebar-link">Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
+            </li>
+          </ul>
         </div>
         <div class="sidebar-legal">
           &copy; 2019 Banka. All Rights Reserved.
@@ -84,13 +87,6 @@
                     <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing
                       elit. Quae, optio?</a>
                   </li>
-                  <li class="item">
-                    <a href="#" class="link">Lorem ipsum dolor, sit amet consectetur adipisicing.</a>
-                  </li>
-                  <li class="item">
-                    <a href="#" class="link">Lorem ipsum dolor sit amet consectetur adipisicing
-                      elit. Nobis similique soluta sit impedit, provident laborum?</a>
-                  </li>
                 </ul>
               </div>
             </div>
@@ -126,44 +122,38 @@
 
         <!--Main Body-->
         <main class="main-body">
-          <div class="card">
+          <div class="alert alert-success"><span class="successMsg">Success </span><span id="close">X</span></div>
+          <div class="alert alert-danger"><span class="errMsg">Something went wrong. Try again </span><span
+              id="close">X</span></div>
+          <!--Accounts Limit-->
+          <div class="accountsQuery">
+            <div class="queryForm">
+              <div class="card">
+                <form action="" class="accounts-form">
+                  <div class="form-group">
+                    <select class="accounts-select" id="limit">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                    </select>
+                  </div>
+
+                  <input type="submit" id="go" class="btn-go" value="Go">
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="card user-table">
             <h1 class="content-title">Users Accounts</h1>
 
             <div class="table">
               <div class="table-row">
-                <div class="account-index">Index</div>
-                <div class="account-name">Account Name</div>
-                <div class="account-number">Account Number</div>
-                <div class="record">Number of Account</div>
-                <div class="delete">Delete</div>
-              </div>
-              <div class="table-row">
-                <div class="account-index">1</div>
-                <div class="account-name">Fred Matthew</div>
-                <div class="account-number">67358929653</div>
-                <div class="record"><a href="#" class="record-btn" id="show-modal">View Record</a></div>
-                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
-              </div>
-              <div class="table-row">
-                <div class="account-index">2</div>
-                <div class="account-name">Jade Smith</div>
-                <div class="account-number">86436442678</div>
-                <div class="record"><a href="#" class="record-btn" id="show-modal">View Record</a></div>
-                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
-              </div>
-              <div class="table-row">
-                <div class="account-index">3</div>
-                <div class="account-name">Black widow</div>
-                <div class="account-number">67358929653</div>
-                <div class="record"><a href="#" class="record-btn" id="show-modal">View Record</a></div>
-                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
-              </div>
-              <div class="table-row">
-                <div class="account-index">4</div>
-                <div class="account-name">Love heart</div>
-                <div class="account-number">86436442678</div>
-                <div class="record"><a href="#" class="record-btn" id="show-modal">View Record</a></div>
-                <div class="delete"><a href="#" class="delete-btn" id="delete">Delete</a></div>
+                <div class="account-index">Name</div>
+                <div class="account-name">Email</div>
+                <div class="account-status">Type</div>
+                <div class="activate">IsAdmin</div>
+                <div class="deactivate">Delete</div>
               </div>
             </div>
           </div>
