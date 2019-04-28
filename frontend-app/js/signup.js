@@ -1,4 +1,4 @@
-const api = 'https://bankaapp-api.herokuapp.com/api';
+const api = 'https://bankaapp-api.herokuapp.com/api/v1';
 
 const fnameAndLnameRegex = /^[a-zA-Z ]{2,15}$/;
 const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,10})$/;
@@ -92,7 +92,10 @@ const postApi = (url, data) => {
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();
-  if (fnamePassed === true && lnamePassed === true && emailPassed === true && passwordPassed === true) {
+  if (fnamePassed === true
+    && lnamePassed === true
+    && emailPassed === true
+    && passwordPassed === true) {
     const signupData = {
       firstName: firstName.value,
       lastName: lastName.value,

@@ -33,7 +33,7 @@ const TransactionService = {
         );
       const { accountnumber, balance } = accountDbData.rows[0];
 
-      if (typeof transactionData.amount === 'number') {
+      if (/^[0-9]{1,}$/.test(transactionData.amount)) {
         // substract the passed in amount from the current balance
         const newBalance = balance - transactionData.amount;
 
@@ -130,7 +130,7 @@ const TransactionService = {
         );
       const { accountnumber, balance } = accountDbData.rows[0];
 
-      if (typeof transactionData.amount === 'number') {
+      if (/^[0-9]{1,}$/.test(transactionData.amount)) {
         if (transactionData.amount <= 0) {
           returnStatus = 422;
           returnError = 'please credit an account with positive value';

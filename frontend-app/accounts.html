@@ -25,11 +25,14 @@
             <li class="sidebar-item">
               <a href="./dashboard.html" class="sidebar-link">Dashboard</a>
             </li>
+            <li class="sidebar-item">
+              <a href="./createaccount.html" class="sidebar-link">Create an account</a>
+            </li>
             <li class="sidebar-item sidebar-item-active">
-              <a href="./accounts.html" class="sidebar-link">Bank Accounts</a>
+              <a href="./accounts.html" class="sidebar-link">Credit / Debit</a>
             </li>
             <li class="sidebar-item">
-              <a href="./users.html" class="sidebar-link">Users Accounts</a>
+              <a href="./transactions.html" class="sidebar-link">Transactions</a>
             </li>
             <li class="sidebar-item">
               <a href="staffs.html" class="sidebar-link">Staffs</a>
@@ -120,99 +123,63 @@
 
         <!--Main Body-->
         <main class="main-body">
-          <div class="alert alert-danger"><span class="errMsg">Something went wrong. Try again </span><span id="close">X</span></div>
-          <!--Accounts Limit-->
-          <div class="accountsQuery">
-            <div class="queryForm">
+            <div class="alert alert-success"><span class="successMsg">Success </span><span id="close">X</span></div>
+          <div class="alert alert-danger"><span class="errMsg">Something went wrong. Try again </span><span
+              id="close">X</span></div>
+          <div class=" transaction">
+            <div class="transaction-body">
               <div class="card">
-                <form action="" class="accounts-form">
-                  <div class="form-group">
-                    <select class="accounts-select" id="limit">
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="30">30</option>
-                    </select>
+                <div class="dc-tran">
+                  <h1>Credit And Debit</h1>
+                  <div class="form">
+                    <div class="form-group">
+                      <label for="accountnumber">Account Number</label><br>
+                      <input type="number" id="accountnumber">
+                    </div>
+                    <div class="form-group">
+                      <label for="amount">Amount</label><br>
+                      <input type="number" id="amount">
+                    </div>
+                    <div class="tran-btn">
+                      <input type="submit" class="credit-btn" id="credit" value="Credit">
+                      <input type="submit" class="debit-btn" id="debit" value="Debit">
+                    </div>
                   </div>
-
-                  <input type="submit" id="go" class="btn-go" value="Go">
-                </form>
-              </div>
-
-              <div class="card">
-                <form action="" class="accounts-form">
-                  <div class="form-group">
-                    <input type="number" class="accounts-input" placeholder="account number">
-                  </div>
-
-                  <input type="submit" id="ac-go" class="btn-go" value="Go">
-                </form>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="card">
-            <h1 class="content-title">Credit / Debit Accounts</h1>
-
-            <div class="table">
-              <div class="table-row">
-                <div class="account-index">AC Number</div>
-                <div class="account-name">AC Name</div>
-                <div class="amount">Balance</div>
-                <div class="edit">Debit</div>
-                <div class="edit">Credit</div>
+            <div class="transaction-details">
+              <p class="show-nothing">No account found</p>
+              <div class="show-account">
+                <div class="show">
+                  <h4 class="show-title">Account name: </h4>
+                  <span class="show-content" id="username">Fred Mark</span>
+                </div>
+                <div class="show">
+                  <h4 class="show-title">Account Number: </h4>
+                  <span class="show-content" id="account-number">45645666</span>
+                </div>
+                <div class="show">
+                  <h4 class="show-title">Account Balance: </h4>
+                  <span class="show-content" id="account-balance">4646</span>
+                </div>
+                <div class="show">
+                  <h4 class="show-title">Type: </h4>
+                  <span class="show-content" id="type">Savings</span>
+                </div>
+                <div class="show">
+                  <h4 class="show-title">Account Status: </h4>
+                  <span class="show-content" id="account-status">Draft</span>
+                </div>
+                <div class="show">
+                  <h4 class="show-title">Account Created: </h4>
+                  <span class="show-content" id="account-created">24/05/2019</span>
+                </div>
               </div>
             </div>
           </div>
         </main>
 
-      </div>
-
-      <!--Debit Modal-->
-      <div id="modal" class="modal">
-        <div class="modal-content">
-          <div class="card">
-            <h1 class="content-title">Debit Account</h1>
-            <div class="alert alert-success"><span class="successMsg">Success </span><span id="close">X</span></div>
-            <div class="alert alert-danger"><span class="errMsg">Error </span><span id="close">X</span></div>
-            <!--Account Name and Balance-->
-            <h4 class="username">Account Name: <span id="username"></span></h4>
-            <h4 class="username">Account Number: <span id="acnumber"></span></h4>
-            <h4 class="balance">Balance: <span id="balance"></span></h4>
-            <!--Debit Form-->
-            <form action="" class="form">
-              <div class="form-group">
-                <label for="debit" class="form-label">Debit</label>
-                <input type="text" placeholder="Debit" id="debit" class="form-input">
-              </div>
-
-              <input type="submit" id="debitbtn" class="btn btn-block btn-primary" value="Debit">
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <!--Credit Modal-->
-      <div id="modal2" class="modal2">
-        <div class="modal-content">
-          <div class="card">
-            <h1 class="content-title">Credit Account</h1>
-            <div class="alert alert-success"><span class="successMsg">Success </span><span id="close">X</span></div>
-            <div class="alert alert-danger"><span class="errMsg">Error </span><span id="close">X</span></div>
-            <!--Account Name and Balance-->
-            <h4 class="username">Account name: <span id="username"></span></h4>
-            <h4 class="username">Account Number: <span id="acnumber"></span></h4>
-            <h4 class="balance">Balance: <span id="balance"></span></h4>
-            <!--Credit Form-->
-            <form action="" class="form">
-              <div class="form-group">
-                <label for="credit" class="form-label">Credit</label>
-                <input type="text" placeholder="Credit" id="credit" class="form-input">
-              </div>
-
-              <input type="submit" id="creditbtn" class="btn btn-block btn-primary" value="Credit">
-            </form>
-          </div>
-        </div>
       </div>
     </div>
   </div>
