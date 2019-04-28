@@ -105,6 +105,270 @@ describe('Testing All Users Controller', () => {
     );
 
     it(
+      'when user not found',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/users/${100000}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.data)
+          .to.equal('no account found');
+      },
+    );
+
+    it(
+      'user can not view another user account',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const resp = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'deleteguy3@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const { id } = resp.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/users/${id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(401);
+        expect(res.body.data)
+          .to.equal('sorry you can\'t view another user\'s account');
+      },
+    );
+
+    it(
+      'admin can view user account',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const resp = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const { id } = resp.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/users/${id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data).to.have.property('id');
+        expect(res.body.data).to.have.property('firstname');
+        expect(res.body.data).to.have.property('lastname');
+        expect(res.body.data).to.have.property('email');
+        expect(res.body.data).to.have.property('password');
+        expect(res.body.data).to.have.property('type');
+        expect(res.body.data).to.have.property('isadmin');
+      },
+    );
+
+    it(
+      'admin or staff can view all clients with query limit',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get('/api/v1/users/clients?limit=10')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data[0]).to.have.property('id');
+        expect(res.body.data[0]).to.have.property('firstname');
+        expect(res.body.data[0]).to.have.property('lastname');
+        expect(res.body.data[0]).to.have.property('email');
+        expect(res.body.data[0]).to.have.property('password');
+        expect(res.body.data[0]).to.have.property('type');
+        expect(res.body.data[0]).to.have.property('isadmin');
+      },
+    );
+
+    it(
+      'admin or staff can view all clients',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get('/api/v1/users/clients')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data[0]).to.have.property('id');
+        expect(res.body.data[0]).to.have.property('firstname');
+        expect(res.body.data[0]).to.have.property('lastname');
+        expect(res.body.data[0]).to.have.property('email');
+        expect(res.body.data[0]).to.have.property('password');
+        expect(res.body.data[0]).to.have.property('type');
+        expect(res.body.data[0]).to.have.property('isadmin');
+      },
+    );
+
+    it(
+      'admin can view all staffs with query limit',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get('/api/v1/users/staffs?limit=10')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data[0]).to.have.property('id');
+        expect(res.body.data[0]).to.have.property('firstname');
+        expect(res.body.data[0]).to.have.property('lastname');
+        expect(res.body.data[0]).to.have.property('email');
+        expect(res.body.data[0]).to.have.property('password');
+        expect(res.body.data[0]).to.have.property('type');
+        expect(res.body.data[0]).to.have.property('isadmin');
+      },
+    );
+
+    it(
+      'admin can view all staffs',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get('/api/v1/users/staffs')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data[0]).to.have.property('id');
+        expect(res.body.data[0]).to.have.property('firstname');
+        expect(res.body.data[0]).to.have.property('lastname');
+        expect(res.body.data[0]).to.have.property('email');
+        expect(res.body.data[0]).to.have.property('password');
+        expect(res.body.data[0]).to.have.property('type');
+        expect(res.body.data[0]).to.have.property('isadmin');
+      },
+    );
+
+    it(
+      'only admin can view all staffs',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'staff@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get('/api/v1/users/staffs')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(401);
+        expect(res.body.data)
+          .to.equal('You don\'t have permission to view this page');
+      },
+    );
+
+    it(
+      'only admin or staff can view all clients',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get('/api/v1/users/clients')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(401);
+        expect(res.body.data)
+          .to.equal('You don\'t have permission to view this page');
+      },
+    );
+
+    it(
+      'users can view their account',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const { id, token } = response.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/users/${id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.data).to.have.property('id');
+        expect(res.body.data).to.have.property('firstname');
+        expect(res.body.data).to.have.property('lastname');
+        expect(res.body.data).to.have.property('email');
+        expect(res.body.data).to.have.property('password');
+        expect(res.body.data).to.have.property('type');
+        expect(res.body.data).to.have.property('isadmin');
+      },
+    );
+
+    it(
       'check if email does not have a bank account',
       async () => {
         const signinUrl = '/api/v1/auth/signin';

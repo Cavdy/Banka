@@ -36,10 +36,9 @@ const debitCreditApi = (url, data) => {
   })
     .then(response => response.json())
     .then((data1) => {
-      console.log(data1);
       if (data1.status === 422) {
         errorMsg.parentElement.style.display = 'flex';
-        errorMsg.innerHTML = 'Please type in a number';
+        errorMsg.innerHTML = data1.data;
       } else if (data1.status === 201) {
         errorMsg.parentElement.style.display = 'none';
         onSuccess.parentElement.style.display = 'flex';
