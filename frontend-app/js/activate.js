@@ -41,7 +41,7 @@ const patchApi = (url, data) => {
 };
 
 // DELETE FETCH REQUEST FOR ACCOUNTS
-const deleteApi = (url, data) => {
+const deleteApi = (url) => {
   fetch(url, {
     method: 'DELETE',
     mode: 'cors',

@@ -90,12 +90,6 @@ const CreateAccountService = {
           returnStatus = 200;
           returnSuccess = allAccounts.rows;
         }
-      } else if (typeof queryParams === 'undefined'
-      && typeof queryLimit === 'undefined') {
-        const allAccounts = await dbConnection
-          .dbConnect('SELECT * from accounts LIMIT $1', [10]);
-        returnStatus = 200;
-        returnSuccess = allAccounts.rows;
       }
     } else {
       returnStatus = 401;
