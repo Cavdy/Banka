@@ -112,10 +112,6 @@ const getTransactionsApi = (url) => {
     .then(() => {
       // modal
       const showModal = document.querySelectorAll('#show-modal');
-      // const accountName = document.querySelectorAll('#username');
-      // const accountNumber = document.querySelectorAll('#acnumber');
-      // const accountBalance = document.querySelectorAll('#balance');
-
       const modalFunction = (modalClick, modalIn, modalId) => {
         if (modalClick) {
           const mModal = document.querySelector(modalIn);
