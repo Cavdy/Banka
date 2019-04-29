@@ -13,7 +13,7 @@ const CreateAccountService = {
     const ACNumberGenerator = Math.floor(Math.random() * 1000000000) + 3000000000;
     const date = new Date();
     const createdOn = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    const balance = 0.00;
+    const balance = parseFloat(0.00).toFixed(2);
     const status = 'draft';
 
     // pulling users data from database

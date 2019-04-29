@@ -35,7 +35,7 @@ const TransactionService = {
 
       if (/^[0-9]{1,}$/.test(transactionData.amount)) {
         // substract the passed in amount from the current balance
-        const newBalance = balance - transactionData.amount;
+        const newBalance = Number.parseFloat(balance) - Number.parseFloat(transactionData.amount);
 
         // check if account balance is zero
         if (newBalance < 0) {
@@ -132,7 +132,7 @@ const TransactionService = {
 
       if (/^[0-9]{1,}$/.test(transactionData.amount)) {
         // add the passed in amount from the current balance
-        const newBalance = balance + transactionData.amount;
+        const newBalance = Number.parseFloat(balance) + Number.parseFloat(transactionData.amount);
         const transactionDbData = await dbConnection
           .dbConnect('INSERT into transactions(createdon, type, accountNumber, cashier, amount, oldbalance, newbalance) values($1, $2, $3, $4, $5,$6, $7) RETURNING id, accountnumber, amount, cashier, type',
             [createdOn, 'credit', accountnumber, id, transactionData.amount, balance, newBalance]);
