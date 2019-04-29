@@ -1,18 +1,21 @@
-language: node_js
-node_js:
-  - "8"
-before_install: cd ./server
-install:
-  - npm install
+--- 
 after_success: 
-  - npm run coverage
-cache:
-  directories:
-    - "node_modules"
+  - "npm run coverage"
+before_install: "cd ./server"
+cache: 
+  directories: 
+    - node_modules
 env: 
-  global:
-    - CODECLIMATE_REPO_TOKEN=c14abfc89b0eb06fcb10f480f4b3e47142ac181c60c21f0131b570e72b1fbeb7
-script:
-  - npm run test
-services:
+  global: 
+    - CODECLIMATE_REPO_TOKEN=c09035864cd06d42ffb61e928d0e11e72fec9e76ce651c8898f874f83c28a63a
+    - JWTSECRETKEY=5634
+    - "DB_CONFIG=postgres://xwrxubeu:u4wOQ6oxpvRCK6yWk5qK4rzaiisTPeoN@isilo.db.elephantsql.com:5432/xwrxubeu"
+install: 
+  - "npm install"
+language: node_js
+node_js: 
+  - "8"
+script: 
+  - "npm run test"
+services: 
   - postgresql
