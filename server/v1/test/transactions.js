@@ -74,7 +74,7 @@ describe('Testing Transactions Controller', () => {
           .post('/api/v1/transactions/3404704124/debit')
           .set('Authorization', `Bearer ${token}`)
           .send({
-            amount: 500,
+            amount: 5000,
           });
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equal(422);
