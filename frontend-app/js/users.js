@@ -119,7 +119,7 @@ const getUsersApi = (url) => {
       return data1;
     });
 };
-getUsersApi(`${api}/v1/users/clients`);
+getUsersApi(`${api}/v1/users/clients?limit=${limitSelect.value}`);
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();

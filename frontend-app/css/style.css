@@ -441,10 +441,6 @@ body,
             Form
     ==========================
 */
-.form-group:not(:first-child) {
-  margin: .5rem 0;
-}
-
 .form-label {
   display: block;
   font-size: var(--ten-pexels);
@@ -740,10 +736,10 @@ body,
 .showcase-header {
   color: var(--color-blue);
   display: flex;
-  height: 3.5rem;
+  height: 3rem;
   align-items: center;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 1rem 2rem;
 }
 
 .showcase-logo {
@@ -793,7 +789,7 @@ body,
   text-align: left;
   display: flex;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem 2rem;
 }
 
 .showcase-body-left {
@@ -835,7 +831,7 @@ body,
   color: var(--color-blue);
   font-size: var(--ten-pexels);
   display: flex;
-  height: 3.5rem;
+  height: 3rem;
   align-items: center;
   justify-content: center;
 }
@@ -1112,6 +1108,39 @@ body,
 
 .none {
   display: none;
+}
+
+/*
+    =======================
+            Loader
+    =======================
+*/
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 5000;
+  background-color: var(--color-black);
+  opacity: .5;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+    =======================
+            Error
+    =======================
+*/
+.errorfname,
+.errorlname,
+.erroremail,
+.errorpassword {
+  color: var(--color-red-2);
+  font-size: .8rem;
+  min-height: 1rem;
 }
 
 /*
