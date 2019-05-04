@@ -6,8 +6,11 @@ const email = document.querySelector('#email');
 const password = document.querySelector('#password');
 const errorEmail = document.querySelector('.erroremail');
 const errorPassword = document.querySelector('.errorpassword');
+const togglePassword = document.querySelector('.toggle-password-button');
 const submit = document.querySelector('#submit');
 const loader = document.querySelector('#loader');
+const see = document.querySelector('#see');
+const unsee = document.querySelector('#unsee');
 let emailPassed, passwordPassed;
 const date = new Date();
 const login = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -82,5 +85,19 @@ submit.addEventListener('click', (e) => {
       password: password.value,
     };
     postApi(`${api}/auth/signin`, signinData);
+  }
+});
+
+togglePassword.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  if (password.type === 'password') {
+    password.type = 'text';
+    see.style.display = 'block';
+    unsee.style.display = 'none';
+  } else {
+    password.type = 'password';
+    see.style.display = 'none';
+    unsee.style.display = 'block';
   }
 });
