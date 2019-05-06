@@ -41,10 +41,7 @@
               <a href="./users.html" class="sidebar-link">Users</a>
             </li>
             <li class="sidebar-item admin sidebar-item-active">
-              <a href="staffs.html" class="sidebar-link">Staffs</a>
-            </li>
-            <li class="sidebar-item admin">
-              <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
+              <a href="staffs.html" class="sidebar-link">Staff</a>
             </li>
             <li class="sidebar-item staff admin">
               <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
@@ -142,6 +139,12 @@
                   <input type="submit" id="go" class="btn-go" value="Go">
                 </form>
               </div>
+
+              <div class="card">
+                <form action="" class="accounts-form">
+                  <input type="submit" id="add-staff" class="btn-go" value="Add Staff">
+                </form>
+              </div>
             </div>
           </div>
           <div class="card user-table">
@@ -159,6 +162,82 @@
           </div>
         </main>
       </div>
+
+      <!--Add staff Modal-->
+      <div id="modal2" class="modal2">
+        <div class="modal-content">
+          <div class="card">
+            <h1 class="content-title">Add Staff</h1>
+            <!--Add Staff Form-->
+            <form action="" class="form">
+              <div class="form-group">
+                <label for="firstname" class="form-label">First Name</label>
+                <input type="text" placeholder="First Name" id="firstname" class="form-input">
+                <p class="errorfname"></p>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="form-label">Last Name</label>
+                <input type="text" placeholder="Last Name" id="lastname" class="form-input">
+                <p class="errorlname"></p>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" placeholder="Email Address" id="email" class="form-input">
+                <p class="erroremail"></p>
+              </div>
+              <div class="form-group">
+                <label for="selectrole" class="form-label">Choose user role</label>
+                <select class="form-select">
+                  <option value="staff">Staff</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <div class="fom-input">
+                  <input type="password" placeholder="Password" id="password" class="form-input">
+                  <button class="toggle-password-button">
+                    <svg class="toggle-password-icon" id="see">
+                      <use xlink:href="./svg/sprite.svg#icon-eye"></use>
+                    </svg>
+                    <svg class="toggle-password-icon" id="unsee">
+                      <use xlink:href="./svg/sprite.svg#icon-eye-blocked"></use>
+                    </svg>
+                  </button>
+                </div>
+                <p class="errorpassword"></p>
+              </div>
+
+              <input type="submit" id="submit-staff" class="btn btn-block btn-primary" value="Add User">
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!--On Delete Modal-->
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <div class="card onDelete">
+            <h1 class="content-title">Are you sure you want to delete?</h1>
+            <!--Account Name and Balance-->
+            <h4 class="username">Account Name: <span id="username"></span></h4>
+            <!--Status Form-->
+            <form action="" class="form">
+              <div class="tran-btn">
+                <input type="submit" class="debit-btn" id="delete" value="Delete">
+                <input type="submit" class="credit-btn" id="cancel" value="Cancel">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Loader-->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <object data="./svg/loader.svg" type="image/svg+xml" class="loader-icon"></object>
     </div>
   </div>
 

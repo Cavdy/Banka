@@ -271,6 +271,14 @@ body,
   display: none;
 }
 
+.onDelete {
+  height: 9rem;
+  text-align: center;
+}
+
+#username {
+  text-transform: capitalize;
+}
 
 /*
     ====================================
