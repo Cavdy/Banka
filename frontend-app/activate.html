@@ -41,10 +41,7 @@
               <a href="./users.html" class="sidebar-link">Users</a>
             </li>
             <li class="sidebar-item admin">
-              <a href="staffs.html" class="sidebar-link">Staffs</a>
-            </li>
-            <li class="sidebar-item admin">
-              <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
+              <a href="staffs.html" class="sidebar-link">Staff</a>
             </li>
             <li class="sidebar-item staff admin sidebar-item-active">
               <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
@@ -122,8 +119,9 @@
 
         <!--Main Body-->
         <main class="main-body">
-          <p class="errorMessage"></p>
-          <p class="successMessage"></p>
+          <div class="alert alert-success"><span class="successMsg">Success </span><span id="close">X</span></div>
+          <div class="alert alert-danger"><span class="errMsg">Something went wrong. Try again </span><span
+              id="close">X</span></div>
           <!--Accounts Limit-->
           <div class="accountsQuery">
             <div class="queryForm">
@@ -143,7 +141,7 @@
               </div>
             </div>
           </div>
-          <div class="card">
+          <div class="card user-table">
             <h1 class="content-title">Activate / Deactivate Accounts</h1>
             <div class="table">
               <div class="table-row">
@@ -161,29 +159,51 @@
       <!--Status Modal-->
       <div id="modal" class="modal">
         <div class="modal-content">
-          <div class="card">
-            <h1 class="content-title">Account Details</h1>
-            <p class="successMessage"></p>
-            <p class="errMessage"></p>
+          <!-- PATCH -->
+          <div class="card onPatch">
+            <div class="patch">
+              <h1 class="content-title">Account Details</h1>
+              <!--Account Name and Balance-->
+              <h4 class="username">Account Name: <span id="username"></span></h4>
+              <h4 class="username">Account Number: <span id="acnumber"></span></h4>
+              <h4 class="balance">Status: <span id="balance"></span></h4>
+              <!--Status Form-->
+              <form action="" class="form">
+                <div class="form-group">
+                  <label for="selectrole" class="form-label">Choose account status</label>
+                  <select class="form-select">
+                    <option value="active">Active</option>
+                    <option value="dormant">Dormant</option>
+                  </select>
+                </div>
+
+                <input type="submit" id="submit" class="btn btn-block btn-primary" value="Update">
+              </form>
+            </div>
+          </div>
+          <!-- DELETE -->
+          <div class="card onDelete">
+            <h1 class="content-title">Are you sure you want to delete?</h1>
             <!--Account Name and Balance-->
             <h4 class="username">Account Name: <span id="username"></span></h4>
             <h4 class="username">Account Number: <span id="acnumber"></span></h4>
-            <h4 class="balance">Status: <span id="balance"></span></h4>
             <!--Status Form-->
             <form action="" class="form">
-              <div class="form-group">
-                <label for="selectrole" class="form-label">Choose account status</label>
-                <select class="form-select">
-                  <option value="active">Active</option>
-                  <option value="dormant">Dormant</option>
-                </select>
+              <div class="tran-btn">
+                <input type="submit" class="debit-btn" id="delete" value="Delete">
+                <input type="submit" class="credit-btn" id="cancel" value="Cancel">
               </div>
-
-              <input type="submit" id="submit" class="btn btn-block btn-primary" value="Update">
             </form>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!--Loader-->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <object data="./svg/loader.svg" type="image/svg+xml" class="loader-icon"></object>
     </div>
   </div>
 

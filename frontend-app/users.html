@@ -41,10 +41,7 @@
               <a href="./users.html" class="sidebar-link">Users</a>
             </li>
             <li class="sidebar-item admin">
-              <a href="staffs.html" class="sidebar-link">Staffs</a>
-            </li>
-            <li class="sidebar-item admin">
-              <a href="./adduser.html" class="sidebar-link">Create Staffs</a>
+              <a href="staffs.html" class="sidebar-link">Staff</a>
             </li>
             <li class="sidebar-item staff admin">
               <a href="./activate.html" class="sidebar-link">Activate / Deactivate</a>
@@ -159,6 +156,31 @@
           </div>
         </main>
       </div>
+
+      <!--On Delete Modal-->
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <div class="card onDelete">
+            <h1 class="content-title">Are you sure you want to delete?</h1>
+            <!--Account Name and Balance-->
+            <h4 class="username">Account Name: <span id="username"></span></h4>
+            <!--Status Form-->
+            <form action="" class="form">
+              <div class="tran-btn">
+                <input type="submit" class="debit-btn" id="delete" value="Delete">
+                <input type="submit" class="credit-btn" id="cancel" value="Cancel">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Loader-->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <object data="./svg/loader.svg" type="image/svg+xml" class="loader-icon"></object>
     </div>
   </div>
 

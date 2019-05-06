@@ -230,12 +230,14 @@ body,
   background-color: var(--color-grey);
 }
 
-.search-form-button {
+.search-form-button,
+.toggle-password-button {
   border: none;
   background-color: transparent;
 }
 
-.search-form-button:focus {
+.search-form-button:focus,
+.toggle-password-button:focus {
   outline: none;
 }
 
@@ -249,6 +251,34 @@ body,
   fill: var(--color-grey-4);
 }
 
+.fom-input {
+  position: relative;
+}
+
+.toggle-password-button {
+  position: absolute;
+  right: .5rem;
+  top: .4rem;
+}
+
+.toggle-password-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+  fill: var(--color-black);
+}
+
+#see {
+  display: none;
+}
+
+.onDelete {
+  height: 9rem;
+  text-align: center;
+}
+
+#username {
+  text-transform: capitalize;
+}
 
 /*
     ====================================
@@ -441,10 +471,6 @@ body,
             Form
     ==========================
 */
-.form-group:not(:first-child) {
-  margin: .5rem 0;
-}
-
 .form-label {
   display: block;
   font-size: var(--ten-pexels);
@@ -470,6 +496,10 @@ body,
   border-radius: 3px;
   border: 1px solid var(--color-blue);
   font-size: var(--ten-pexels);
+}
+
+.fom-input {
+  display: flex;
 }
 
 /*
@@ -735,15 +765,17 @@ body,
   min-height: 30rem;
   border-radius: 5px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .showcase-header {
   color: var(--color-blue);
   display: flex;
-  height: 3.5rem;
+  height: 3rem;
   align-items: center;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 1rem 2rem;
 }
 
 .showcase-logo {
@@ -793,7 +825,8 @@ body,
   text-align: left;
   display: flex;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem 2rem;
+  margin-bottom: auto;
 }
 
 .showcase-body-left {
@@ -835,7 +868,7 @@ body,
   color: var(--color-blue);
   font-size: var(--ten-pexels);
   display: flex;
-  height: 3.5rem;
+  height: 3rem;
   align-items: center;
   justify-content: center;
 }
@@ -1112,6 +1145,39 @@ body,
 
 .none {
   display: none;
+}
+
+/*
+    =======================
+            Loader
+    =======================
+*/
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 5000;
+  background-color: var(--color-black);
+  opacity: .5;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+    =======================
+            Error
+    =======================
+*/
+.errorfname,
+.errorlname,
+.erroremail,
+.errorpassword {
+  color: var(--color-red-2);
+  font-size: .8rem;
+  min-height: 1rem;
 }
 
 /*

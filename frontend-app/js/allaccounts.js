@@ -7,6 +7,7 @@ const errMsg = document.querySelector('.errMsg');
 const userTable = document.querySelector('.user-table');
 const queryForm = document.querySelector('.queryForm');
 const search = document.querySelector('#search');
+const loader = document.querySelector('#loader');
 
 // DELETE FETCH REQUEST FOR ACCOUNTS
 const deleteApi = (url) => {
@@ -22,7 +23,20 @@ const deleteApi = (url) => {
     redirect: 'follow',
     referrer: 'no-referrer',
   })
-    .then(response => response.json());
+    .then(response => response.json())
+    .then((data) => {
+      const cModal = document.querySelector('.modal');
+      if (data.status === 200) {
+        loader.style.display = 'none';
+        cModal.style.visibility = 'hidden';
+        cModal.style.opacity = '0';
+        successMsg.parentElement.style.display = 'flex';
+        successMsg.innerHTML = 'Account successfully deleted';
+        setInterval(() => {
+          location.reload(true);
+        }, 3000);
+      }
+    });
 };
 
 // GET FETCH API REQUEST TO GET ALL ACCOUNTS OF A USER
@@ -41,11 +55,13 @@ const getAccountsApi = (url) => {
   })
     .then((response) => {
       if (response.status === 403) {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'flex';
         userTable.style.display = 'none';
         queryForm.style.display = 'none';
         errMsg.innerHTML = 'you must be logged in to view accounts';
       } else {
+        loader.style.display = 'none';
         userTable.style.display = 'block';
         queryForm.style.display = 'flex';
         errMsg.parentElement.style.display = 'none';
@@ -55,11 +71,13 @@ const getAccountsApi = (url) => {
     })
     .then((data1) => {
       if (data1.status === 401) {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'flex';
         userTable.style.display = 'none';
         queryForm.style.display = 'none';
         errMsg.innerHTML = 'you must be an admin or staff to view accounts';
       } else {
+        loader.style.display = 'none';
         userTable.style.display = 'block';
         queryForm.style.display = 'flex';
         errMsg.parentElement.style.display = 'none';
@@ -84,6 +102,7 @@ const getAccountsApi = (url) => {
           const aDeleteAccount = document.createElement('a');
           aDeleteAccount.href = '#';
           aDeleteAccount.className = 'deactivate-btn';
+          aDeleteAccount.id = 'show-modal';
           aDeleteAccount.innerHTML = 'Delete';
           deleteAccount.appendChild(aDeleteAccount);
           tableRow.appendChild(accountNumber);
@@ -94,24 +113,67 @@ const getAccountsApi = (url) => {
           table.appendChild(tableRow);
         });
 
-        // DELETE
-        const dels = document.querySelectorAll('.deactivate-btn');
-        dels.forEach((del) => {
-          del.addEventListener('click', (e) => {
-            const acnumber = e.target.parentElement.parentElement.children[0].innerHTML;
-            deleteApi(`${api}/v1/accounts/${acnumber}`);
-            e.target.parentElement.parentElement.remove();
-            successMsg.parentElement.style.display = 'flex';
-            successMsg.innerHTML = 'Account successfully deleted';
-            setInterval(() => {
-              location.reload(true);
-            }, 3000);
+        // show modal
+        const showModal = document.querySelectorAll('#show-modal');
+        const acName = document.querySelectorAll('#username');
+        const acNumber = document.querySelectorAll('#acnumber');
+
+        const modalFunction = (modalClick, modalIn, modalId) => {
+          if (modalClick) {
+            const mModal = document.querySelector(modalIn);
+
+            modalClick.forEach((modal) => {
+              modal.addEventListener('click', (e) => {
+                mModal.style.visibility = 'visible';
+                mModal.style.opacity = '1';
+                if (e.target.parentElement.parentElement) {
+                  const ACNumber = e.target.parentElement.parentElement.children[0].innerHTML;
+                  const ACName = e.target.parentElement.parentElement.children[1].innerHTML;
+                  acName.forEach((name) => {
+                    name.innerHTML = ACName;
+                  });
+                  acNumber.forEach((number) => {
+                    number.innerHTML = ACNumber;
+                  });
+
+                  const del = document.querySelector('#delete');
+                  const cancel = document.querySelector('#cancel');
+
+                  del.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    deleteApi(`${api}/v1/accounts/${ACNumber}`);
+                    e.target.parentElement.parentElement.remove();
+                    loader.style.display = 'flex';
+                  });
+
+                  cancel.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const cModal = document.querySelector(modalIn);
+                    cModal.style.visibility = 'hidden';
+                    cModal.style.opacity = '0';
+                  });
+                }
+              });
+            });
+          }
+
+          window.addEventListener('click', (e) => {
+            const modal = document.querySelector(modalId);
+            const cModal = document.querySelector(modalIn);
+            if (e.target === modal) {
+              cModal.style.visibility = 'hidden';
+              cModal.style.opacity = '0';
+            }
           });
-        });
+        };
+
+        modalFunction(showModal, '.modal', '#modal');
       }
       return data1;
     });
 };
+
+loader.style.display = 'flex';
 getAccountsApi(`${api}/v1/accounts?limit=${limitSelect.value}`);
 
 // GET FETCH API REQUEST TO GET A SPECIFIC ACCOUNT OF A USER
@@ -130,11 +192,13 @@ const getSpecficAccountApi = (url) => {
   })
     .then((response) => {
       if (response.status === 403) {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'flex';
         userTable.style.display = 'none';
         queryForm.style.display = 'none';
         errMsg.innerHTML = 'you must be logged in to view accounts';
       } else {
+        loader.style.display = 'none';
         userTable.style.display = 'block';
         queryForm.style.display = 'flex';
         errMsg.parentElement.style.display = 'none';
@@ -144,16 +208,19 @@ const getSpecficAccountApi = (url) => {
     })
     .then((data1) => {
       if (data1.status === 401) {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'flex';
         userTable.style.display = 'none';
         queryForm.style.display = 'none';
         errMsg.innerHTML = 'you must be an admin or staff to view accounts';
       } else if (data1.status === 404) {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'flex';
         userTable.style.display = 'none';
         queryForm.style.display = 'none';
         errMsg.innerHTML = 'no account found';
       } else {
+        loader.style.display = 'none';
         userTable.style.display = 'block';
         queryForm.style.display = 'flex';
         errMsg.parentElement.style.display = 'none';
@@ -178,6 +245,7 @@ const getSpecficAccountApi = (url) => {
         const aDeleteAccount = document.createElement('a');
         aDeleteAccount.href = '#';
         aDeleteAccount.className = 'deactivate-btn';
+        aDeleteAccount.id = 'show-modal';
         aDeleteAccount.innerHTML = 'Delete';
         deleteAccount.appendChild(aDeleteAccount);
         tableRow.appendChild(accountNumber);
@@ -187,20 +255,61 @@ const getSpecficAccountApi = (url) => {
         tableRow.appendChild(deleteAccount);
         table.appendChild(tableRow);
 
-        // DELETE
-        const dels = document.querySelectorAll('.deactivate-btn');
-        dels.forEach((del) => {
-          del.addEventListener('click', (e) => {
-            const acnumber = e.target.parentElement.parentElement.children[0].innerHTML;
-            deleteApi(`${api}/v1/accounts/${acnumber}`);
-            e.target.parentElement.parentElement.remove();
-            successMsg.parentElement.style.display = 'flex';
-            successMsg.innerHTML = 'Account successfully deleted';
-            setInterval(() => {
-              location.reload(true);
-            }, 3000);
+        // show modal
+        const showModal = document.querySelectorAll('#show-modal');
+        const acName = document.querySelectorAll('#username');
+        const acNumber = document.querySelectorAll('#acnumber');
+
+        const modalFunction = (modalClick, modalIn, modalId) => {
+          if (modalClick) {
+            const mModal = document.querySelector(modalIn);
+
+            modalClick.forEach((modal) => {
+              modal.addEventListener('click', (e) => {
+                mModal.style.visibility = 'visible';
+                mModal.style.opacity = '1';
+                if (e.target.parentElement.parentElement) {
+                  const ACNumber = e.target.parentElement.parentElement.children[0].innerHTML;
+                  const ACName = e.target.parentElement.parentElement.children[1].innerHTML;
+                  acName.forEach((name) => {
+                    name.innerHTML = ACName;
+                  });
+                  acNumber.forEach((number) => {
+                    number.innerHTML = ACNumber;
+                  });
+
+                  const del = document.querySelector('#delete');
+                  const cancel = document.querySelector('#cancel');
+
+                  del.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    deleteApi(`${api}/v1/accounts/${ACNumber}`);
+                    e.target.parentElement.parentElement.remove();
+                    loader.style.display = 'flex';
+                  });
+
+                  cancel.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const cModal = document.querySelector(modalIn);
+                    cModal.style.visibility = 'hidden';
+                    cModal.style.opacity = '0';
+                  });
+                }
+              });
+            });
+          }
+
+          window.addEventListener('click', (e) => {
+            const modal = document.querySelector(modalId);
+            const cModal = document.querySelector(modalIn);
+            if (e.target === modal) {
+              cModal.style.visibility = 'hidden';
+              cModal.style.opacity = '0';
+            }
           });
-        });
+        };
+
+        modalFunction(showModal, '.modal', '#modal');
 
         return data1;
       }
@@ -213,7 +322,7 @@ go.addEventListener('click', (e) => {
   tableBodies.forEach((tableBody) => {
     tableBody.remove();
   });
-
+  loader.style.display = 'flex';
   getAccountsApi(`${api}/v1/accounts?limit=${limitSelect.value}`);
 });
 
@@ -223,6 +332,6 @@ search.addEventListener('keyup', (e) => {
   tableBodies.forEach((tableBody) => {
     tableBody.remove();
   });
-
+  loader.style.display = 'flex';
   getSpecficAccountApi(`${api}/v1/accounts/${search.value}`);
 });

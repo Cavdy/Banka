@@ -12,6 +12,7 @@ const accountName = document.querySelector('#username');
 const acNumber = document.querySelector('#account-number');
 const accountBalance = document.querySelector('#account-balance');
 const accountType = document.querySelector('#type');
+const loader = document.querySelector('#loader');
 const accountStatus = document.querySelector('#account-status');
 const accountCreated = document.querySelector('#account-created');
 const transactionElement = document.querySelector('.transaction');
@@ -37,15 +38,18 @@ const debitCreditApi = (url, data) => {
     .then(response => response.json())
     .then((data1) => {
       if (data1.status === 422) {
+        loader.style.display = 'none';
         errorMsg.parentElement.style.display = 'flex';
         errorMsg.innerHTML = data1.data;
       } else if (data1.status === 201) {
+        loader.style.display = 'none';
         errorMsg.parentElement.style.display = 'none';
         onSuccess.parentElement.style.display = 'flex';
         onSuccess.innerHTML = 'Transaction was successful';
+        getSpecficAccountApi(`${api}/accounts/${accountNumber.value}`);
         setInterval(() => {
           document.location.reload(true);
-        }, 3000);
+        }, 5000);
       }
     });
 };
@@ -92,13 +96,13 @@ const getSpecficAccountApi = (url) => {
 
         creditBtn.addEventListener('click', (e) => {
           e.preventDefault();
-
+          loader.style.display = 'flex';
           debitCreditApi(`${api}/transactions/${i.accountnumber}/credit`, { amount: amount.value });
         });
 
         debitBtn.addEventListener('click', (e) => {
           e.preventDefault();
-
+          loader.style.display = 'flex';
           debitCreditApi(`${api}/transactions/${i.accountnumber}/debit`, { amount: amount.value });
         });
       }
