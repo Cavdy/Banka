@@ -12,6 +12,7 @@ const accountStatus = document.querySelector('#account-status');
 const accountCreated = document.querySelector('#account-created');
 const firstName = document.querySelector('#firstname');
 const lastLogin = document.querySelector('#lastLogin');
+const loader = document.querySelector('#loader');
 const totalBalance = document.querySelector('.total-balance-amount');
 const accountsElement = document.querySelector('.accounts');
 const dashboard = document.querySelector('.dashboard-wrapper');
@@ -36,6 +37,7 @@ const getAccountApi = (url) => {
   })
     .then((response) => {
       if (response.status === 403) {
+        loader.style.display = 'none';
         errMsg.innerHTML = 'you must be logged in to view accounts, Login <a href="./login.html">here</a>';
         errMsg.parentElement.style.display = 'flex';
       }
@@ -43,6 +45,7 @@ const getAccountApi = (url) => {
       return response.json();
     })
     .then((data1) => {
+      loader.style.display = 'none';
       firstName.innerHTML = data1.data.firstname;
       totalBalance.innerHTML = `#${data1.data.balance}`;
       accountName.innerHTML = `${data1.data.firstname} ${data1.data.lastname}`;
@@ -70,6 +73,7 @@ const getAccountsApi = (url) => {
   })
     .then((response) => {
       if (response.status === 403) {
+        loader.style.display = 'none';
         errMsg.innerHTML = 'you must be logged in to view accounts, Login <a href="./login.html">here</a>';
         errMsg.parentElement.style.display = 'flex';
       } else {
@@ -80,9 +84,11 @@ const getAccountsApi = (url) => {
     })
     .then((data1) => {
       if (data1.status === 404) {
+        loader.style.display = 'none';
         errMsg.innerHTML = 'you don\'t have an account, create <a href="./createaccount.html">one</a>';
         errMsg.parentElement.style.display = 'flex';
       } else {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'none';
         // set the dahsboard hidden
         accountsElement.style.display = 'flex';
@@ -102,6 +108,8 @@ const getAccountsApi = (url) => {
       }
     });
 };
+
+loader.style.display = 'flex';
 getAccountsApi(`${api}/users/${email}/accounts`);
 
 // set the dahsboard hidden
@@ -111,6 +119,7 @@ welcomeUser.style.display = 'none';
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();
+  loader.style.display = 'flex';
   const selected = accountSelect.value;
   getAccountApi(`${api}/accounts/${selected}`);
 });

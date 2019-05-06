@@ -1,13 +1,14 @@
 const token = sessionStorage.getItem('token');
 const api = 'https://bankaapp-api.herokuapp.com/api';
 const limitSelect = document.querySelector('#limit');
+const loader = document.querySelector('#loader');
 const submit = document.querySelector('#go');
 const errMsg = document.querySelector('.errMsg');
 const successMsg = document.querySelector('.successMsg');
 const userTable = document.querySelector('.user-table');
 const queryForm = document.querySelector('.queryForm');
 
-// DELETE FETCH REQUEST FOR USERS
+// DELETE FETCH REQUEST FOR ACCOUNTS
 const deleteApi = (url) => {
   fetch(url, {
     method: 'DELETE',
@@ -21,7 +22,20 @@ const deleteApi = (url) => {
     redirect: 'follow',
     referrer: 'no-referrer',
   })
-    .then(response => response.json());
+    .then(response => response.json())
+    .then((data) => {
+      const cModal = document.querySelector('.modal');
+      if (data.status === 200) {
+        loader.style.display = 'none';
+        cModal.style.visibility = 'hidden';
+        cModal.style.opacity = '0';
+        successMsg.parentElement.style.display = 'flex';
+        successMsg.innerHTML = 'Account successfully deleted';
+        setInterval(() => {
+          location.reload(true);
+        }, 3000);
+      }
+    });
 };
 
 // GET FETCH API REQUEST TO GET ALL ACCOUNTS OF A USER
@@ -40,11 +54,13 @@ const getUsersApi = (url) => {
   })
     .then((response) => {
       if (response.status === 403) {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'flex';
         userTable.style.display = 'none';
         queryForm.style.display = 'none';
         errMsg.innerHTML = 'you must be logged in to view users';
       } else {
+        loader.style.display = 'none';
         userTable.style.display = 'block';
         queryForm.style.display = 'flex';
         errMsg.parentElement.style.display = 'none';
@@ -54,11 +70,13 @@ const getUsersApi = (url) => {
     })
     .then((data1) => {
       if (data1.status === 401) {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'flex';
         userTable.style.display = 'none';
         queryForm.style.display = 'none';
         errMsg.innerHTML = 'you must be an admin or staff to view accounts';
       } else {
+        loader.style.display = 'none';
         userTable.style.display = 'block';
         queryForm.style.display = 'flex';
         errMsg.parentElement.style.display = 'none';
@@ -86,7 +104,7 @@ const getUsersApi = (url) => {
           const aDeleteUser = document.createElement('a');
           aDeleteUser.href = '#';
           aDeleteUser.className = 'delete-btn';
-          aDeleteUser.id = 'delete';
+          aDeleteUser.id = 'show-modal';
           aDeleteUser.innerHTML = 'Delete';
           deleteUser.appendChild(aDeleteUser);
           const newBalnace = document.createElement('div');
@@ -101,25 +119,64 @@ const getUsersApi = (url) => {
           table.appendChild(tableRow);
         });
 
-        // DELETE
-        const dels = document.querySelectorAll('.delete-btn');
-        dels.forEach((del) => {
-          del.addEventListener('click', (e) => {
-            const id = e.target.parentElement.parentElement.children[0].innerHTML;
-            deleteApi(`${api}/v1/users/${id}`);
-            e.target.parentElement.parentElement.remove();
-            successMsg.parentElement.style.display = 'flex';
-            successMsg.innerHTML = 'User successfully deleted';
-            setInterval(() => {
-              location.reload(true);
-            }, 3000);
+        // show modal
+        const showModal = document.querySelectorAll('#show-modal');
+        const acName = document.querySelectorAll('#username');
+
+        const modalFunction = (modalClick, modalIn, modalId) => {
+          if (modalClick) {
+            const mModal = document.querySelector(modalIn);
+
+            modalClick.forEach((modal) => {
+              modal.addEventListener('click', (e) => {
+                mModal.style.visibility = 'visible';
+                mModal.style.opacity = '1';
+                if (e.target.parentElement.parentElement) {
+                  const userID = e.target.parentElement.parentElement.children[0].innerHTML;
+                  const ACName = e.target.parentElement.parentElement.children[1].innerHTML;
+                  acName.forEach((name) => {
+                    name.innerHTML = ACName;
+                  });
+
+                  const del = document.querySelector('#delete');
+                  const cancel = document.querySelector('#cancel');
+
+                  del.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    deleteApi(`${api}/v1/users/${userID}`);
+                    e.target.parentElement.parentElement.remove();
+                    loader.style.display = 'flex';
+                  });
+
+                  cancel.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const cModal = document.querySelector(modalIn);
+                    cModal.style.visibility = 'hidden';
+                    cModal.style.opacity = '0';
+                  });
+                }
+              });
+            });
+          }
+
+          window.addEventListener('click', (e) => {
+            const modal = document.querySelector(modalId);
+            const cModal = document.querySelector(modalIn);
+            if (e.target === modal) {
+              cModal.style.visibility = 'hidden';
+              cModal.style.opacity = '0';
+            }
           });
-        });
+        };
+
+        modalFunction(showModal, '.modal', '#modal');
       }
       return data1;
     });
 };
-getUsersApi(`${api}/v1/users/clients`);
+
+loader.style.display = 'flex';
+getUsersApi(`${api}/v1/users/clients?limit=${limitSelect.value}`);
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();
@@ -128,5 +185,6 @@ submit.addEventListener('click', (e) => {
     tableBody.remove();
   });
 
+  loader.style.display = 'flex';
   getUsersApi(`${api}/v1/users/clients?limit=${limitSelect.value}`);
 });

@@ -6,30 +6,43 @@ const email = document.querySelector('#email');
 const password = document.querySelector('#password');
 const errorEmail = document.querySelector('.erroremail');
 const errorPassword = document.querySelector('.errorpassword');
+const togglePassword = document.querySelector('.toggle-password-button');
 const submit = document.querySelector('#submit');
+const loader = document.querySelector('#loader');
+const see = document.querySelector('#see');
+const unsee = document.querySelector('#unsee');
 let emailPassed, passwordPassed;
 const date = new Date();
 const login = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
-email.addEventListener('keyup', () => {
-  if (!emailRegex.test(email.value)) {
+const emailChecker = () => {
+  if (!emailRegex.test(email.value)
+    || email.value.length === 0
+    || email.value === '') {
     errorEmail.innerHTML = 'invaild email address';
     emailPassed = false;
   } else {
     errorEmail.innerHTML = '';
     emailPassed = true;
   }
-});
+};
+email.addEventListener('keyup', emailChecker);
+submit.addEventListener('click', emailChecker);
 
-password.addEventListener('keyup', () => {
-  if (!passwordRegex.test(password.value)) {
-    errorPassword.innerHTML = 'Password must at least have 1 alphabet, lowercase, uppercase, number and cannot be less than 8';
+const passwordChecker = () => {
+  if (!passwordRegex.test(password.value)
+    || password.value.length === 0
+    || password.value === '') {
+    errorPassword
+      .innerHTML = 'Password must have 1 lowercase, uppercase, number and special character';
     passwordPassed = false;
   } else {
     errorPassword.innerHTML = '';
     passwordPassed = true;
   }
-});
+};
+password.addEventListener('keyup', passwordChecker);
+submit.addEventListener('click', passwordChecker);
 
 // POST FETCH API REQUEST
 const postApi = (url, data) => {
@@ -48,8 +61,10 @@ const postApi = (url, data) => {
     .then(response => response.json())
     .then((data1) => {
       if (data1.status === 422) {
+        loader.style.display = 'none';
         errorPassword.innerHTML = data1.data;
       } else if (data1.status === 404) {
+        loader.style.display = 'none';
         errorEmail.innerHTML = data1.data;
       } else if (data1.status === 201) {
         sessionStorage.setItem('token', data1.data.token);
@@ -64,10 +79,25 @@ const postApi = (url, data) => {
 submit.addEventListener('click', (e) => {
   e.preventDefault();
   if (emailPassed === true && passwordPassed === true) {
+    loader.style.display = 'flex';
     const signinData = {
       email: email.value,
       password: password.value,
     };
     postApi(`${api}/auth/signin`, signinData);
+  }
+});
+
+togglePassword.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  if (password.type === 'password') {
+    password.type = 'text';
+    see.style.display = 'block';
+    unsee.style.display = 'none';
+  } else {
+    password.type = 'password';
+    see.style.display = 'none';
+    unsee.style.display = 'block';
   }
 });

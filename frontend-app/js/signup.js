@@ -12,51 +12,72 @@ const errorLname = document.querySelector('.errorlname');
 const errorEmail = document.querySelector('.erroremail');
 const errorPassword = document.querySelector('.errorpassword');
 const submit = document.querySelector('#submit');
+const loader = document.querySelector('#loader');
 let fnamePassed, lnamePassed, emailPassed, passwordPassed;
+const togglePassword = document.querySelector('.toggle-password-button');
+const see = document.querySelector('#see');
+const unsee = document.querySelector('#unsee');
 const date = new Date();
 const login = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
-firstName.addEventListener('keyup', () => {
-  if (!fnameAndLnameRegex.test(firstName.value)) {
+const fnameChecker = () => {
+  if (!fnameAndLnameRegex.test(firstName.value)
+    || firstName.value.length === 0
+    || firstName.value === '') {
     errorFname.innerHTML = 'first name should at least be 2 characters';
     fnamePassed = false;
   } else {
     errorFname.innerHTML = '';
     fnamePassed = true;
   }
-});
+};
 
-lastName.addEventListener('keyup', () => {
-  if (!fnameAndLnameRegex.test(lastName.value)) {
+firstName.addEventListener('keyup', fnameChecker);
+submit.addEventListener('click', fnameChecker);
+
+const lnameChecker = () => {
+  if (!fnameAndLnameRegex.test(lastName.value)
+    || lastName.value.length === 0
+    || lastName.value === '') {
     errorLname.innerHTML = 'last name should at least be 2 characters';
     lnamePassed = false;
   } else {
     errorLname.innerHTML = '';
     lnamePassed = true;
   }
-});
+};
 
-email.addEventListener('keyup', () => {
-  if (!emailRegex.test(email.value)) {
+lastName.addEventListener('keyup', lnameChecker);
+submit.addEventListener('click', lnameChecker);
+
+const emailChecker = () => {
+  if (!emailRegex.test(email.value)
+    || email.value.length === 0
+    || email.value === '') {
     errorEmail.innerHTML = 'invaild email address';
     emailPassed = false;
   } else {
     errorEmail.innerHTML = '';
     emailPassed = true;
   }
-});
+};
+email.addEventListener('keyup', emailChecker);
+submit.addEventListener('click', emailChecker);
 
-password.addEventListener('keyup', () => {
-  if (!passwordRegex.test(password.value)) {
-    errorPassword.innerHTML = 'Password must at least have 1 alphabet, lowercase, uppercase, number and cannot be less than 8';
+const passwordChecker = () => {
+  if (!passwordRegex.test(password.value)
+    || password.value.length === 0
+    || password.value === '') {
+    errorPassword
+      .innerHTML = 'Password must have 1 lowercase, uppercase, number and special character';
     passwordPassed = false;
   } else {
     errorPassword.innerHTML = '';
     passwordPassed = true;
   }
-});
-
-const modal = document.querySelector('.modal');
+};
+password.addEventListener('keyup', passwordChecker);
+submit.addEventListener('click', passwordChecker);
 
 // POST FETCH API REQUEST
 const postApi = (url, data) => {
@@ -75,10 +96,9 @@ const postApi = (url, data) => {
     .then(response => response.json())
     .then((data1) => {
       if (data1.status === 409) {
+        loader.style.display = 'none';
         errorEmail.innerHTML = data1.data;
       } else if (data1.status === 201) {
-        modal.style.visibility = 'visible';
-        modal.style.opacity = '1';
         setInterval(() => {
           sessionStorage.setItem('token', data1.data.token);
           sessionStorage.setItem('email', data1.data.email);
@@ -96,6 +116,7 @@ submit.addEventListener('click', (e) => {
     && lnamePassed === true
     && emailPassed === true
     && passwordPassed === true) {
+    loader.style.display = 'flex';
     const signupData = {
       firstName: firstName.value,
       lastName: lastName.value,
@@ -103,5 +124,19 @@ submit.addEventListener('click', (e) => {
       password: password.value,
     };
     postApi(`${api}/auth/signup`, signupData);
+  }
+});
+
+togglePassword.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  if (password.type === 'password') {
+    password.type = 'text';
+    see.style.display = 'block';
+    unsee.style.display = 'none';
+  } else {
+    password.type = 'password';
+    see.style.display = 'none';
+    unsee.style.display = 'block';
   }
 });

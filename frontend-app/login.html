@@ -38,7 +38,17 @@
             </div>
             <div class="form-group">
               <label for="password" class="form-label">Password</label>
-              <input type="password" placeholder="Password" id="password" class="form-input">
+              <div class="fom-input">
+                <input type="password" placeholder="Password" id="password" class="form-input">
+                <button class="toggle-password-button">
+                  <svg class="toggle-password-icon" id="see">
+                    <use xlink:href="./svg/sprite.svg#icon-eye"></use>
+                  </svg>
+                  <svg class="toggle-password-icon" id="unsee">
+                    <use xlink:href="./svg/sprite.svg#icon-eye-blocked"></use>
+                  </svg>
+                </button>
+              </div>
               <p class="errorpassword"></p>
             </div>
 
@@ -49,6 +59,13 @@
       <footer class="showcase-footer">
         <p class="right">&copy; 2019 Banka. All Rights Reserved.</p>
       </footer>
+    </div>
+  </div>
+
+  <!--Loader-->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <object data="./svg/loader.svg" type="image/svg+xml" class="loader-icon"></object>
     </div>
   </div>
 

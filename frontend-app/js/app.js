@@ -105,16 +105,28 @@ const getUApi = (url) => {
     redirect: 'follow',
     referrer: 'no-referrer',
   })
-    .then(response => response.json())
+    .then((response) => {
+      if (response.status === 403) {
+        location.replace('./login.html');
+      } else {
+        return response.json();
+      }
+    })
     .then((data1) => {
       const i = data1.data;
       userFname.innerHTML = i.firstname;
       userFname.style.textTransform = 'capitalize';
       if (i.type === 'staff') {
+        if (window.location.pathname === '/frontend-app/dashboard.html') {
+          location.replace('./viewaccounts.html');
+        }
         staffItems.forEach((staffItem) => {
           staffItem.style.display = 'block';
         });
       } else if (i.isadmin === true) {
+        if (window.location.pathname === '/frontend-app/dashboard.html') {
+          location.replace('./viewaccounts.html');
+        }
         adminItems.forEach((adminItem) => {
           adminItem.style.display = 'block';
         });

@@ -3,6 +3,7 @@ const api = 'https://bankaapp-api.herokuapp.com/api';
 const email = sessionStorage.getItem('email');
 const accountSelect = document.querySelector('#account-select');
 const submit = document.querySelector('#ac-go');
+const loader = document.querySelector('#loader');
 const errMsg = document.querySelector('.errMsg');
 
 // GET FETCH API REQUEST TO GET A SPECIFIC ACCOUNT TRANSACTION
@@ -65,10 +66,12 @@ const getTransactionsApi = (url) => {
     .then((data1) => {
       const tableElement = document.querySelector('.tran-table');
       if (data1.status === 404) {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'flex';
         tableElement.style.display = 'none';
         errMsg.innerHTML = 'No transaction found for this account';
       } else {
+        loader.style.display = 'none';
         errMsg.parentElement.style.display = 'none';
         tableElement.style.display = 'block';
         data1.data.map((i) => {
@@ -158,6 +161,7 @@ const getAccountsApi = (url) => {
   })
     .then((response) => {
       if (response.status === 403) {
+        loader.style.display = 'none';
         errMsg.innerHTML = 'you must be logged in to view accounts';
       } else {
         errMsg.innerHTML = '';
@@ -166,8 +170,10 @@ const getAccountsApi = (url) => {
     })
     .then((data1) => {
       if (data1.status === 401) {
-        errMsg.innerHTML = 'you must be an admin or staff to view accounts';
+        loader.style.display = 'none';
+        errMsg.innerHTML = 'you must be logged in to view accounts';
       } else {
+        loader.style.display = 'none';
         data1.data.map((i) => {
           const option = document.createElement('option');
           const attr = document.createAttribute('value');
@@ -181,10 +187,13 @@ const getAccountsApi = (url) => {
       return data1;
     });
 };
+
+loader.style.display = 'flex';
 getAccountsApi(`${api}/v1/users/${email}/accounts`);
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();
+  loader.style.display = 'flex';
   const tableBodies = document.querySelectorAll('.table-body');
   tableBodies.forEach((tableBody) => {
     tableBody.remove();
