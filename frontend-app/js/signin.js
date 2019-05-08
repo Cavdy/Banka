@@ -44,6 +44,73 @@ const passwordChecker = () => {
 password.addEventListener('keyup', passwordChecker);
 submit.addEventListener('click', passwordChecker);
 
+// secretToken from URL
+const urlParams = new URLSearchParams(window.location.search);
+const secretToken = urlParams.get('secret');
+
+// PATCH TO VERIFY ACCOUNT
+const patchApi = (url) => {
+  fetch(url, {
+    method: 'PATCH',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow',
+    referrer: 'no-referrer',
+  })
+    .then(response => response.json())
+    .then((data1) => {
+      const notifyMsg = document.querySelector('.notify-msg');
+      if (data1.status === 422) {
+        notifyMsg.parentElement.classList.add('notify-error', 'notify-show');
+        notifyMsg.innerHTML = 'Invalid secret token. Please check your email';
+        setTimeout(() => {
+          notifyMsg.parentElement.classList.remove('notify-show');
+        }, 5000);
+      } else if (data1.status === 200) {
+        notifyMsg.parentElement.classList.add('notify-success', 'notify-show');
+        notifyMsg.innerHTML = 'Account successfully verified. You can login';
+        setTimeout(() => {
+          notifyMsg.parentElement.classList.remove('notify-show');
+        }, 5000);
+      }
+    });
+};
+
+if (secretToken !== null
+  && secretToken !== '') {
+  patchApi(`${api}/auth/verify/${secretToken}`);
+}
+
+// GET FETCH API REQUEST TO GET A PARTICULAR ACCOUNT INFO
+const getUserApi = (url) => {
+  const token = sessionStorage.getItem('token');
+  fetch(url, {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow',
+    referrer: 'no-referrer',
+  })
+    .then(response => response.json())
+    .then((data1) => {
+      const i = data1.data;
+      if (i.type === 'staff' || i.isadmin === true) {
+        location.replace('./viewaccounts.html');
+      } else if (i.type === 'client' && i.isadmin === false) {
+        location.replace('./dashboard.html');
+      }
+    });
+};
+
 // POST FETCH API REQUEST
 const postApi = (url, data) => {
   fetch(url, {
@@ -80,7 +147,7 @@ const postApi = (url, data) => {
         sessionStorage.setItem('email', data1.data.email);
         sessionStorage.setItem('id', data1.data.id);
         sessionStorage.setItem('login', login);
-        location.replace('./dashboard.html');
+        getUserApi(`${api}/users/${data1.data.id}`);
       }
     });
 };
