@@ -22,6 +22,25 @@ const AuthController = {
   },
 
   /**
+   * Verify user
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   */
+  async verifyUser(req, res) {
+    const { secretToken } = req.params;
+    const verifiedUser = await AuthService.verifyUser(secretToken);
+
+    const data = await statusHelper
+      .statusHelper(req,
+        res,
+        verifiedUser.returnStatus,
+        verifiedUser.returnError,
+        verifiedUser.returnSuccess);
+    return data;
+  },
+
+  /**
    * Signup user
    * @constructor
    * @param {*} req - get request.
