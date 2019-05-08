@@ -60,12 +60,21 @@ const postApi = (url, data) => {
   })
     .then(response => response.json())
     .then((data1) => {
+      const notifyMsg = document.querySelector('.notify-msg');
       if (data1.status === 422) {
         loader.style.display = 'none';
         errorPassword.innerHTML = data1.data;
       } else if (data1.status === 404) {
         loader.style.display = 'none';
         errorEmail.innerHTML = data1.data;
+      } else if (data1.status === 401) {
+        loader.style.display = 'none';
+        notifyMsg.parentElement.classList.add('notify-error', 'notify-show');
+        notifyMsg.innerHTML = 'Account not verified. Please check your email';
+
+        setTimeout(() => {
+          notifyMsg.parentElement.classList.remove('notify-show');
+        }, 5000);
       } else if (data1.status === 201) {
         sessionStorage.setItem('token', data1.data.token);
         sessionStorage.setItem('email', data1.data.email);
