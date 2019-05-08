@@ -117,16 +117,10 @@ const getUApi = (url) => {
       userFname.innerHTML = i.firstname;
       userFname.style.textTransform = 'capitalize';
       if (i.type === 'staff') {
-        if (window.location.pathname === '/frontend-app/dashboard.html') {
-          location.replace('./viewaccounts.html');
-        }
         staffItems.forEach((staffItem) => {
           staffItem.style.display = 'block';
         });
       } else if (i.isadmin === true) {
-        if (window.location.pathname === '/frontend-app/dashboard.html') {
-          location.replace('./viewaccounts.html');
-        }
         adminItems.forEach((adminItem) => {
           adminItem.style.display = 'block';
         });

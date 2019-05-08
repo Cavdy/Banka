@@ -351,7 +351,7 @@ addStaff.addEventListener('click', (e) => {
             firstName: firstName.value,
             lastName: lastName.value,
             email: email.value,
-            type: 'staff',
+            type: 'client',
             password: password.value,
             isAdmin: true,
           };
