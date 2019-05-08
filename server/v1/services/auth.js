@@ -168,13 +168,13 @@ const AuthService = {
             [email, fname, lname, hash, userData.type, userData.isAdmin, 'false', secretToken]);
         if (response.command === 'INSERT') {
           const html = `<div style='width:100%;text-align:center;'>
-              <h2 style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>Welcome to banka ${response.rows[0].lastname} ${response.rows[0].firstname}<h2>
+              <h2 style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>Welcome to Banka ${response.rows[0].lastname} ${response.rows[0].firstname}<h2>
               <br />
-              We are thrilled to have you at banka, below is the link to verify your account
+              We are thrilled to have you at Banka, below is the link to verify your account
               <br /><br />
-              <a style='text-decoration:none;background-color:#2196F3;color:#ffffff;padding:1rem 1.5rem;' href="https://cavdy.github.io/Banka/verify?secret=${secretToken}">Verify</a>
+              <a style='text-decoration:none;background-color:#2196F3;color:#ffffff;padding:1rem 1.5rem;' href="https://cavdy.github.io/Banka/login.html?secret=${secretToken}">Verify</a>
               <br /><br />
-              If you can not click on the button above, copy this link <strong>https://cavdy.github.io/Banka/verify?secret=${secretToken}</strong>
+              If you can not click on the button above, copy this link <strong>https://cavdy.github.io/Banka/login.html?secret=${secretToken}</strong>
               <br /><br />
               Thank You.
             </div>
