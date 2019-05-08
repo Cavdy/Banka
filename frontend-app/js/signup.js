@@ -99,13 +99,18 @@ const postApi = (url, data) => {
         loader.style.display = 'none';
         errorEmail.innerHTML = data1.data;
       } else if (data1.status === 201) {
-        setInterval(() => {
-          sessionStorage.setItem('token', data1.data.token);
-          sessionStorage.setItem('email', data1.data.email);
-          sessionStorage.setItem('id', data1.data.id);
-          sessionStorage.setItem('login', login);
-          location.replace('./createaccount.html');
-        }, 3000);
+        loader.style.display = 'none';
+        const notifyMsg = document.querySelector('.notify-msg');
+        notifyMsg.parentElement.classList.add('notify-success', 'notify-show');
+        notifyMsg.innerHTML = data1.data;
+        firstName.value = '';
+        lastName.value = '';
+        email.value = '';
+        password.value = '';
+
+        setTimeout(() => {
+          notifyMsg.parentElement.classList.remove('notify-show');
+        }, 5000);
       }
     });
 };
