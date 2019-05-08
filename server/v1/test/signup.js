@@ -14,20 +14,26 @@ describe('Testing User Controller', () => {
   before(async () => {
     await dbConnection.dbConnect('DELETE FROM users');
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
-        ['admin@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true]);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
+        ['admin@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true, true, '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
-        ['staff@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', false]);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
+        ['banka872@banka4.com', 'cavdy', 'isaiah', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, true, '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
-        ['deleteguy@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', true]);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
+        ['staff@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', false, true, '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
-        ['deleteguy2@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true]);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
+        ['deleteguy@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', true, true, '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6)',
-        ['deleteguy3@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false]);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
+        ['deleteguy2@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true, true, '']);
+    await dbConnection
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
+        ['deleteguy3@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, true, '']);
+    await dbConnection
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
+        ['unverifiedguy@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, false, '']);
   });
   describe('Testing signup controller', () => {
     const signupUrl = '/api/v1/auth/signup';
@@ -39,16 +45,13 @@ describe('Testing User Controller', () => {
           .send({
             firstName: 'cavdy',
             lastName: 'isaiah',
-            email: 'banka872@banka4.com',
+            email: 'banka874@banka4.com',
             password: 'passworD4@',
           });
         expect(response).to.be.an('object');
         expect(response).to.have.status(201);
-        expect(response.body.data).to.have.property('id');
-        expect(response.body.data).to.have.property('firstName');
-        expect(response.body.data).to.have.property('lastName');
-        expect(response.body.data).to.have.property('email');
-        expect(response.body.data).to.have.property('token');
+        expect(response.body.data)
+          .to.equal('Successfully signed up, check your email for verification');
       },
     );
 
@@ -60,7 +63,7 @@ describe('Testing User Controller', () => {
           .send({
             firstName: 'cavdy',
             lastName: 'isaiah',
-            email: 'banka872@banka4.com',
+            email: 'banka874@banka4.com',
             password: 'passworD4@',
           });
         expect(response).to.be.an('object');
@@ -86,7 +89,7 @@ describe('Testing User Controller', () => {
           .send({
             firstName: 'cavdy',
             lastName: 'isaiah',
-            email: 'banka872@banka4.com',
+            email: 'banka874@banka4.com',
             password: 'passworD4@',
             type: 'staff',
             isAdmin: false,

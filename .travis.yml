@@ -8,8 +8,6 @@ cache:
 env: 
   global: 
     - CODECLIMATE_REPO_TOKEN=c09035864cd06d42ffb61e928d0e11e72fec9e76ce651c8898f874f83c28a63a
-    - JWTSECRETKEY=5634
-    - "DB_CONFIG=postgres://xwrxubeu:u4wOQ6oxpvRCK6yWk5qK4rzaiisTPeoN@isilo.db.elephantsql.com:5432/xwrxubeu"
 install: 
   - "npm install"
 language: node_js

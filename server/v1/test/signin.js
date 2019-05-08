@@ -1,11 +1,19 @@
 import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
+import dbConnection from '../config/database';
 
 import app from '../app';
 
 chai.use(chaiHttp);
 
+let secretToken;
+
 describe('Testing User Controller', () => {
+  before(async () => {
+    secretToken = await dbConnection
+      .dbConnect('SELECT secretToken FROM users WHERE email=$1',
+        ['banka874@banka4.com']);
+  });
   describe('Testing signin controller', () => {
     const signinUrl = '/api/v1/auth/signin';
     it(
@@ -83,6 +91,45 @@ describe('Testing User Controller', () => {
         expect(response.body).to.be.an('object');
         expect(response.body.status).to.equal(422);
         expect(response.body.data).to.equal('incorrect password');
+      },
+    );
+
+    it(
+      'should not login if user/email is not verified',
+      async () => {
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'unverifiedguy@banka.com',
+            password: 'passworD4@',
+          });
+        expect(response.body).to.be.an('object');
+        expect(response.body.status).to.equal(401);
+        expect(response.body.data).to.equal('Your account is not verified');
+      },
+    );
+
+    it(
+      'should verify user if valid',
+      async () => {
+        const response = await chai.request(app)
+          .patch(`/api/v1/auth/verify/${secretToken.rows[0].secrettoken}`)
+          .send();
+        expect(response.body).to.be.an('object');
+        expect(response.body.status).to.equal(200);
+        expect(response.body.data).to.equal('user successfully verified');
+      },
+    );
+
+    it(
+      'should not verify user if not valid',
+      async () => {
+        const response = await chai.request(app)
+          .patch(`/api/v1/auth/verify/${secretToken.rows[0].secretToken}5688rt`)
+          .send();
+        expect(response.body).to.be.an('object');
+        expect(response.body.status).to.equal(422);
+        expect(response.body.data).to.equal('invalid secret token');
       },
     );
 

@@ -1,7 +1,11 @@
 import bcrypt from 'bcryptjs';
+import randomString from 'randomstring';
 import dbConnection from '../config/database';
 import UserModel from '../model/users';
 import registrationHelper from '../helper/registrationHelper';
+import sendEmail from '../config/mailer';
+
+const secretToken = randomString.generate();
 
 const AuthService = {
   /**
@@ -27,15 +31,21 @@ const AuthService = {
         const passwordUnhash = bcrypt
           .compareSync(userData.password, emailresponse.rows[0].password);
         if (passwordUnhash) {
-          // return users details
-          const user = new UserModel();
-          user.id = emailresponse.rows[0].id;
-          user.firstName = emailresponse.rows[0].firstname;
-          user.lastName = emailresponse.rows[0].lastname;
-          user.email = emailresponse.rows[0].email;
-          user.token = token;
-          returnStatus = 201;
-          returnSuccess = user;
+          // if user is verified
+          if (emailresponse.rows[0].verify) {
+            // return users details
+            const user = new UserModel();
+            user.id = emailresponse.rows[0].id;
+            user.firstName = emailresponse.rows[0].firstname;
+            user.lastName = emailresponse.rows[0].lastname;
+            user.email = emailresponse.rows[0].email;
+            user.token = token;
+            returnStatus = 201;
+            returnSuccess = user;
+          } else {
+            returnStatus = 401;
+            returnError = 'Your account is not verified';
+          }
         } else {
           // else echo incorrect password
           returnStatus = 422;
@@ -69,12 +79,43 @@ const AuthService = {
   },
 
   /**
+   * Verify user
+   * @constructor
+   * @param {*} verifyToken - secret token.
+   */
+  async verifyUser(verifyToken) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
+
+    const verifyUser = await dbConnection
+      .dbConnect('SELECT verify FROM users WHERE secretToken=$1',
+        [verifyToken]);
+
+    if (verifyUser.rows.length >= 1) {
+      const updateUser = await dbConnection
+        .dbConnect('UPDATE users SET verify=$1, secretToken=$2 WHERE secretToken=$3',
+          [true, '', verifyToken]);
+      if (updateUser.command === 'UPDATE') {
+        returnStatus = 200;
+        returnSuccess = 'user successfully verified';
+      }
+    } else {
+      returnStatus = 422;
+      returnError = 'invalid secret token';
+    }
+
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
+  },
+
+  /**
    * Register user
    * @constructor
    * @param {*} userData - user form data.
-   * @param {*} token - user's token
    */
-  async registerUser(userData, token) {
+  async registerUser(userData) {
     const returnData = await registrationHelper.registrationHelper(userData);
     let returnStatus; let returnSuccess = ''; let returnError = '';
     const whiteSpaces = /\s/g;
@@ -123,17 +164,27 @@ const AuthService = {
       } else {
         // email does not exist... you can insert data
         const response = await dbConnection
-          .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6) RETURNING id, email, firstname, lastname, password, type, isadmin',
-            [email, fname, lname, hash, userData.type, userData.isAdmin]);
+          .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, email, firstname, lastname, password, type, isadmin, verify',
+            [email, fname, lname, hash, userData.type, userData.isAdmin, 'false', secretToken]);
         if (response.command === 'INSERT') {
-          const user = new UserModel();
-          user.id = response.rows[0].id;
-          user.firstName = response.rows[0].firstname;
-          user.lastName = response.rows[0].lastname;
-          user.email = response.rows[0].email;
-          user.token = token;
+          const html = `<div style='width:100%;text-align:center;'>
+              <h2 style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>Welcome to banka ${response.rows[0].lastname} ${response.rows[0].firstname}<h2>
+              <br />
+              We are thrilled to have you at banka, below is the link to verify your account
+              <br /><br />
+              <a style='text-decoration:none;background-color:#2196F3;color:#ffffff;padding:1rem 1.5rem;' href="https://cavdy.github.io/Banka/verify?secret=${secretToken}">Verify</a>
+              <br /><br />
+              If you can not click on the button above, copy this link <strong>https://cavdy.github.io/Banka/verify?secret=${secretToken}</strong>
+              <br /><br />
+              Thank You.
+            </div>
+            `;
+
+          await sendEmail
+            .sendEmail('do_not_reply@banka.com',
+              response.rows[0].email, 'Verify your email', html);
           returnStatus = 201;
-          returnSuccess = user;
+          returnSuccess = 'Successfully signed up, check your email for verification';
         }
       }
     } else {
