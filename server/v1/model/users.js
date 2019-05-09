@@ -5,5 +5,6 @@ export default class User {
     this.firstName = null;
     this.lastName = null;
     this.token = null;
+    this.secretToken = null;
   }
 }
