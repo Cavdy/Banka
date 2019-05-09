@@ -41,6 +41,45 @@ const AuthController = {
   },
 
   /**
+   * Send Reset
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   */
+  async sendReset(req, res) {
+    const userEmail = req.body;
+    const sendReset = await AuthService.sendReset(userEmail);
+
+    const data = await statusHelper
+      .statusHelper(req,
+        res,
+        sendReset.returnStatus,
+        sendReset.returnError,
+        sendReset.returnSuccess);
+    return data;
+  },
+
+  /**
+   * Forgot Password
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   */
+  async forgotPassword(req, res) {
+    const newPassword = req.body;
+    const { secretToken } = req.params;
+    const forgotPwd = await AuthService.forgotPassword(secretToken, newPassword);
+
+    const data = await statusHelper
+      .statusHelper(req,
+        res,
+        forgotPwd.returnStatus,
+        forgotPwd.returnError,
+        forgotPwd.returnSuccess);
+    return data;
+  },
+
+  /**
    * Signup user
    * @constructor
    * @param {*} req - get request.
