@@ -40,6 +40,7 @@ const AuthService = {
             user.lastName = emailresponse.rows[0].lastname;
             user.email = emailresponse.rows[0].email;
             user.token = token;
+            user.secretToken = emailresponse.rows[0].secrettoken;
             returnStatus = 201;
             returnSuccess = user;
           } else {
@@ -111,6 +112,109 @@ const AuthService = {
   },
 
   /**
+   * Send Reset
+   * @constructor
+   * @param {*} userEmail - user email.
+   */
+  async sendReset(userEmail) {
+    /* eslint max-len: ["error", { "ignoreRegExpLiterals": true }] */
+    const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,10})$/;
+    let returnStatus; let returnSuccess = ''; let returnError = '';
+
+    if (emailRegex.test(userEmail.email)) {
+      const user = await dbConnection
+        .dbConnect('SELECT lastname, email FROM users WHERE email=$1',
+          [userEmail.email]);
+
+      if (user.rows.length > 0) {
+        const updateUser = await dbConnection
+          .dbConnect('UPDATE users SET secretToken=$1 WHERE email=$2',
+            [secretToken, userEmail.email]);
+        if (updateUser.command === 'UPDATE') {
+          const html = `Hi ${user.rows[0].lastname},
+              <br /><br />
+              You requested for a password reset, below is the link to reset your password
+              <br /><br />
+              <a style='text-decoration:none;background-color:#2196F3;color:#ffffff;padding:1rem 1.5rem;' href="https://cavdy.github.io/Banka/forgot.html?reset=${secretToken}">Reset</a>
+              <br /><br />
+              If you can not click on the button above, copy this link <strong>https://cavdy.github.io/Banka/forgot.html?reset=${secretToken}</strong>
+              <br /><br />
+              Please ignore if you didn't request for password reset.
+              <br /><br />
+              Thank You.
+            `;
+
+          await sendEmail
+            .sendEmail('do_not_reply@banka.com',
+              userEmail.email, 'Reset your password', html);
+          returnStatus = 201;
+          returnSuccess = 'reset password has been sent to your mail';
+        }
+      } else {
+        returnStatus = 404;
+        returnError = 'account not found';
+      }
+    } else {
+      returnStatus = 422;
+      returnError = 'invalid email address';
+    }
+
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
+  },
+
+  /**
+   * Forgot password
+   * @constructor
+   * @param {*} verifyToken - secret token.
+   * @param {*} newPassword - user new password.
+   */
+  async forgotPassword(verifyToken, newPassword) {
+    let returnStatus; let returnSuccess = ''; let returnError = '';
+
+    const verifyUser = await dbConnection
+      .dbConnect('SELECT lastname, email FROM users WHERE secretToken=$1',
+        [verifyToken]);
+
+    if (verifyUser.rows.length > 0) {
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(newPassword.password, salt);
+      const updateUser = await dbConnection
+        .dbConnect('UPDATE users SET password=$1, secretToken=$2 WHERE secretToken=$3',
+          [hash, '', verifyToken]);
+      if (updateUser.command === 'UPDATE') {
+        const html = `Hi ${verifyUser.rows[0].lastname},
+        <br /><br />
+        Your password has successfully been reset
+        <br /><br />
+        You can now log in with your new password
+        <br /><br />
+        Thank You.
+      `;
+
+        await sendEmail
+          .sendEmail('do_not_reply@banka.com',
+            verifyUser.rows[0].email, 'Password reset successful', html);
+
+        returnStatus = 200;
+        returnSuccess = 'password reset successful';
+      }
+    } else {
+      returnStatus = 422;
+      returnError = 'invalid secret token';
+    }
+
+    return {
+      returnStatus,
+      returnSuccess,
+      returnError,
+    };
+  },
+
+  /**
    * Register user
    * @constructor
    * @param {*} userData - user form data.
@@ -168,7 +272,10 @@ const AuthService = {
             [email, fname, lname, hash, userData.type, userData.isAdmin, 'false', secretToken]);
         if (response.command === 'INSERT') {
           const html = `<div style='width:100%;text-align:center;'>
-              <h2 style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>Welcome to Banka ${response.rows[0].lastname} ${response.rows[0].firstname}<h2>
+              <div style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>
+                <h2>Welcome to Banka</h2>
+                <h2>${response.rows[0].lastname} ${response.rows[0].firstname}</h2>
+              </div>
               <br />
               We are thrilled to have you at Banka, below is the link to verify your account
               <br /><br />
