@@ -3,8 +3,6 @@ addons:
   chrome: stable
 after_script: 
   - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
-after_success: 
-  - "npm run coverage"
 before_install: "cd ./server"
 before_script: 
   - "npm i -g nyc"
