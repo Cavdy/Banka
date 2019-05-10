@@ -8,7 +8,7 @@
     "start": "node ./server/build/app.js",
     "build": "babel -d ./server/build ./server/v1 -s",
     "dev": "nodemon --exec babel-node ./server/v1/app.js",
-    "test": "nyc --reporter=lcov mocha --timeout 50000 ./server/v1/test/tests.js --recursive --require @babel/register --exit || true",
+    "test": "nyc --reporter=text-lcov mocha --timeout 50000 ./server/v1/test/tests.js --recursive --require @babel/register --exit || true",
     "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
     "coveralls-coverage": "nyc report --reporter=text-lcov | coveralls",
     "coverage": "nyc npm test && npm run coveralls-coverage"
