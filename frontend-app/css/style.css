@@ -231,13 +231,15 @@ body,
 }
 
 .search-form-button,
-.toggle-password-button {
+.toggle-password-button,
+.toggle-password-button2 {
   border: none;
   background-color: transparent;
 }
 
 .search-form-button:focus,
-.toggle-password-button:focus {
+.toggle-password-button:focus,
+.toggle-password-button2:focus {
   outline: none;
 }
 
@@ -255,19 +257,22 @@ body,
   position: relative;
 }
 
-.toggle-password-button {
+.toggle-password-button,
+.toggle-password-button2 {
   position: absolute;
   right: .5rem;
   top: .4rem;
 }
 
-.toggle-password-icon {
+.toggle-password-icon,
+.toggle-password-icon2 {
   height: 1.5rem;
   width: 1.5rem;
   fill: var(--color-black);
 }
 
-#see {
+#see,
+#see2 {
   display: none;
 }
 
@@ -821,6 +826,7 @@ body,
 }
 
 .showcase-body {
+  min-height: 20rem;
   color: var(--color-blue);
   text-align: left;
   display: flex;
@@ -1174,7 +1180,8 @@ body,
 .errorfname,
 .errorlname,
 .erroremail,
-.errorpassword {
+.errorpassword,
+.errorpassword2 {
   color: var(--color-red-2);
   font-size: .8rem;
   min-height: 1rem;
@@ -1211,6 +1218,15 @@ body,
 .notify-show {
   transform: translateY(0rem);
   opacity: 1;
+}
+
+.reset {
+  text-decoration: none;
+  color: var(--color-blue-light-1);
+}
+
+.reset:hover {
+  color: var(--color-blue-2);
 }
 
 /*
