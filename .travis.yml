@@ -1,18 +1,30 @@
 --- 
+addons: 
+  chrome: stable
+after_script: 
+  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 after_success: 
   - "npm run coverage"
 before_install: "cd ./server"
+before_script: 
+  - "npm i -g nyc"
+  - "curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter"
+  - "chmod +x ./cc-test-reporter"
+  - "./cc-test-reporter before-build"
 cache: 
   directories: 
     - node_modules
+dist: trusty
 env: 
   global: 
-    - CODECLIMATE_REPO_TOKEN=c09035864cd06d42ffb61e928d0e11e72fec9e76ce651c8898f874f83c28a63a
+    - CC_TEST_REPORTER_ID=c09035864cd06d42ffb61e928d0e11e72fec9e76ce651c8898f874f83c28a63a
 install: 
   - "npm install"
 language: node_js
 node_js: 
-  - "8"
+  - "8.2.1"
+notifications: 
+  email: true
 script: 
   - "npm run test"
 services: 
