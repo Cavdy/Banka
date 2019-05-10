@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Banka Forgot</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="body">
+  <div class="notify">
+    <h1 class="notify-msg">Test</h1>
+  </div>
+  <div class="showcase">
+    <div class="showcase-content">
+      <header class="showcase-header">
+        <div class="showcase-logo"><a href="./index.html">Banka</a></div>
+        <ul class="showcase-list">
+          <li class="showcase-item">
+            <a href="./login.html" class="showcase-link">Login</a>
+          </li>
+          <li class="showcase-item">
+            <a href="./register.html" class="showcase-link">Register</a>
+          </li>
+        </ul>
+      </header>
+      <main class="showcase-body">
+        <div class="showcase-body-left">
+          <h1 class="showcase-title">
+            Reset your password
+          </h1>
+        </div>
+        <div class="showcase-body-right">
+          <form action="" class="form">
+            <div class="form-group">
+              <label for="password" class="form-label">New Password</label>
+              <div class="fom-input">
+                <input type="password" placeholder="New Password" id="password" class="form-input">
+                <button class="toggle-password-button">
+                  <svg class="toggle-password-icon" id="see">
+                    <use xlink:href="./svg/sprite.svg#icon-eye"></use>
+                  </svg>
+                  <svg class="toggle-password-icon" id="unsee">
+                    <use xlink:href="./svg/sprite.svg#icon-eye-blocked"></use>
+                  </svg>
+                </button>
+              </div>
+              <p class="errorpassword"></p>
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <div class="fom-input">
+                <input type="password" placeholder="Confirm Password" id="confirmPassword" class="form-input">
+                <button class="toggle-password-button2">
+                  <svg class="toggle-password-icon" id="see2">
+                    <use xlink:href="./svg/sprite.svg#icon-eye"></use>
+                  </svg>
+                  <svg class="toggle-password-icon" id="unsee2">
+                    <use xlink:href="./svg/sprite.svg#icon-eye-blocked"></use>
+                  </svg>
+                </button>
+              </div>
+              <p class="errorpassword2"></p>
+            </div>
+
+            <input type="submit" id="submit" class="btn btn-block btn-primary" value="Submit">
+          </form>
+        </div>
+      </main>
+      <footer class="showcase-footer">
+        <p class="right">&copy; 2019 Banka. All Rights Reserved.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!--Loader-->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <object data="./svg/loader.svg" type="image/svg+xml" class="loader-icon"></object>
+    </div>
+  </div>
+
+  <!--Javascript-->
+  <script src="./js/forgot.js"></script>
+</body>
+
+</html>
