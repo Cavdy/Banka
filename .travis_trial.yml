@@ -1,0 +1,19 @@
+--- 
+after_success: 
+  - "npm run coverage"
+before_install: "cd ./server"
+cache: 
+  directories: 
+    - node_modules
+env: 
+  global: 
+    - CODECLIMATE_REPO_TOKEN=c09035864cd06d42ffb61e928d0e11e72fec9e76ce651c8898f874f83c28a63a
+install: 
+  - "npm install"
+language: node_js
+node_js: 
+  - "8"
+script: 
+  - "npm run test"
+services: 
+  - postgresql
