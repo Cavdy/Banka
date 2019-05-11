@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import dbConnection from '../config/database';
 import TransactionModel from '../model/transaction';
+import sendEmail from '../config/mailer';
 
 const TransactionService = {
 
@@ -28,10 +29,10 @@ const TransactionService = {
       // pull accountnumber details from database
       const accountDbData = await dbConnection
         .dbConnect(
-          'SELECT accountnumber, balance FROM accounts WHERE accountnumber=$1',
+          'SELECT accountnumber, balance, email, lastname FROM accounts WHERE accountnumber=$1',
           [accountNumber]
         );
-      const { accountnumber, balance } = accountDbData.rows[0];
+      const { accountnumber, balance, email, lastname } = accountDbData.rows[0];
 
       if (/^[0-9]{1,}$/.test(transactionData.amount)) {
         // substract the passed in amount from the current balance
@@ -59,6 +60,22 @@ const TransactionService = {
             transaction.cashier = transactionDbData.rows[0].cashier;
             transaction.transactionType = transactionDbData.rows[0].type;
             transaction.accountBalance = acBalance.rows[0].balance;
+
+            const html = `Hi ${lastname},
+              <br /><br />
+              Your account has been debited ${transactionData.amount}
+              <br /><br />
+              Your previous balance was ${balance}
+              <br /><br />
+              Your new balance is ${newBalance}
+              <br /><br />
+              Thank You.
+            `;
+
+            await sendEmail
+              .sendEmail('do_not_reply@banka.com',
+                email, 'Debit Alert', html);
+
             returnStatus = 201;
             returnSuccess = transaction;
           }
@@ -125,10 +142,10 @@ const TransactionService = {
       // pull accountnumber details from database
       const accountDbData = await dbConnection
         .dbConnect(
-          'SELECT accountnumber, balance FROM accounts WHERE accountnumber=$1',
+          'SELECT accountnumber, balance, email, lastname FROM accounts WHERE accountnumber=$1',
           [accountNumber]
         );
-      const { accountnumber, balance } = accountDbData.rows[0];
+      const { accountnumber, balance, email, lastname } = accountDbData.rows[0];
 
       if (/^[0-9]{1,}$/.test(transactionData.amount)) {
         // add the passed in amount from the current balance
@@ -148,6 +165,22 @@ const TransactionService = {
           transaction.cashier = transactionDbData.rows[0].cashier;
           transaction.transactionType = transactionDbData.rows[0].type;
           transaction.accountBalance = acBalance.rows[0].balance;
+
+          const html = `Hi ${lastname},
+              <br /><br />
+              Your account has been credited ${transactionData.amount}
+              <br /><br />
+              Your previous balance was ${balance}
+              <br /><br />
+              Your new balance is ${newBalance}
+              <br /><br />
+              Thank You.
+            `;
+
+          await sendEmail
+            .sendEmail('do_not_reply@banka.com',
+              email, 'Credit Alert', html);
+
           returnStatus = 201;
           returnSuccess = transaction;
         }
