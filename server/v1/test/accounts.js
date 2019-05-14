@@ -245,6 +245,28 @@ describe('Testing Accounts Controller', () => {
     );
 
     it(
+      'when a user tries to view an invalid account',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'banka872@banka4.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get('/api/v1/accounts/8758697867544')
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.data)
+          .to.equal('no account found');
+      },
+    );
+
+    it(
       'only admin should access all accounts',
       async () => {
         const signinUrl = '/api/v1/auth/signin';
@@ -459,6 +481,27 @@ describe('Testing Accounts Controller', () => {
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.equal(404);
         expect(res.body.data).to.equal('no transaction found');
+      },
+    );
+
+    it(
+      'when account does not exist',
+      async () => {
+        const signinUrl = '/api/v1/auth/signin';
+        const response = await chai.request(app)
+          .post(signinUrl)
+          .send({
+            email: 'admin@banka.com',
+            password: 'passworD4@',
+          });
+        const { token } = response.body.data;
+        const res = await chai.request(app)
+          .get(`/api/v1/accounts/${acNumber[2]}4499/transactions`)
+          .set('Authorization', `Bearer ${token}`)
+          .send();
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.data).to.equal('account not found');
       },
     );
 
