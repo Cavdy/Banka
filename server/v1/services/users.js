@@ -305,8 +305,8 @@ const UsersServices = {
         } else {
           // email does not exist... you can insert data
           const response = await dbConnection
-            .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin) values($1, $2, $3, $4, $5, $6) RETURNING id, firstname, lastname, email',
-              [userData.email, userData.firstName, userData.lastName, hash, userData.type, userData.isAdmin]);
+            .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, firstname, lastname, email',
+              [userData.email, userData.firstName, userData.lastName, hash, userData.type, userData.isAdmin, true, '', '']);
           if (response.command === 'INSERT') {
             const user = new UserModel();
             user.id = response.rows[0].id;

@@ -3,6 +3,26 @@ import statusHelper from '../helper/statusHelper';
 
 const TransactionController = {
   /**
+   * Get All Transactions
+   * @constructor
+   * @param {*} req - get request.
+   * @param {*} res -get response
+   */
+  async getAllTransactions(req, res) {
+    const queryLimit = req.query.limit;
+    const getTransactions = await TransactionService
+      .getAllTransactions(req.authorizedData, queryLimit);
+
+    const data = await statusHelper
+      .statusHelper(req,
+        res,
+        getTransactions.returnStatus,
+        getTransactions.returnError,
+        getTransactions.returnSuccess);
+    return data;
+  },
+
+  /**
    * Debit Account
    * @constructor
    * @param {*} req - get request.

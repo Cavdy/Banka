@@ -8,7 +8,7 @@
     "start": "node ./server/build/app.js",
     "build": "babel -d ./server/build ./server/v1 -s",
     "dev": "nodemon --exec babel-node ./server/v1/app.js",
-    "test": "nyc --reporter=lcov mocha --timeout 50000 ./server/v1/test/tests.js --recursive --require @babel/register --exit || true",
+    "test": "nyc mocha --timeout 50000 ./server/v1/test/tests.js --recursive --require @babel/register --exit || true",
     "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
     "coveralls-coverage": "nyc report --reporter=text-lcov | coveralls",
     "coverage": "nyc npm test && npm run coveralls-coverage"
@@ -46,6 +46,7 @@
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^8.5.0",
     "mocha": "^6.1.4",
+    "multer": "^1.4.1",
     "nodemailer": "^6.1.1",
     "nodemailer-sendgrid": "^1.0.3",
     "pg": "^7.8.1",
