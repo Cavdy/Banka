@@ -11,7 +11,7 @@ let secretToken2;
 describe('Testing User Controller', () => {
   before(async () => {
     secretToken2 = await dbConnection
-      .dbConnect('SELECT secretToken FROM users WHERE email=$1',
+      .dbConnect('SELECT secrettoken FROM users WHERE email=$1',
         ['banka874@banka4.com']);
   });
   describe('Testing signin controller', () => {

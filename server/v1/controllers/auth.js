@@ -87,8 +87,9 @@ const AuthController = {
    */
   async registerUser(req, res) {
     const userData = req.body;
+    const avatar = req.file;
     const createdUser = await AuthService
-      .registerUser(userData, req.signintoken);
+      .registerUser(userData, avatar);
 
     const data = await statusHelper
       .statusHelper(req,

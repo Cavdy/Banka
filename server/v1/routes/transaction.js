@@ -5,6 +5,9 @@ import TransactionController from '../controllers/transaction';
 const router = express.Router();
 
 // creating our routes
+router.get('/',
+  jwtMiddleware.verifyJwt,
+  TransactionController.getAllTransactions);
 router.get('/:transactionid',
   jwtMiddleware.verifyJwt,
   TransactionController.getSpecificTransaction);

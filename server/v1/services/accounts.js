@@ -89,6 +89,9 @@ const CreateAccountService = {
         if (allAccounts.rows.length > 0) {
           returnStatus = 200;
           returnSuccess = allAccounts.rows;
+        } else {
+          returnStatus = 404;
+          returnError = 'no account found';
         }
       }
     } else {
@@ -168,22 +171,32 @@ const CreateAccountService = {
       .dbConnect('SELECT email from accounts WHERE accountnumber=$1',
         [accountNumber]);
 
-    if (userTransaction.rows.length > 0) {
+    if (userAccount.rows.length > 0) {
       if (userAccount.rows[0].email === loggedIn.email) {
-        returnStatus = 200;
-        // eslint-disable-next-line prefer-destructuring
-        returnSuccess = userTransaction.rows;
+        if (userTransaction.rows.length > 0) {
+          returnStatus = 200;
+          // eslint-disable-next-line prefer-destructuring
+          returnSuccess = userTransaction.rows;
+        } else {
+          returnStatus = 404;
+          returnError = 'no transaction found';
+        }
       } else if (type === 'staff' || isadmin === true) {
-        returnStatus = 200;
-        // eslint-disable-next-line prefer-destructuring
-        returnSuccess = userTransaction.rows;
+        if (userTransaction.rows.length > 0) {
+          returnStatus = 200;
+          // eslint-disable-next-line prefer-destructuring
+          returnSuccess = userTransaction.rows;
+        } else {
+          returnStatus = 404;
+          returnError = 'no transaction found';
+        }
       } else {
         returnStatus = 401;
         returnError = 'sorry you can\'t view another user\'s transactions';
       }
     } else {
       returnStatus = 404;
-      returnError = 'no transaction found';
+      returnError = 'account not found';
     }
 
     return {
