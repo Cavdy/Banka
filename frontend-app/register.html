@@ -33,39 +33,55 @@
           </h1>
         </div>
         <div class="showcase-body-right">
-          <form action="" class="form">
-            <div class="form-group">
-              <label for="firstname" class="form-label">First Name</label>
-              <input type="text" placeholder="First Name" id="firstname" class="form-input">
-              <p class="errorfname"></p>
-            </div>
-            <div class="form-group">
-              <label for="lastname" class="form-label">Last Name</label>
-              <input type="text" placeholder="Last Name" id="lastname" class="form-input">
-              <p class="errorlname"></p>
-            </div>
-            <div class="form-group">
-              <label for="email" class="form-label">Email</label>
-              <input type="text" placeholder="Email Address" id="email" class="form-input">
-              <p class="erroremail"></p>
-            </div>
-            <div class="form-group">
-              <label for="password" class="form-label">Password</label>
-              <div class="fom-input">
-                <input type="password" placeholder="Password" id="password" class="form-input">
-                <button class="toggle-password-button">
-                  <svg class="toggle-password-icon" id="see">
-                    <use xlink:href="./svg/sprite.svg#icon-eye"></use>
-                  </svg>
-                  <svg class="toggle-password-icon" id="unsee">
-                    <use xlink:href="./svg/sprite.svg#icon-eye-blocked"></use>
-                  </svg>
-                </button>
+          <form action="" class="form form-case">
+            <div class="input-form-form">
+              <div class="form-group">
+                <label for="firstname" class="form-label">First Name</label>
+                <input type="text" placeholder="First Name" id="firstname" class="form-input">
+                <p class="errorfname"></p>
               </div>
-              <p class="errorpassword"></p>
+              <div class="form-group">
+                <label for="lastname" class="form-label">Last Name</label>
+                <input type="text" placeholder="Last Name" id="lastname" class="form-input">
+                <p class="errorlname"></p>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" placeholder="Email Address" id="email" class="form-input">
+                <p class="erroremail"></p>
+              </div>
+              <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <div class="fom-input">
+                  <input type="password" placeholder="Password" id="password" class="form-input">
+                  <button class="toggle-password-button">
+                    <svg class="toggle-password-icon" id="see">
+                      <use xlink:href="./svg/sprite.svg#icon-eye"></use>
+                    </svg>
+                    <svg class="toggle-password-icon" id="unsee">
+                      <use xlink:href="./svg/sprite.svg#icon-eye-blocked"></use>
+                    </svg>
+                  </button>
+                </div>
+                <p class="errorpassword"></p>
+              </div>
+  
+              <input type="submit" id="next" class="btn btn-block btn-primary" value="Next">
             </div>
 
-            <input type="submit" id="submit" class="btn btn-block btn-primary" value="Register">
+            <div class="avatar animate-avatar">
+              <div class="avatar-upload">
+                <label for="avatar" class="form-label">Profile Picture</label>
+                <br />
+                <input type="file" name="avatar" id="avatar" accept="image/*">
+                <br /> <br />
+                <p>We accept only .png and .jpg format and shouldn't be more than 5mb</p>
+              </div>
+              <br />
+              <img src="" class="display-avatar" alt="">
+              <br />
+              <input type="submit" id="submit" class="btn btn-block btn-primary" value="Register">
+            </div>
           </form>
         </div>
       </main>
