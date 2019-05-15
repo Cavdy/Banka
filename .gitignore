@@ -62,7 +62,3 @@ typings/
 
 # vs code
 .DS_Store
-
-# ignore upload
-upload
-uploads
