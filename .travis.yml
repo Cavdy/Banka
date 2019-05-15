@@ -16,7 +16,7 @@ cache:
 dist: trusty
 env: 
   global: 
-    - CC_TEST_REPORTER_ID=c09035864cd06d42ffb61e928d0e11e72fec9e76ce651c8898f874f83c28a63a
+    - CC_TEST_REPORTER_ID=9aa8ff7fcdb7e404fbd4a0ff7c5a30f07577fd4e5681de577296a3984e9683dc
 install: 
   - "npm install"
 language: node_js
