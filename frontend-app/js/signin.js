@@ -147,6 +147,7 @@ const postApi = (url, data) => {
         sessionStorage.setItem('email', data1.data.email);
         sessionStorage.setItem('id', data1.data.id);
         sessionStorage.setItem('login', login);
+        sessionStorage.setItem('avatar', data1.data.avatar);
         getUserApi(`${api}/users/${data1.data.id}`);
       }
     });

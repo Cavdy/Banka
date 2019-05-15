@@ -2,6 +2,7 @@ const api = 'https://bankaapp-api.herokuapp.com/api/v1';
 const token = sessionStorage.getItem('token');
 const email = sessionStorage.getItem('email');
 const login = localStorage.getItem('login');
+const avatar = sessionStorage.getItem('avatar');
 const accountSelect = document.querySelector('.accounts-select');
 const submit = document.querySelector('#submit');
 const accountName = document.querySelector('#username');
@@ -18,6 +19,7 @@ const accountsElement = document.querySelector('.accounts');
 const dashboard = document.querySelector('.dashboard-wrapper');
 const welcomeUser = document.querySelector('.welcome-user');
 const errMsg = document.querySelector('.errMsg');
+const pImage = document.querySelector('.user-nav-user-photo');
 
 lastLogin.innerHTML = login;
 
@@ -85,9 +87,12 @@ const getAccountsApi = (url) => {
     .then((data1) => {
       if (data1.status === 404) {
         loader.style.display = 'none';
+        console.log(avatar);
+        pImage.src = `https://bankaapp-api.herokuapp.com/${avatar}`;
         errMsg.innerHTML = 'you don\'t have an account, create <a href="./createaccount.html">one</a>';
         errMsg.parentElement.style.display = 'flex';
       } else {
+        pImage.src = `https://bankaapp-api.herokuapp.com/${avatar}`;
         loader.style.display = 'none';
         errMsg.parentElement.style.display = 'none';
         // set the dahsboard hidden
