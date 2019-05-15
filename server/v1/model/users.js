@@ -6,5 +6,6 @@ export default class User {
     this.lastName = null;
     this.token = null;
     this.secretToken = null;
+    this.avatar = null;
   }
 }

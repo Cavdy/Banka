@@ -20,7 +20,8 @@ const Migration = {
         type VARCHAR(10),
         isAdmin BOOLEAN,
         verify BOOLEAN,
-        secretToken VARCHAR(40)
+        secretToken VARCHAR(40),
+        avatar VARCHAR(200)
       )`;
 
     const accounts = `
@@ -55,8 +56,8 @@ const Migration = {
     await dbConnection.dbConnect(accounts);
     await dbConnection.dbConnect(transactions);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
-        ['admin@banka.com', 'cavdy', 'admin', process.env.ADMIN_PWD, 'client', true, true, '']);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        ['admin@banka.com', 'cavdy', 'admin', process.env.ADMIN_PWD, 'client', true, true, '', '']);
   },
 };
 

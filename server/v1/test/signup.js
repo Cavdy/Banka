@@ -2,6 +2,7 @@ import '@babel/polyfill';
 import chaiHttp from 'chai-http';
 import chai, { expect } from 'chai';
 import dotenv from 'dotenv';
+import path from 'path';
 import dbConnection from '../config/database';
 
 import app from '../app';
@@ -14,26 +15,26 @@ describe('Testing User Controller', () => {
   before(async () => {
     await dbConnection.dbConnect('DELETE FROM users');
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
-        ['admin@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true, true, '']);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        ['admin@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true, true, '', '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
-        ['banka872@banka4.com', 'cavdy', 'isaiah', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, true, '']);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        ['banka872@banka4.com', 'cavdy', 'isaiah', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, true, '', '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
-        ['staff@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', false, true, '']);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        ['staff@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', false, true, '', '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
-        ['deleteguy@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', true, true, '']);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        ['deleteguy@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'staff', true, true, '', '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
-        ['deleteguy2@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true, true, '']);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        ['deleteguy2@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', true, true, '', '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
-        ['deleteguy3@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, true, '']);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        ['deleteguy3@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, true, '', '']);
     await dbConnection
-      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken) values($1, $2, $3, $4, $5, $6, $7, $8)',
-        ['unverifiedguy@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, false, '']);
+      .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        ['unverifiedguy@banka.com', 'cavdy', 'ikenna', '$2a$10$CmmIst1.D3QjaWuafKbBaOuAFu0r9o7xxQY.0SMKiAN.h9z52a2y2', 'client', false, false, '', '']);
   });
   describe('Testing signup controller', () => {
     const signupUrl = '/api/v1/auth/signup';
@@ -42,12 +43,30 @@ describe('Testing User Controller', () => {
       async () => {
         const response = await chai.request(app)
           .post(signupUrl)
-          .send({
-            firstName: 'cavdy',
-            lastName: 'isaiah',
-            email: 'banka874@banka4.com',
-            password: 'passworD4@',
-          });
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .field('firstName', 'Cavdy')
+          .field('lastName', 'Isaiah')
+          .field('email', 'banka874@banka4.com')
+          .field('password', 'passworD4@')
+          .attach('avatar', path.join(__dirname, 'img/preview.png'), 'preview.png');
+        expect(response).to.be.an('object');
+        expect(response).to.have.status(201);
+        expect(response.body.data)
+          .to.equal('Successfully signed up, check your email for verification');
+      },
+    );
+
+    it(
+      'should register a new user but not save avatar if invalid',
+      async () => {
+        const response = await chai.request(app)
+          .post(signupUrl)
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .field('firstName', 'Cavdy')
+          .field('lastName', 'Isaiah')
+          .field('email', 'banka875@banka4.com')
+          .field('password', 'passworD4@')
+          .attach('avatar', path.join(__dirname, 'img/animated.gif'), 'animated.gif');
         expect(response).to.be.an('object');
         expect(response).to.have.status(201);
         expect(response.body.data)
@@ -60,12 +79,12 @@ describe('Testing User Controller', () => {
       async () => {
         const response = await chai.request(app)
           .post(signupUrl)
-          .send({
-            firstName: 'cavdy',
-            lastName: 'isaiah',
-            email: 'banka874@banka4.com',
-            password: 'passworD4@',
-          });
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .field('firstName', 'Cavdy')
+          .field('lastName', 'Isaiah')
+          .field('email', 'banka874@banka4.com')
+          .field('password', 'passworD4@')
+          .attach('avatar', path.join(__dirname, 'img/preview.png'), 'preview.png');
         expect(response).to.be.an('object');
         expect(response).to.have.status(409);
         expect(response.body.data).to.equal('email already exist');
