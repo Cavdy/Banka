@@ -334,7 +334,8 @@ body,
 
 .header .user-nav-user-photo {
   height: 2.5rem;
-  border-radius: 50%;
+  width: 2.5rem;
+  border-radius: 100%;
   margin-right: .5rem;
 }
 
@@ -1227,6 +1228,48 @@ body,
 
 .reset:hover {
   color: var(--color-blue-2);
+}
+
+/*
+    ==========================
+        Animate Form Field
+    ==========================
+*/
+.form-case {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-form-form {
+  transition: transform .8s ease-in-out, opacity .4s ease-in-out, visibility .4s ease-in-out, height .4s ease-in-out;
+}
+.animate-form {
+  transform: scale(-1);
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+}
+
+.avatar {
+  transform: scale(1);
+  transition: all 1s ease-in-out;
+}
+.animate-avatar {
+  visibility: hidden;
+  transform: scale(-1);
+  opacity: .7;
+  height: 0;
+}
+
+.display-avatar {
+  width: 10rem;
+  height: 10rem;
+}
+
+#avatar {
+  width: 100%;
+  border: 1px solid var(--color-blue-2);
+  padding: .5rem 0 .5rem .5rem;
 }
 
 /*
