@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import randomString from 'randomstring';
 import dbConnection from '../config/database';
-import UserModel from '../model/users';
 import registrationHelper from '../helper/registrationHelper';
+import loginHelper from '../helper/loginHelper';
 import sendEmail from '../config/mailer';
 
 
@@ -16,61 +16,55 @@ const AuthService = {
    * @param {*} token - user's token
    */
   async loginUser(userData, token) {
-    /* eslint max-len: ["error", { "ignoreRegExpLiterals": true }] */
-    const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,10})$/;
-    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    const { errors, isValid } = loginHelper.validateInput(userData);
     let returnStatus; let returnSuccess = ''; let returnError = '';
 
-    // Check if email and password is valid
-    if (emailRegex.test(userData.email)
-      && passwordRegex.test(userData.password)) {
-      // check if email, if it exist get the user data
-      const emailresponse = await dbConnection
-        .dbConnect('SELECT * FROM users WHERE email=$1', [userData.email]);
-      if (emailresponse.rows.length > 0) {
-        // Load hash from your password DB.
-        const passwordUnhash = bcrypt
-          .compareSync(userData.password, emailresponse.rows[0].password);
-        if (passwordUnhash) {
-          // if user is verified
-          if (emailresponse.rows[0].verify) {
-            // return users details
-            const user = new UserModel();
-            user.id = emailresponse.rows[0].id;
-            user.firstName = emailresponse.rows[0].firstname;
-            user.lastName = emailresponse.rows[0].lastname;
-            user.email = emailresponse.rows[0].email;
-            user.token = token;
-            user.secretToken = emailresponse.rows[0].secrettoken;
-            user.avatar = emailresponse.rows[0].avatar;
-            returnStatus = 201;
-            returnSuccess = user;
-          } else {
-            returnStatus = 401;
-            returnError = 'Your account is not verified';
-          }
+    if (!isValid) {
+      returnStatus = 422;
+      returnError = errors;
+      return {
+        returnStatus,
+        returnSuccess,
+        returnError,
+      };
+    }
+
+    // check if email, if it exist get the user data
+    const emailresponse = await dbConnection
+      .dbConnect('SELECT * FROM users WHERE email=$1', [userData.email]);
+    if (emailresponse.rows.length > 0) {
+    // Load hash from your password DB.
+      const passwordUnhash = bcrypt
+        .compareSync(userData.password, emailresponse.rows[0].password);
+      if (passwordUnhash) {
+      // if user is verified
+        if (emailresponse.rows[0].verify) {
+        // return users details
+          const user = {};
+          user.user = {};
+          user.user.id = emailresponse.rows[0].id;
+          user.user.firstName = emailresponse.rows[0].firstname;
+          user.user.lastName = emailresponse.rows[0].lastname;
+          user.user.email = emailresponse.rows[0].email;
+          user.user.token = token;
+          user.user.avatar = emailresponse.rows[0].avatar;
+          returnStatus = 201;
+          returnSuccess = user;
         } else {
-          // else echo incorrect password
-          returnStatus = 422;
-          returnError = 'incorrect password';
+          returnStatus = 401;
+          errors.notValid = 'Your account is not verified';
+          returnError = errors;
         }
       } else {
-        returnStatus = 404;
-        returnError = 'email does not exist';
+      // else echo incorrect password
+        returnStatus = 422;
+        errors.password = 'incorrect password';
+        returnError = errors;
       }
     } else {
-      const error = [];
-      if (!emailRegex.test(userData.email)) {
-        returnStatus = 422;
-        error.push('invalid email address');
-      }
-
-      if (!passwordRegex.test(userData.password)) {
-        returnStatus = 422;
-        error
-          .push('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
-      }
-      returnError = error;
+      returnStatus = 404;
+      errors.email = 'email does not exist';
+      returnError = errors;
     }
 
 
@@ -100,23 +94,23 @@ const AuthService = {
         .dbConnect('UPDATE users SET verify=$1, secretToken=$2 WHERE secretToken=$3',
           [true, '', vToken]);
       if (updateUser.command === 'UPDATE') {
-        const html = `<div style='width:100%;text-align:center;'>
-              <div style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>
-                <h2>Welcome to Banka</h2>
-                <h2>${verifyUser.rows[0].lastname} ${verifyUser.rows[0].firstname}</h2>
-              </div>
-              <br />
-              We are happy to have you as part of the family.
-              <br /><br />
-              Please if you have any issues, do contact our customer care services
-              <br /><br />
-              Thank You.
-            </div>
-            `;
+        // const html = `<div style='width:100%;text-align:center;'>
+        //       <div style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>
+        //         <h2>Welcome to Banka</h2>
+        //         <h2>${verifyUser.rows[0].lastname} ${verifyUser.rows[0].firstname}</h2>
+        //       </div>
+        //       <br />
+        //       We are happy to have you as part of the family.
+        //       <br /><br />
+        //       Please if you have any issues, do contact our customer care services
+        //       <br /><br />
+        //       Thank You.
+        //     </div>
+        //     `;
 
-        await sendEmail
-          .sendEmail('do_not_reply@banka.com',
-            verifyUser.rows[0].email, 'Welcome to Banka', html);
+        // await sendEmail
+        //   .sendEmail('do_not_reply@banka.com',
+        //     verifyUser.rows[0].email, 'Welcome to Banka', html);
         returnStatus = 200;
         returnSuccess = 'user successfully verified';
       }
@@ -245,7 +239,7 @@ const AuthService = {
    * @param {*} avatar - profile image.
    */
   async registerUser(userData, avatar) {
-    const returnData = await registrationHelper.registrationHelper(userData);
+    const { errors, isValid } = registrationHelper.validateInput(userData);
     let returnStatus; let returnSuccess = ''; let returnError = '';
     const whiteSpaces = /\s/g;
 
@@ -254,6 +248,16 @@ const AuthService = {
     let lname;
     let password;
     let mAvatar;
+
+    if (!isValid) {
+      returnStatus = 422;
+      returnError = errors;
+      return {
+        returnStatus,
+        returnSuccess,
+        returnError,
+      };
+    }
 
     // strip spaces
     if (typeof userData.email !== 'undefined') {
@@ -283,52 +287,46 @@ const AuthService = {
       mAvatar = '';
     }
 
-    if (returnData[0] === true
-      && returnData[1] === true
-      && returnData[2] === true
-      && returnData[3] === true) {
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(password, salt);
-      userData.type = 'client';
-      userData.isAdmin = false;
-      // checks if email exist
-      const emailresponse = await dbConnection
-        .dbConnect('SELECT email FROM users WHERE email=$1',
-          [email]);
-      if (emailresponse.rows.length >= 1) {
-        returnStatus = 409;
-        returnError = 'email already exist';
-      } else {
-        // email does not exist... you can insert data
-        const response = await dbConnection
-          .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING email, firstname, lastname',
-            [email, fname, lname, hash, userData.type, userData.isAdmin, 'false', secretToken, mAvatar]);
-        if (response.command === 'INSERT') {
-          const html = `Hi ${response.rows[0].lastname},
-            <br /><br />
-            Thank you for registering with us, below is your verification key
-            <br /><br />
-            <a style='text-decoration:none;background-color:#2196F3;color:#ffffff;padding:1rem 1.5rem;' href="https://cavdy.github.io/Banka/login.html?secret=${secretToken}">Verify</a>
-            <br /><br />
-            If you can not click on the button above, copy this link <strong>https://cavdy.github.io/Banka/login.html?secret=${secretToken}</strong>
-            <br /><br />
-            Please we will never ask you for this verification key, do not share it with anyone.
-            <br /><br />
-            Thank You.
-          `;
-
-          await sendEmail
-            .sendEmail('do_not_reply@banka.com',
-              response.rows[0].email, 'Verify your email', html);
-          returnStatus = 201;
-          returnSuccess = 'Successfully signed up, check your email for verification';
-        }
-      }
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    userData.type = 'client';
+    userData.isAdmin = false;
+    // checks if email exist
+    const emailresponse = await dbConnection
+      .dbConnect('SELECT email FROM users WHERE email=$1',
+        [email]);
+    if (emailresponse.rows.length >= 1) {
+      returnStatus = 409;
+      errors.email = 'email already exist';
+      returnError = errors;
     } else {
-      returnStatus = 422;
-      // eslint-disable-next-line prefer-destructuring
-      returnError = returnData[4];
+      // email does not exist... you can insert data
+      const response = await dbConnection
+        .dbConnect('INSERT into users(email, firstName, lastName, password, type, isAdmin, verify, secretToken, avatar) values($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING email, firstname, lastname',
+          [email, fname, lname, hash, userData.type, userData.isAdmin, 'false', secretToken, mAvatar]);
+          
+      if (response.command === 'INSERT') {
+        // const html = `Hi ${response.rows[0].lastname},
+        //     <br /><br />
+        //     Thank you for registering with us, below is your verification key
+        //     <br /><br />
+        //     <a style='text-decoration:none;background-color:#2196F3;color:#ffffff;padding:1rem 1.5rem;' href="https://cavdy.github.io/Banka/login.html?secret=${secretToken}">Verify</a>
+        //     <br /><br />
+        //     If you can not click on the button above, copy this link <strong>https://cavdy.github.io/Banka/login.html?secret=${secretToken}</strong>
+        //     <br /><br />
+        //     Please we will never ask you for this verification key, do not share it with anyone.
+        //     <br /><br />
+        //     Thank You.
+        //   `;
+
+        // await sendEmail
+        //   .sendEmail('do_not_reply@banka.com',
+        //     response.rows[0].email, 'Verify your email', html);
+        returnStatus = 201;
+        returnSuccess = 'Successfully signed up, check your email for verification';
+      }
     }
+
     return {
       returnStatus,
       returnSuccess,
