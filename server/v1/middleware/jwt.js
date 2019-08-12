@@ -38,18 +38,18 @@ const jwtMiddleware = {
    * @param {*} next - run next
    */
   signinJwt(req, res, next) {
-    jwt.sign(req.body, process.env.JWTSECRETKEY, async (err, token) => {
-      if (err) {
-        return statusHelper
-          .statusHelper(req,
-            res,
-            403,
-            'you are not logged in',
-            '');
-      }
-      req.signintoken = token;
-      return next();
-    });
+    let payload;
+    if (req.body.email !== undefined && req.body.email !== '') payload = { email: req.body.email };
+    jwt.sign(payload,
+      process.env.JWTSECRETKEY,
+      { expiresIn: '24h' },
+      async (err, token) => {
+        if (err) {
+          return next();
+        }
+        req.signintoken = token;
+        return next();
+      });
   },
 
   /**
