@@ -46,6 +46,8 @@ const AuthService = {
           user.user.firstName = emailresponse.rows[0].firstname;
           user.user.lastName = emailresponse.rows[0].lastname;
           user.user.email = emailresponse.rows[0].email;
+          user.user.type = emailresponse.rows[0].type;
+          user.user.isAdmin = emailresponse.rows[0].isadmin;
           user.user.token = token;
           user.user.avatar = emailresponse.rows[0].avatar;
           returnStatus = 201;
@@ -94,23 +96,23 @@ const AuthService = {
         .dbConnect('UPDATE users SET verify=$1, secretToken=$2 WHERE secretToken=$3',
           [true, '', vToken]);
       if (updateUser.command === 'UPDATE') {
-        // const html = `<div style='width:100%;text-align:center;'>
-        //       <div style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>
-        //         <h2>Welcome to Banka</h2>
-        //         <h2>${verifyUser.rows[0].lastname} ${verifyUser.rows[0].firstname}</h2>
-        //       </div>
-        //       <br />
-        //       We are happy to have you as part of the family.
-        //       <br /><br />
-        //       Please if you have any issues, do contact our customer care services
-        //       <br /><br />
-        //       Thank You.
-        //     </div>
-        //     `;
+        const html = `<div style='width:100%;text-align:center;'>
+              <div style='color:#2196F3;background-color:#2196F3;color:#ffffff;padding:2rem 0;'>
+                <h2>Welcome to Banka</h2>
+                <h2>${verifyUser.rows[0].lastname} ${verifyUser.rows[0].firstname}</h2>
+              </div>
+              <br />
+              We are happy to have you as part of the family.
+              <br /><br />
+              Please if you have any issues, do contact our customer care services
+              <br /><br />
+              Thank You.
+            </div>
+            `;
 
-        // await sendEmail
-        //   .sendEmail('do_not_reply@banka.com',
-        //     verifyUser.rows[0].email, 'Welcome to Banka', html);
+        await sendEmail
+          .sendEmail('do_not_reply@banka.com',
+            verifyUser.rows[0].email, 'Welcome to Banka', html);
         returnStatus = 200;
         returnSuccess = 'user successfully verified';
       }
@@ -306,22 +308,22 @@ const AuthService = {
           [email, fname, lname, hash, userData.type, userData.isAdmin, 'false', secretToken, mAvatar]);
           
       if (response.command === 'INSERT') {
-        // const html = `Hi ${response.rows[0].lastname},
-        //     <br /><br />
-        //     Thank you for registering with us, below is your verification key
-        //     <br /><br />
-        //     <a style='text-decoration:none;background-color:#2196F3;color:#ffffff;padding:1rem 1.5rem;' href="https://cavdy.github.io/Banka/login.html?secret=${secretToken}">Verify</a>
-        //     <br /><br />
-        //     If you can not click on the button above, copy this link <strong>https://cavdy.github.io/Banka/login.html?secret=${secretToken}</strong>
-        //     <br /><br />
-        //     Please we will never ask you for this verification key, do not share it with anyone.
-        //     <br /><br />
-        //     Thank You.
-        //   `;
+        const html = `Hi ${response.rows[0].lastname},
+            <br /><br />
+            Thank you for registering with us, below is your verification key
+            <br /><br />
+            <a style='text-decoration:none;background-color:#2196F3;color:#ffffff;padding:1rem 1.5rem;' href="https://ah-banka.herokuapp.com/login?secret=${secretToken}">Verify</a>
+            <br /><br />
+            If you can not click on the button above, copy this link <strong>https://ah-banka.herokuapp.com/login?secret=${secretToken}</strong>
+            <br /><br />
+            Please we will never ask you for this verification key, do not share it with anyone.
+            <br /><br />
+            Thank You.
+          `;
 
-        // await sendEmail
-        //   .sendEmail('do_not_reply@banka.com',
-        //     response.rows[0].email, 'Verify your email', html);
+        await sendEmail
+          .sendEmail('do_not_reply@banka.com',
+            response.rows[0].email, 'Verify your email', html);
         returnStatus = 201;
         returnSuccess = 'Successfully signed up, check your email for verification';
       }
