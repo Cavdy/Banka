@@ -143,12 +143,12 @@ const postApi = (url, data) => {
           notifyMsg.parentElement.classList.remove('notify-show');
         }, 5000);
       } else if (data1.status === 201) {
-        sessionStorage.setItem('token', data1.data.token);
-        sessionStorage.setItem('email', data1.data.email);
-        sessionStorage.setItem('id', data1.data.id);
+        sessionStorage.setItem('token', data1.data.user.token);
+        sessionStorage.setItem('email', data1.data.user.email);
+        sessionStorage.setItem('id', data1.data.user.id);
         sessionStorage.setItem('login', login);
-        sessionStorage.setItem('avatar', data1.data.avatar);
-        getUserApi(`${api}/users/${data1.data.id}`);
+        sessionStorage.setItem('avatar', data1.data.user.avatar);
+        getUserApi(`${api}/users/${data1.data.user.id}`);
       }
     });
 };

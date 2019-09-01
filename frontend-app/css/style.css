@@ -1293,11 +1293,6 @@ body,
     align-items: center;
     justify-content: center;
   }
-
-  .wrapper {
-    height: 900px;
-    max-width: 1800px;
-  }
 }
 
 @media (max-width: 1140px) {
