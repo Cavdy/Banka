@@ -11,7 +11,7 @@
     "https"
   ],
   "paths": {
-    "v1/auth/signup": {
+    "/v1/auth/signup": {
       "post": {
         "tags": [
           "Auth"
@@ -62,7 +62,7 @@
         }
       }
     },
-    "v1/auth/signup/addstaff": {
+    "/v1/auth/signup/addstaff": {
       "post": {
         "tags": [
           "Auth"
@@ -132,7 +132,7 @@
         ]
       }
     },
-    "v1/auth/signin": {
+    "/v1/auth/signin": {
       "post": {
         "tags": [
           "Auth"
