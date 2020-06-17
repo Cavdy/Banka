@@ -6,7 +6,7 @@
     "title": "Banka App"
   },
   "host": "bankaapp-api.herokuapp.com",
-  "basePath": "/api",
+  "basePath": "/api/",
   "schemes": [
     "https"
   ],
