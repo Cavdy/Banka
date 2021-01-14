@@ -138,4 +138,4 @@ URL: https://www.pivotaltracker.com/n/projects/2319773
 
 ## Authors
 
-- **Isaiah Ikenna Franklin**
+- **Isaiah Ikenna Franklin (Cavdy)**
